@@ -1,61 +1,83 @@
-# Copilot Instructions for vu-frontend
+# Copilot Instructions for VU Frontend
 
 ## Project Overview
-React 19 frontend application built with Vite 7. This is a graduation project frontend in early development stage.
+
+VU is an AI-powered virtual interview platform with two modes:
+
+- **Practice Mode** - For job seekers to practice with AI coaching
+- **Recruitment Mode** - For companies to screen candidates with AI
+
+Built with React 19, Vite 7, and Tailwind CSS 4. UI-first development using Figma design system.
 
 ## Tech Stack
+
 - **Framework**: React 19 with JSX (not TypeScript)
 - **Build Tool**: Vite 7 with `@vitejs/plugin-react`
-- **Styling**: Tailwind CSS 4 (installed, needs configuration in `src/index.css`)
-- **Linting**: ESLint 9 with flat config, React Hooks plugin, React Refresh plugin
-- **Formatting**: Prettier
+- **Styling**: Tailwind CSS 4 with design tokens from Figma
+- **Linting**: ESLint 9 flat config + React Hooks plugin
+- **Formatting**: Prettier with `prettier-plugin-tailwindcss`
 
 ## Development Commands
+
 ```bash
 npm run dev      # Start dev server with HMR
 npm run build    # Production build to dist/
-npm run preview  # Preview production build locally
+npm run preview  # Preview production build
 npm run lint     # Run ESLint
 ```
 
 ## Project Structure
+
 ```
 src/
-├── main.jsx      # App entry point, renders into #root with StrictMode
-├── App.jsx       # Root component
-├── index.css     # Global styles (add Tailwind directives here)
-├── App.css       # Component-specific styles
-└── assets/       # Static assets imported in components
-public/           # Static files served at root (favicon, etc.)
+├── components/
+│   ├── ui/           # Reusable UI (buttons, inputs, cards, modals)
+│   └── layout/       # Layout (header, sidebar, footer, navigation)
+├── pages/            # Page-level components (route views)
+├── styles/
+│   ├── index.css     # Tailwind entry with @layer directives
+│   └── tokens.css    # Figma design tokens (CSS variables)
+└── assets/           # Images, icons, fonts
 ```
 
 ## Code Conventions
 
-### Component Pattern
-- Use function components with hooks (no class components)
-- Export components as default: `export default ComponentName`
-- Use named imports for React hooks: `import { useState } from 'react'`
+### Components
 
-### ESLint Rules
-- Unused variables error except those starting with uppercase or underscore (`varsIgnorePattern: '^[A-Z_]'`)
-- React Hooks rules enforced (exhaustive deps, rules of hooks)
-- React Refresh compatibility required for HMR
+- Function components with hooks only
+- Default exports: `export default ComponentName`
+- One component per file, PascalCase naming
+- Named imports for hooks: `import { useState } from 'react'`
 
-### File Organization
-- Components in `.jsx` files
-- CSS imports at component level when component-specific
-- Assets imported directly in components: `import logo from './assets/logo.svg'`
-- Public assets referenced with absolute path: `src="/vite.svg"`
+### Styling
 
-## Setup Notes
-- Tailwind CSS 4 is installed but requires setup. Add to `src/index.css`:
-  ```css
-  @import "tailwindcss";
-  ```
-- No routing or state management libraries installed yet
-- No API client configured yet
+- Tailwind utility classes in JSX
+- Design tokens in `src/styles/tokens.css`
+- Prettier auto-sorts Tailwind classes
+
+### File Naming
+
+- Components: `Button.jsx`, `InterviewCard.jsx`
+- Pages: `HomePage.jsx`, `DashboardPage.jsx`
+
+## Key Features to Implement
+
+- Video interview interface
+- AI feedback displays
+- Analytics dashboards
+- Candidate/recruiter dashboards
+- Authentication flows
+- Utils: `src/utils/formatDate.js`
+
+## Figma Integration
+
+1. Export design tokens from Figma (colors, typography, spacing)
+2. Add CSS variables to `src/styles/tokens.css`
+3. Reference in Tailwind or components: `var(--color-primary)`
 
 ## When Adding Features
-- Place new components in `src/` (consider creating `src/components/` for organization)
-- Use Tailwind utility classes for styling when possible
-- Ensure components are compatible with React Refresh for HMR
+
+- Components go in appropriate subfolder under `src/components/`
+- Pages go in `src/pages/`
+- Keep components small and focused
+- Use Tailwind utilities; avoid inline styles
