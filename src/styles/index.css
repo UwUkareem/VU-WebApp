@@ -1,0 +1,20 @@
+/* Tailwind CSS */
+@import "tailwindcss";
+
+/* Design Tokens from Figma */
+/* Add your Figma tokens here: colors, typography, spacing, etc. */
+
+/* Custom base styles */
+@layer base {
+  /* Font family, base typography, etc. */
+}
+
+/* Custom component styles */
+@layer components {
+  /* Reusable component classes */
+}
+
+/* Custom utilities */
+@layer utilities {
+  /* Custom utility classes */
+}

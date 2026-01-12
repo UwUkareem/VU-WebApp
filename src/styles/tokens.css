@@ -1,0 +1,32 @@
+/* 
+ * Design Tokens from Figma
+ * Export your Figma tokens and paste them here
+ * These will be used to extend Tailwind's theme
+ */
+
+:root {
+  /* Colors - Replace with your Figma color tokens */
+  /* --color-primary: #3b82f6; */
+  /* --color-secondary: #6366f1; */
+  /* --color-accent: #f59e0b; */
+  
+  /* Typography - Replace with your Figma typography tokens */
+  /* --font-sans: 'Inter', system-ui, sans-serif; */
+  /* --font-heading: 'Poppins', sans-serif; */
+  
+  /* Spacing - Replace with your Figma spacing tokens */
+  /* --spacing-xs: 0.25rem; */
+  /* --spacing-sm: 0.5rem; */
+  /* --spacing-md: 1rem; */
+  /* --spacing-lg: 1.5rem; */
+  /* --spacing-xl: 2rem; */
+  
+  /* Border Radius */
+  /* --radius-sm: 0.25rem; */
+  /* --radius-md: 0.5rem; */
+  /* --radius-lg: 1rem; */
+  
+  /* Shadows */
+  /* --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05); */
+  /* --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
