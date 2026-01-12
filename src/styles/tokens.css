@@ -9,7 +9,7 @@
      ======================================== */
 
   /* Font Families */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-mono: 'Roboto Mono', ui-monospace, monospace;
 
   /* Font Weights */
@@ -407,10 +407,19 @@
   /* Button - Primary */
   --btn-primary-text: var(--text-primary);
   --btn-primary-bg: var(--brand-600);
+  --btn-primary-hover: var(--black-a10);
+  --btn-primary-active: var(--black-a20);
 
   /* Button - Secondary */
   --btn-secondary-text: var(--text-secondary);
   --btn-secondary-bg: var(--gray-1200);
+  --btn-secondary-hover: var(--white-a5);
+  --btn-secondary-active: var(--white-a10);
+
+  /* Button - Ghost */
+  --btn-ghost-text: var(--text-disabled);
+  --btn-ghost-hover: var(--white-a5);
+  --btn-ghost-active: var(--white-a10);
 
   /* Button - Disabled */
   --btn-disabled-text: var(--white-a30);
