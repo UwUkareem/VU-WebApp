@@ -2,82 +2,85 @@
 
 ## Project Overview
 
-VU is an AI-powered virtual interview platform with two modes:
+**VU** is an AI-powered virtual interview platform enabling interactive interviews with real-time feedback. Two distinct modes serve different users:
 
-- **Practice Mode** - For job seekers to practice with AI coaching
-- **Recruitment Mode** - For companies to screen candidates with AI
+- **Practice Mode** – Job seekers conduct mock interviews with AI coaching and skill analytics
+- **Recruitment Mode** – Companies use AI-led interviews for candidate screening and ranking
 
-Built with React 19, Vite 7, and Tailwind CSS 4. UI-first development using Figma design system.
+This is a React 19 SPA built with Vite 7, styled with Tailwind CSS 4, and design-first approach via Figma.
 
-## Tech Stack
+## Tech Stack & Commands
 
-- **Framework**: React 19 with JSX (not TypeScript)
-- **Build Tool**: Vite 7 with `@vitejs/plugin-react`
-- **Styling**: Tailwind CSS 4 with design tokens from Figma
-- **Linting**: ESLint 9 flat config + React Hooks plugin
-- **Formatting**: Prettier with `prettier-plugin-tailwindcss`
+| Tool             | Version         | Command                                       |
+| ---------------- | --------------- | --------------------------------------------- |
+| **React**        | 19              | `npm run dev` – dev server with HMR           |
+| **Vite**         | 7               | `npm run build` – production build            |
+| **Tailwind CSS** | 4               | `npm run lint` – ESLint validation            |
+| **ESLint**       | 9 (flat config) | `npm run preview` – preview prod build        |
+| **Prettier**     | 3.7             | Auto-formats on save (includes Tailwind sort) |
 
-## Development Commands
+**Design reference**: [Figma – VU-WebApp](https://www.figma.com/design/LgLS6zCwbhl4yISLlsN2qC/VU-WebApp)
 
-```bash
-npm run dev      # Start dev server with HMR
-npm run build    # Production build to dist/
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-```
-
-## Project Structure
+## Architecture & File Structure
 
 ```
 src/
-├── components/
-│   ├── ui/           # Reusable UI (buttons, inputs, cards, modals)
-│   └── layout/       # Layout (header, sidebar, footer, navigation)
-├── pages/            # Page-level components (route views)
+├── components/ui/
+│   ├── Button/           # Exported as named export via index.js
+│   │   ├── Button.jsx    # Variant props: primary|secondary|ghost
+│   │   ├── Button.css    # Per-component CSS w/ token variables
+│   │   └── index.js      # Re-exported for barrel import
+│   └── index.js          # Central UI export: export { Button }
+├── components/layout/    # Header, nav, sidebar – page structure
+├── pages/                # Top-level route components
 ├── styles/
-│   ├── index.css     # Tailwind entry with @layer directives
-│   └── tokens.css    # Figma design tokens (CSS variables)
-└── assets/           # Images, icons, fonts
+│   ├── index.css         # Tailwind directives + design layer
+│   └── tokens.css        # 460+ CSS custom properties from Figma
+└── assets/               # Static images, icons
 ```
 
-## Code Conventions
+## Component Patterns
 
-### Components
+### UI Components (Reusable)
 
-- Function components with hooks only
-- Default exports: `export default ComponentName`
-- One component per file, PascalCase naming
-- Named imports for hooks: `import { useState } from 'react'`
+- **Location**: `src/components/ui/{ComponentName}/`
+- **Props**: Use PropTypes validation (e.g., `Button` has `variant`, `disabled`, `iconLeft/Right`)
+- **Exports**: Named exports from `ComponentName.jsx`, re-exported via `index.js`
+- **Example**: `Button` accepts `className` prop for Tailwind extensions
 
-### Styling
+### Design Token Integration
 
-- Tailwind utility classes in JSX
-- Design tokens in `src/styles/tokens.css`
-- Prettier auto-sorts Tailwind classes
+- CSS variables defined in `tokens.css` (e.g., `--btn-height`, `--btn-primary-bg`)
+- Components apply via CSS: `.btn--primary { background-color: var(--btn-primary-bg); }`
+- Tailwind can reference tokens: `bg-[var(--btn-primary-bg)]` (if needed for utilities)
 
-### File Naming
+### Styling Approach
 
-- Components: `Button.jsx`, `InterviewCard.jsx`
-- Pages: `HomePage.jsx`, `DashboardPage.jsx`
+- **Utility-first**: Prefer Tailwind classes in JSX
+- **Component CSS**: Scope styles to `.btn`, `.btn--variant`, `.btn__icon` (BEM-like)
+- **No inline styles** in production (App.jsx demo uses `style={}` for layout examples only)
+- **Prettier sorts classes** automatically per Tailwind plugin
 
-## Key Features to Implement
+## Key Conventions
 
-- Video interview interface
-- AI feedback displays
-- Analytics dashboards
-- Candidate/recruiter dashboards
-- Authentication flows
-- Utils: `src/utils/formatDate.js`
+| Pattern            | Rule                                          | Example                               |
+| ------------------ | --------------------------------------------- | ------------------------------------- |
+| **Imports**        | Named for hooks/utils; default for components | `import { Button } from '../ui'`      |
+| **Props**          | Use PropTypes for validation                  | See `Button.propTypes`                |
+| **Variants**       | Validation array + fallback                   | `VARIANTS = ['primary', 'secondary']` |
+| **Icons**          | Lucide React (`lucide-react` package)         | `<Info size={16} />`                  |
+| **Disabled state** | Always handle in CSS (`:disabled` pseudo)     | `.btn:disabled { opacity: 0.6; }`     |
 
-## Figma Integration
+## Component Development Workflow
 
-1. Export design tokens from Figma (colors, typography, spacing)
-2. Add CSS variables to `src/styles/tokens.css`
-3. Reference in Tailwind or components: `var(--color-primary)`
+1. **Create folder**: `src/components/ui/NewComponent/`
+2. **Create files**: `NewComponent.jsx`, `NewComponent.css`, `index.js`
+3. **Define PropTypes** in the `.jsx` file
+4. **Style with CSS tokens** from `tokens.css` (e.g., `var(--text-md)`)
+5. **Export from barrel**: Add to `src/components/ui/index.js`
+6. **Import where needed**: `import { NewComponent } from '../ui'`
 
-## When Adding Features
+## Related Backend
 
-- Components go in appropriate subfolder under `src/components/`
-- Pages go in `src/pages/`
-- Keep components small and focused
-- Use Tailwind utilities; avoid inline styles
+- **Backend repo**: [VU-WebApp (API services)](https://github.com/UwUkareem/VU-WebApp.git)
+- **Assumed endpoints**: Authentication, interview data, feedback submission (to be integrated)

@@ -11,6 +11,7 @@
    TAILWIND THEME CUSTOMIZATION
    ======================================== */
 
+/* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
   /* Font Families */
   --font-sans: var(--font-sans);
