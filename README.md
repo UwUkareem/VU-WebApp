@@ -83,11 +83,6 @@ src/
 └── assets/           # Static assets (images, icons)
 ```
 
-## 🤝 Team
-
-- **Frontend**: [@UwUkareem](https://github.com/UwUkareem)
-- **Backend**: [Teammate's GitHub]
-
 ## 📄 License
 
 This project is part of a graduation project.
