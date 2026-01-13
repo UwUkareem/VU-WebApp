@@ -1,0 +1,106 @@
+/* Toggle Component */
+
+.toggle {
+  /* Dimensions */
+  --toggle-width: 3rem;
+  --toggle-height: 1.75rem;
+  --toggle-padding: 0.125rem;
+  --toggle-thumb-size: 1.5rem;
+  --toggle-stretch: 0.5rem;
+
+  /* Colors */
+  --toggle-track-off: var(--bg-surface);
+  --toggle-track-on: var(--brand-600);
+  --toggle-thumb-off: var(--text-secondary);
+  --toggle-thumb-on: var(--white);
+
+  /* Animation */
+  --toggle-timing: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Visually hidden checkbox */
+.toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* Track */
+.toggle__track {
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background-color: var(--toggle-track-off);
+  border-radius: var(--radius-full);
+  transition: background-color 0.3s ease;
+}
+
+/* Thumb */
+.toggle__thumb {
+  position: absolute;
+  top: var(--toggle-padding);
+  left: var(--toggle-padding);
+  width: var(--toggle-thumb-size);
+  height: var(--toggle-thumb-size);
+  background-color: var(--toggle-thumb-off);
+  border-radius: var(--radius-full);
+  transition:
+    left 0.4s var(--toggle-timing),
+    width 0.4s var(--toggle-timing),
+    background-color 0.2s ease;
+  will-change: left, width;
+}
+
+/* Checked */
+.toggle__input:checked ~ .toggle__track {
+  background-color: var(--toggle-track-on);
+}
+
+.toggle__input:checked ~ .toggle__track .toggle__thumb {
+  left: calc(var(--toggle-width) - var(--toggle-thumb-size) - var(--toggle-padding));
+  background-color: var(--toggle-thumb-on);
+}
+
+/* Liquid stretch on press */
+.toggle:active:not(.toggle--disabled) .toggle__thumb {
+  width: calc(var(--toggle-thumb-size) + var(--toggle-stretch));
+}
+
+.toggle:active:not(.toggle--disabled) .toggle__input:checked ~ .toggle__track .toggle__thumb {
+  left: calc(
+    var(--toggle-width) - var(--toggle-thumb-size) - var(--toggle-padding) - var(--toggle-stretch)
+  );
+}
+
+/* Hover */
+.toggle:hover:not(.toggle--disabled) .toggle__track {
+  filter: brightness(1.1);
+}
+
+/* Focus */
+.toggle__input:focus-visible ~ .toggle__track {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.toggle__input:disabled ~ .toggle__track {
+  background-color: var(--btn-disabled-bg);
+}
+
+.toggle__input:disabled ~ .toggle__track .toggle__thumb {
+  background-color: var(--btn-disabled-text);
+}

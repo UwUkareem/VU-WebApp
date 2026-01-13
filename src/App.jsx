@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Button } from '../src/components/ui/Button';
+import { Toggle } from '../src/components/ui/Toggle';
 import { Info } from 'lucide-react';
 
 export default function App() {
+  const [toggle1, setToggle1] = useState(true);
+  const [toggle2, setToggle2] = useState(false);
+
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>Buttons</h1>
@@ -26,6 +31,16 @@ export default function App() {
         <Button variant="secondary" disabled>
           Disabled
         </Button>
+      </Section>
+
+      <h1 style={styles.title}>Toggle</h1>
+
+      {/* TOGGLE */}
+      <Section title="Toggle">
+        <Toggle checked={toggle1} onChange={setToggle1} />
+        <Toggle checked={toggle2} onChange={setToggle2} />
+        <Toggle disabled />
+        <Toggle checked disabled />
       </Section>
     </div>
   );
