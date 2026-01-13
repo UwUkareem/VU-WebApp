@@ -1,0 +1,69 @@
+/* RoleBadge Dropdown */
+
+.role-badge {
+  position: relative;
+  display: inline-flex;
+}
+
+.role-badge--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.role-badge__dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  min-width: 6rem;
+  padding: 0.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px var(--black-a30);
+  animation: dropIn 0.12s ease-out;
+  overflow: hidden;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.role-badge__option {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  font: var(--font-medium) var(--text-sm) var(--font-sans);
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.role-badge__option:hover {
+  background: var(--white-a10);
+}
+
+.role-badge__option--purple {
+  color: var(--purple-400);
+}
+.role-badge__option--teal {
+  color: var(--teal-400);
+}
+.role-badge__option--gray {
+  color: var(--gray-300);
+}
+
+.role-badge__option--selected {
+  background: var(--white-a5);
+}

@@ -104,3 +104,12 @@
 .toggle__input:disabled ~ .toggle__track .toggle__thumb {
   background-color: var(--btn-disabled-text);
 }
+
+/* Disabled + Checked - muted brand color */
+.toggle__input:disabled:checked ~ .toggle__track {
+  background-color: var(--brand-800);
+}
+
+.toggle__input:disabled:checked ~ .toggle__track .toggle__thumb {
+  background-color: var(--white-a50);
+}
