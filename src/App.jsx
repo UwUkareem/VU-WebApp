@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '../src/components/ui/Button';
 import { Toggle } from '../src/components/ui/Toggle';
 import { Badge, RoleBadge } from '../src/components/ui/Badge';
+import { Breadcrumb } from '../src/components/ui/Breadcrumb';
 import {
   TextInput,
   EmailInput,
@@ -96,6 +97,25 @@ export default function App() {
         <Badge type="role" variant="owner" />
         <Badge type="role" variant="editor" />
         <Badge type="role" variant="viewer" />
+      </Section>
+
+      <h1 style={styles.title}>Breadcrumb</h1>
+
+      {/* BREADCRUMB */}
+      <Section title="Breadcrumb Navigation" vertical>
+        <Breadcrumb items={[{ label: 'Tab 1' }]} />
+        <Breadcrumb items={[{ label: 'Tab 1', href: '#' }, { label: 'Tab 2' }]} />
+        <Breadcrumb
+          items={[{ label: 'Tab 1', href: '#' }, { label: 'Tab 2', href: '#' }, { label: 'Tab 3' }]}
+        />
+        <Breadcrumb
+          items={[
+            { label: 'Home', onClick: () => console.log('Home') },
+            { label: 'Projects', onClick: () => console.log('Projects') },
+            { label: 'Dashboard', onClick: () => console.log('Dashboard') },
+            { label: 'Settings' },
+          ]}
+        />
       </Section>
 
       {/* ROLE - Interactive with Dropdown */}
