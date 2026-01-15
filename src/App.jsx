@@ -1,7 +1,17 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '../src/components/ui/Button';
 import { Toggle } from '../src/components/ui/Toggle';
 import { Badge, RoleBadge } from '../src/components/ui/Badge';
+import {
+  TextInput,
+  EmailInput,
+  PasswordInput,
+  SearchInput,
+  DropdownInput,
+  Textarea,
+  FileInput,
+} from '../src/components/ui/Input';
 import { Info } from 'lucide-react';
 
 export default function App() {
@@ -10,6 +20,16 @@ export default function App() {
   const [role1, setRole1] = useState('owner');
   const [role2, setRole2] = useState('editor');
   const [role3, setRole3] = useState('viewer');
+  const [searchValue, setSearchValue] = useState('');
+  const [country, setCountry] = useState('');
+  const [roleValue, setRoleValue] = useState('user');
+
+  const countryOptions = [
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'uk', label: 'United Kingdom' },
+    { value: 'au', label: 'Australia' },
+  ];
 
   return (
     <div style={styles.page}>
@@ -85,6 +105,120 @@ export default function App() {
         <RoleBadge value={role3} onChange={setRole3} />
         <RoleBadge value="viewer" disabled />
       </Section>
+
+      <h1 style={styles.title}>Input Fields</h1>
+
+      {/* TEXT INPUT */}
+      <Section title="Text Input" vertical>
+        <TextInput label="Full Name" placeholder="Enter your name" required />
+        <TextInput label="Username" placeholder="@username" hint="Choose a unique username" />
+        <TextInput
+          label="Bio"
+          placeholder="Tell us about yourself"
+          showInfo
+          infoTooltip="Brief description about yourself (max 160 characters)"
+        />
+      </Section>
+
+      {/* EMAIL INPUT */}
+      <Section title="Email Input (with validation)" vertical>
+        <EmailInput
+          label="Email Address"
+          placeholder="you@example.com"
+          required
+          hint="We'll never share your email"
+          showInfo
+          infoTooltip="Enter a valid email address for account verification"
+        />
+        <EmailInput label="Work Email" placeholder="you@company.com" defaultValue="invalid-email" />
+      </Section>
+
+      {/* PASSWORD INPUT */}
+      <Section title="Password Input" vertical>
+        <PasswordInput label="Password" placeholder="Enter password" required />
+        <PasswordInput
+          label="Confirm Password"
+          placeholder="Re-enter password"
+          hint="Must be at least 8 characters"
+        />
+      </Section>
+
+      {/* SEARCH INPUT */}
+      <Section title="Search Input (with clear button)" vertical>
+        <SearchInput
+          placeholder="Search..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <SearchInput
+          label="Search Jobs"
+          placeholder="Job title, keywords..."
+          defaultValue="Designer"
+        />
+      </Section>
+
+      {/* DROPDOWN INPUT */}
+      <Section title="Dropdown Input (native select)" vertical>
+        <DropdownInput
+          label="Country"
+          placeholder="Select country"
+          options={countryOptions}
+          value={country}
+          onChange={(value) => setCountry(value)}
+          required
+        />
+        <DropdownInput
+          label="Role"
+          options={[
+            { value: 'admin', label: 'Administrator' },
+            { value: 'user', label: 'User' },
+            { value: 'guest', label: 'Guest' },
+          ]}
+          value={roleValue}
+          onChange={(value) => setRoleValue(value)}
+        />
+      </Section>
+
+      {/* TEXTAREA */}
+      <Section title="Textarea (with counter & autosize)" vertical>
+        <Textarea
+          label="Description"
+          placeholder="Write a description..."
+          rows={3}
+          hint="Brief overview of the project"
+        />
+        <Textarea
+          label="Cover Letter"
+          placeholder="Why do you want this job?"
+          maxLength={500}
+          showCounter
+          required
+        />
+        <Textarea
+          label="Auto-resize Comment"
+          placeholder="Type to see auto-resize..."
+          autosize
+          maxHeight={200}
+          hint="This textarea grows as you type"
+        />
+      </Section>
+
+      {/* FILE INPUT */}
+      <Section title="File Upload" vertical>
+        <FileInput label="Upload Resume" hint="PDF or DOCX, max 5MB" />
+        <FileInput label="Profile Picture" hint="JPG or PNG" required />
+      </Section>
+
+      {/* INPUT STATES */}
+      <Section title="Input States" vertical>
+        <TextInput label="Disabled" placeholder="Cannot type" disabled />
+        <TextInput
+          label="Error State"
+          placeholder="Invalid input"
+          hint="This field has an error"
+          error
+        />
+      </Section>
     </div>
   );
 }
@@ -93,14 +227,20 @@ export default function App() {
 /* Helper Components */
 /* ------------------ */
 
-function Section({ title, children }) {
+function Section({ title, children, vertical }) {
   return (
     <div style={styles.section}>
       <h2 style={styles.sectionTitle}>{title}</h2>
-      <div style={styles.row}>{children}</div>
+      <div style={vertical ? styles.column : styles.row}>{children}</div>
     </div>
   );
 }
+
+Section.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  vertical: PropTypes.bool,
+};
 
 /* ------------------ */
 /* Inline styles only for demo layout */
@@ -132,5 +272,11 @@ const styles = {
     display: 'flex',
     gap: '16px',
     flexWrap: 'wrap',
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    maxWidth: '400px',
   },
 };
