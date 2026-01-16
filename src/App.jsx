@@ -4,6 +4,7 @@ import { Button } from '../src/components/ui/Button';
 import { Toggle } from '../src/components/ui/Toggle';
 import { Badge, RoleBadge } from '../src/components/ui/Badge';
 import { Breadcrumb } from '../src/components/ui/Breadcrumb';
+import { Pagination } from '../src/components/ui/Pagination';
 import { Navbar } from '../src/components/layout/Navbar';
 import {
   TextInput,
@@ -25,6 +26,7 @@ export default function App() {
   const [searchValue, setSearchValue] = useState('');
   const [country, setCountry] = useState('');
   const [roleValue, setRoleValue] = useState('user');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const countryOptions = [
     { value: 'us', label: 'United States' },
@@ -258,6 +260,27 @@ export default function App() {
             error
           />
         </Section>
+
+        <h1 style={styles.title}>Pagination</h1>
+
+        {/* PAGINATION */}
+        <Section title="Basic Pagination">
+          <div style={styles.paginationDemo}>
+            <Pagination currentPage={currentPage} totalPages={10} onPageChange={setCurrentPage} />
+
+            <Pagination
+              currentPage={1}
+              totalPages={5}
+              onPageChange={(page) => console.log('Page:', page)}
+            />
+
+            <Pagination
+              currentPage={25}
+              totalPages={100}
+              onPageChange={(page) => console.log('Page:', page)}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -320,5 +343,11 @@ const styles = {
     flexDirection: 'column',
     gap: '16px',
     maxWidth: '400px',
+  },
+  paginationDemo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px',
+    alignItems: 'flex-start',
   },
 };
