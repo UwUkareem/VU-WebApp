@@ -5,6 +5,7 @@ import { Toggle } from '../src/components/ui/Toggle';
 import { Badge, RoleBadge } from '../src/components/ui/Badge';
 import { Breadcrumb } from '../src/components/ui/Breadcrumb';
 import { Pagination } from '../src/components/ui/Pagination';
+import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { Navbar } from '../src/components/layout/Navbar';
 import {
   TextInput,
@@ -16,6 +17,7 @@ import {
   FileInput,
 } from '../src/components/ui/Input';
 import { Info } from 'lucide-react';
+import { Briefcase, FileText, Users, Settings } from 'lucide-react';
 
 export default function App() {
   const [toggle1, setToggle1] = useState(true);
@@ -281,6 +283,42 @@ export default function App() {
             />
           </div>
         </Section>
+
+        <h1 style={styles.title}>Sidebar Buttons</h1>
+
+        {/* SIDEBAR BUTTONS */}
+        <Section title="Basic Sidebar Buttons" vertical>
+          <div style={styles.sidebarDemo}>
+            <SidebarButton icon={Briefcase} label="Candidates" />
+            <SidebarButton icon={FileText} label="Mocks" />
+            <SidebarButton icon={Users} label="Team" />
+            <SidebarButton icon={Settings} label="Settings" isActive />
+          </div>
+        </Section>
+
+        {/* SIDEBAR BUTTONS WITH SUB ITEMS */}
+        <Section title="Sidebar Buttons with Sub-items" vertical>
+          <div style={styles.sidebarDemo}>
+            <SidebarButton
+              icon={Briefcase}
+              label="Candidates"
+              subItems={[
+                { label: 'Job Management', isActive: true },
+                { label: 'Create Job', isActive: false },
+                { label: 'Pipeline', isActive: true },
+              ]}
+            />
+            <SidebarButton
+              icon={FileText}
+              label="Mocks"
+              subItems={[
+                { label: 'All Mocks', isActive: false },
+                { label: 'Create Mock', isActive: false },
+              ]}
+            />
+            <SidebarButton icon={Users} label="Team" isActive />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -349,5 +387,15 @@ const styles = {
     flexDirection: 'column',
     gap: '32px',
     alignItems: 'flex-start',
+  },
+  sidebarDemo: {
+    width: '280px',
+    padding: '16px',
+    backgroundColor: 'var(--bg-surface)',
+    borderRadius: 'var(--radius-lg)',
+    border: '1px solid var(--border-default)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
   },
 };
