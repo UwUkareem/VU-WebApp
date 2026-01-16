@@ -4,6 +4,7 @@ import { Button } from '../src/components/ui/Button';
 import { Toggle } from '../src/components/ui/Toggle';
 import { Badge, RoleBadge } from '../src/components/ui/Badge';
 import { Breadcrumb } from '../src/components/ui/Breadcrumb';
+import { Navbar } from '../src/components/layout/Navbar';
 import {
   TextInput,
   EmailInput,
@@ -34,211 +35,230 @@ export default function App() {
 
   return (
     <div style={styles.page}>
-      <h1 style={styles.title}>Buttons</h1>
+      {/* NAVBAR */}
+      <Navbar
+        breadcrumbItems={[
+          { label: 'Candidates', href: '#' },
+          { label: 'Pipeline', href: '#' },
+          { label: 'Tab 3' },
+        ]}
+      />
 
-      {/* PRIMARY */}
-      <Section title="Primary">
-        <Button>Button</Button>
-        <Button iconLeft={<Info size={16} />}>With Icon</Button>
-        <Button iconRight={<Info size={16} />}>Icon Right</Button>
-        <Button disabled>Disabled</Button>
-      </Section>
+      <div style={styles.content}>
+        <h1 style={styles.title}>Buttons</h1>
 
-      {/* SECONDARY */}
-      <Section title="Secondary">
-        <Button variant="secondary">Default</Button>
-        <Button variant="secondary" iconLeft={<Info size={16} />}>
-          With Icon
-        </Button>
-        <Button variant="secondary" iconRight={<Info size={16} />}>
-          Icon Right
-        </Button>
-        <Button variant="secondary" disabled>
-          Disabled
-        </Button>
-      </Section>
+        {/* PRIMARY */}
+        <Section title="Primary">
+          <Button>Button</Button>
+          <Button iconLeft={<Info size={16} />}>With Icon</Button>
+          <Button iconRight={<Info size={16} />}>Icon Right</Button>
+          <Button disabled>Disabled</Button>
+        </Section>
 
-      <h1 style={styles.title}>Toggle</h1>
+        {/* SECONDARY */}
+        <Section title="Secondary">
+          <Button variant="secondary">Default</Button>
+          <Button variant="secondary" iconLeft={<Info size={16} />}>
+            With Icon
+          </Button>
+          <Button variant="secondary" iconRight={<Info size={16} />}>
+            Icon Right
+          </Button>
+          <Button variant="secondary" disabled>
+            Disabled
+          </Button>
+        </Section>
 
-      {/* TOGGLE */}
-      <Section title="Toggle">
-        <Toggle checked={toggle1} onChange={setToggle1} />
-        <Toggle checked={toggle2} onChange={setToggle2} />
-        <Toggle disabled />
-        <Toggle checked disabled />
-      </Section>
+        <h1 style={styles.title}>Toggle</h1>
 
-      <h1 style={styles.title}>Badges</h1>
+        {/* TOGGLE */}
+        <Section title="Toggle">
+          <Toggle checked={toggle1} onChange={setToggle1} />
+          <Toggle checked={toggle2} onChange={setToggle2} />
+          <Toggle disabled />
+          <Toggle checked disabled />
+        </Section>
 
-      {/* CANDIDATE STATE */}
-      <Section title="Candidate State">
-        <Badge type="candidateState" variant="accepted" iconLeft iconRight />
-        <Badge type="candidateState" variant="pending" />
-        <Badge type="candidateState" variant="shortlist" />
-        <Badge type="candidateState" variant="rejected" />
-      </Section>
+        <h1 style={styles.title}>Badges</h1>
 
-      {/* CHEATING FLAG */}
-      <Section title="Cheating Flag">
-        <Badge type="cheatingFlag" variant="clean" iconLeft />
-        <Badge type="cheatingFlag" variant="flagged" iconLeft />
-        <Badge type="cheatingFlag" variant="critical" iconLeft />
-      </Section>
+        {/* CANDIDATE STATE */}
+        <Section title="Candidate State">
+          <Badge type="candidateState" variant="accepted" iconLeft iconRight />
+          <Badge type="candidateState" variant="pending" />
+          <Badge type="candidateState" variant="shortlist" />
+          <Badge type="candidateState" variant="rejected" />
+        </Section>
 
-      {/* JOB STATUS */}
-      <Section title="Job Status">
-        <Badge type="jobStatus" variant="active" />
-        <Badge type="jobStatus" variant="scheduled" />
-        <Badge type="jobStatus" variant="closed" />
-      </Section>
+        {/* CHEATING FLAG */}
+        <Section title="Cheating Flag">
+          <Badge type="cheatingFlag" variant="clean" iconLeft />
+          <Badge type="cheatingFlag" variant="flagged" iconLeft />
+          <Badge type="cheatingFlag" variant="critical" iconLeft />
+        </Section>
 
-      {/* ROLE - Static (no dropdown) */}
-      <Section title="Role (Static)">
-        <Badge type="role" variant="owner" />
-        <Badge type="role" variant="editor" />
-        <Badge type="role" variant="viewer" />
-      </Section>
+        {/* JOB STATUS */}
+        <Section title="Job Status">
+          <Badge type="jobStatus" variant="active" />
+          <Badge type="jobStatus" variant="scheduled" />
+          <Badge type="jobStatus" variant="closed" />
+        </Section>
 
-      <h1 style={styles.title}>Breadcrumb</h1>
+        {/* ROLE - Static (no dropdown) */}
+        <Section title="Role (Static)">
+          <Badge type="role" variant="owner" />
+          <Badge type="role" variant="editor" />
+          <Badge type="role" variant="viewer" />
+        </Section>
 
-      {/* BREADCRUMB */}
-      <Section title="Breadcrumb Navigation" vertical>
-        <Breadcrumb items={[{ label: 'Tab 1' }]} />
-        <Breadcrumb items={[{ label: 'Tab 1', href: '#' }, { label: 'Tab 2' }]} />
-        <Breadcrumb
-          items={[{ label: 'Tab 1', href: '#' }, { label: 'Tab 2', href: '#' }, { label: 'Tab 3' }]}
-        />
-        <Breadcrumb
-          items={[
-            { label: 'Home', onClick: () => console.log('Home') },
-            { label: 'Projects', onClick: () => console.log('Projects') },
-            { label: 'Dashboard', onClick: () => console.log('Dashboard') },
-            { label: 'Settings' },
-          ]}
-        />
-      </Section>
+        <h1 style={styles.title}>Breadcrumb</h1>
 
-      {/* ROLE - Interactive with Dropdown */}
-      <Section title="Role (Interactive Dropdown)">
-        <RoleBadge value={role1} onChange={setRole1} />
-        <RoleBadge value={role2} onChange={setRole2} />
-        <RoleBadge value={role3} onChange={setRole3} />
-        <RoleBadge value="viewer" disabled />
-      </Section>
+        {/* BREADCRUMB */}
+        <Section title="Breadcrumb Navigation" vertical>
+          <Breadcrumb items={[{ label: 'Tab 1' }]} />
+          <Breadcrumb items={[{ label: 'Tab 1', href: '#' }, { label: 'Tab 2' }]} />
+          <Breadcrumb
+            items={[
+              { label: 'Tab 1', href: '#' },
+              { label: 'Tab 2', href: '#' },
+              { label: 'Tab 3' },
+            ]}
+          />
+          <Breadcrumb
+            items={[
+              { label: 'Home', onClick: () => console.log('Home') },
+              { label: 'Projects', onClick: () => console.log('Projects') },
+              { label: 'Dashboard', onClick: () => console.log('Dashboard') },
+              { label: 'Settings' },
+            ]}
+          />
+        </Section>
 
-      <h1 style={styles.title}>Input Fields</h1>
+        {/* ROLE - Interactive with Dropdown */}
+        <Section title="Role (Interactive Dropdown)">
+          <RoleBadge value={role1} onChange={setRole1} />
+          <RoleBadge value={role2} onChange={setRole2} />
+          <RoleBadge value={role3} onChange={setRole3} />
+          <RoleBadge value="viewer" disabled />
+        </Section>
 
-      {/* TEXT INPUT */}
-      <Section title="Text Input" vertical>
-        <TextInput label="Full Name" placeholder="Enter your name" required />
-        <TextInput label="Username" placeholder="@username" hint="Choose a unique username" />
-        <TextInput
-          label="Bio"
-          placeholder="Tell us about yourself"
-          showInfo
-          infoTooltip="Brief description about yourself (max 160 characters)"
-        />
-      </Section>
+        <h1 style={styles.title}>Input Fields</h1>
 
-      {/* EMAIL INPUT */}
-      <Section title="Email Input (with validation)" vertical>
-        <EmailInput
-          label="Email Address"
-          placeholder="you@example.com"
-          required
-          hint="We'll never share your email"
-          showInfo
-          infoTooltip="Enter a valid email address for account verification"
-        />
-        <EmailInput label="Work Email" placeholder="you@company.com" defaultValue="invalid-email" />
-      </Section>
+        {/* TEXT INPUT */}
+        <Section title="Text Input" vertical>
+          <TextInput label="Full Name" placeholder="Enter your name" required />
+          <TextInput label="Username" placeholder="@username" hint="Choose a unique username" />
+          <TextInput
+            label="Bio"
+            placeholder="Tell us about yourself"
+            showInfo
+            infoTooltip="Brief description about yourself (max 160 characters)"
+          />
+        </Section>
 
-      {/* PASSWORD INPUT */}
-      <Section title="Password Input" vertical>
-        <PasswordInput label="Password" placeholder="Enter password" required />
-        <PasswordInput
-          label="Confirm Password"
-          placeholder="Re-enter password"
-          hint="Must be at least 8 characters"
-        />
-      </Section>
+        {/* EMAIL INPUT */}
+        <Section title="Email Input (with validation)" vertical>
+          <EmailInput
+            label="Email Address"
+            placeholder="you@example.com"
+            required
+            hint="We'll never share your email"
+            showInfo
+            infoTooltip="Enter a valid email address for account verification"
+          />
+          <EmailInput
+            label="Work Email"
+            placeholder="you@company.com"
+            defaultValue="invalid-email"
+          />
+        </Section>
 
-      {/* SEARCH INPUT */}
-      <Section title="Search Input (with clear button)" vertical>
-        <SearchInput
-          placeholder="Search..."
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-        />
-        <SearchInput
-          label="Search Jobs"
-          placeholder="Job title, keywords..."
-          defaultValue="Designer"
-        />
-      </Section>
+        {/* PASSWORD INPUT */}
+        <Section title="Password Input" vertical>
+          <PasswordInput label="Password" placeholder="Enter password" required />
+          <PasswordInput
+            label="Confirm Password"
+            placeholder="Re-enter password"
+            hint="Must be at least 8 characters"
+          />
+        </Section>
 
-      {/* DROPDOWN INPUT */}
-      <Section title="Dropdown Input (native select)" vertical>
-        <DropdownInput
-          label="Country"
-          placeholder="Select country"
-          options={countryOptions}
-          value={country}
-          onChange={(value) => setCountry(value)}
-          required
-        />
-        <DropdownInput
-          label="Role"
-          options={[
-            { value: 'admin', label: 'Administrator' },
-            { value: 'user', label: 'User' },
-            { value: 'guest', label: 'Guest' },
-          ]}
-          value={roleValue}
-          onChange={(value) => setRoleValue(value)}
-        />
-      </Section>
+        {/* SEARCH INPUT */}
+        <Section title="Search Input (with clear button)" vertical>
+          <SearchInput
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <SearchInput
+            label="Search Jobs"
+            placeholder="Job title, keywords..."
+            defaultValue="Designer"
+          />
+        </Section>
 
-      {/* TEXTAREA */}
-      <Section title="Textarea (with counter & autosize)" vertical>
-        <Textarea
-          label="Description"
-          placeholder="Write a description..."
-          rows={3}
-          hint="Brief overview of the project"
-        />
-        <Textarea
-          label="Cover Letter"
-          placeholder="Why do you want this job?"
-          maxLength={500}
-          showCounter
-          required
-        />
-        <Textarea
-          label="Auto-resize Comment"
-          placeholder="Type to see auto-resize..."
-          autosize
-          maxHeight={200}
-          hint="This textarea grows as you type"
-        />
-      </Section>
+        {/* DROPDOWN INPUT */}
+        <Section title="Dropdown Input (native select)" vertical>
+          <DropdownInput
+            label="Country"
+            placeholder="Select country"
+            options={countryOptions}
+            value={country}
+            onChange={(value) => setCountry(value)}
+            required
+          />
+          <DropdownInput
+            label="Role"
+            options={[
+              { value: 'admin', label: 'Administrator' },
+              { value: 'user', label: 'User' },
+              { value: 'guest', label: 'Guest' },
+            ]}
+            value={roleValue}
+            onChange={(value) => setRoleValue(value)}
+          />
+        </Section>
 
-      {/* FILE INPUT */}
-      <Section title="File Upload" vertical>
-        <FileInput label="Upload Resume" hint="PDF or DOCX, max 5MB" />
-        <FileInput label="Profile Picture" hint="JPG or PNG" required />
-      </Section>
+        {/* TEXTAREA */}
+        <Section title="Textarea (with counter & autosize)" vertical>
+          <Textarea
+            label="Description"
+            placeholder="Write a description..."
+            rows={3}
+            hint="Brief overview of the project"
+          />
+          <Textarea
+            label="Cover Letter"
+            placeholder="Why do you want this job?"
+            maxLength={500}
+            showCounter
+            required
+          />
+          <Textarea
+            label="Auto-resize Comment"
+            placeholder="Type to see auto-resize..."
+            autosize
+            maxHeight={200}
+            hint="This textarea grows as you type"
+          />
+        </Section>
 
-      {/* INPUT STATES */}
-      <Section title="Input States" vertical>
-        <TextInput label="Disabled" placeholder="Cannot type" disabled />
-        <TextInput
-          label="Error State"
-          placeholder="Invalid input"
-          hint="This field has an error"
-          error
-        />
-      </Section>
+        {/* FILE INPUT */}
+        <Section title="File Upload" vertical>
+          <FileInput label="Upload Resume" hint="PDF or DOCX, max 5MB" />
+          <FileInput label="Profile Picture" hint="JPG or PNG" required />
+        </Section>
+
+        {/* INPUT STATES */}
+        <Section title="Input States" vertical>
+          <TextInput label="Disabled" placeholder="Cannot type" disabled />
+          <TextInput
+            label="Error State"
+            placeholder="Invalid input"
+            hint="This field has an error"
+            error
+          />
+        </Section>
+      </div>
     </div>
   );
 }
@@ -271,8 +291,10 @@ const styles = {
     minHeight: '100vh',
     backgroundColor: 'var(--bg-base)',
     color: 'var(--text-primary)',
-    padding: '40px',
     fontFamily: 'var(--font-sans)',
+  },
+  content: {
+    padding: '40px',
   },
   title: {
     fontSize: '48px',
