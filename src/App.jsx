@@ -8,6 +8,7 @@ import { Pagination } from '../src/components/ui/Pagination';
 import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { User } from '../src/components/ui/User';
 import { Tabs } from '../src/components/ui/Tabs';
+import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -31,6 +32,7 @@ import {
   UserCircle2,
   ArrowRight,
   Plus,
+  Star,
 } from 'lucide-react';
 
 export default function App() {
@@ -43,6 +45,46 @@ export default function App() {
   const [country, setCountry] = useState('');
   const [roleValue, setRoleValue] = useState('user');
   const [currentPage, setCurrentPage] = useState(1);
+  const [tableSortColumn, setTableSortColumn] = useState(null);
+  const [tableSortDirection, setTableSortDirection] = useState(null);
+
+  const tableColumns = [
+    {
+      key: 'name',
+      label: 'Name',
+      sortable: true,
+      width: '300px',
+      sortState: tableSortColumn === 'name' ? tableSortDirection : null,
+    },
+    {
+      key: 'job',
+      label: 'Job',
+      width: '180px',
+      sortable: true,
+      sortState: tableSortColumn === 'job' ? tableSortDirection : null,
+    },
+    {
+      key: 'score',
+      label: 'Score',
+      width: '100px',
+      sortable: true,
+      sortState: tableSortColumn === 'score' ? tableSortDirection : null,
+    },
+    {
+      key: 'date',
+      label: 'Date',
+      width: '150px',
+      sortable: true,
+      sortState: tableSortColumn === 'date' ? tableSortDirection : null,
+    },
+    { key: 'antiCheat', label: 'Anti-cheat', width: '120px', sortable: false },
+    { key: 'status', label: 'Status', width: '120px', sortable: false },
+  ];
+
+  const handleSort = (columnKey, sortDirection) => {
+    setTableSortColumn(sortDirection ? columnKey : null);
+    setTableSortDirection(sortDirection);
+  };
 
   const countryOptions = [
     { value: 'us', label: 'United States' },
@@ -439,6 +481,164 @@ export default function App() {
             />
           </div>
         </Section>
+
+        <h1 style={styles.title}>Table Header</h1>
+
+        {/* TABLE HEADER */}
+        <Section title="Table Header with Sort" vertical>
+          <div style={styles.tableDemo}>
+            <TableHeader columns={tableColumns} onSort={handleSort} />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Table Rows</h1>
+
+        {/* TABLE ROW WITH CELLS */}
+        <Section title="Table Rows with Data" vertical>
+          <div style={styles.tableDemo}>
+            <TableHeader columns={tableColumns} onSort={handleSort} />
+
+            {/* Row 1 - With icon, badges, and menu */}
+            <TableRow showMenu onMenuClick={() => console.log('Menu clicked')}>
+              <TableCell width="300px" color="primary">
+                John Doe
+              </TableCell>
+              <TableCell width="180px" color="secondary">
+                Software Engineer
+              </TableCell>
+              <TableCell
+                width="100px"
+                color="primary"
+                icon={
+                  <Star size={14} fill="var( --brand-default)" stroke="var( --brand-default)" />
+                }
+              >
+                4.8
+              </TableCell>
+              <TableCell width="150px" color="tertiary">
+                Jan 15, 2026
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="cheatingFlag" variant="clean" iconLeft />
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="candidateState" variant="accepted" />
+              </TableCell>
+            </TableRow>
+
+            {/* Row 2 - Different data */}
+            <TableRow showMenu onMenuClick={() => console.log('Menu clicked')}>
+              <TableCell width="300px" color="primary">
+                Jane Smith
+              </TableCell>
+              <TableCell width="180px" color="secondary">
+                Product Designer
+              </TableCell>
+              <TableCell
+                width="100px"
+                color="primary"
+                icon={
+                  <Star size={14} fill="var( --brand-default)" stroke="var( --brand-default)" />
+                }
+              >
+                4.5
+              </TableCell>
+              <TableCell width="150px" color="tertiary">
+                Jan 12, 2026
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="cheatingFlag" variant="flagged" iconLeft />
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="candidateState" variant="pending" />
+              </TableCell>
+            </TableRow>
+
+            {/* Row 3 - Critical flagged */}
+            <TableRow showMenu onMenuClick={() => console.log('Menu clicked')}>
+              <TableCell width="300px" color="primary">
+                Alex Johnson
+              </TableCell>
+              <TableCell width="180px" color="secondary">
+                Data Analyst
+              </TableCell>
+              <TableCell
+                width="100px"
+                color="primary"
+                icon={
+                  <Star size={14} fill="var( --brand-default)" stroke="var( --brand-default)" />
+                }
+              >
+                3.2
+              </TableCell>
+              <TableCell width="150px" color="tertiary">
+                Jan 10, 2026
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="cheatingFlag" variant="critical" iconLeft />
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="candidateState" variant="rejected" />
+              </TableCell>
+            </TableRow>
+
+            {/* Row 4 - Shortlisted */}
+            <TableRow showMenu onMenuClick={() => console.log('Menu clicked')}>
+              <TableCell width="300px" color="primary">
+                Emily Brown
+              </TableCell>
+              <TableCell width="180px" color="secondary">
+                Frontend Developer
+              </TableCell>
+              <TableCell
+                width="100px"
+                color="primary"
+                icon={
+                  <Star size={14} fill="var( --brand-default)" stroke="var( --brand-default)" />
+                }
+              >
+                4.9
+              </TableCell>
+              <TableCell width="150px" color="tertiary">
+                Jan 08, 2026
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="cheatingFlag" variant="clean" iconLeft />
+              </TableCell>
+              <TableCell width="120px">
+                <Badge type="candidateState" variant="shortlist" />
+              </TableCell>
+            </TableRow>
+          </div>
+        </Section>
+
+        {/* TABLE ROWS WITHOUT MENU */}
+        <Section title="Table Rows (No Menu)" vertical>
+          <div style={styles.tableDemo}>
+            <TableRow>
+              <TableCell width="200px" color="primary">
+                Primary Text
+              </TableCell>
+              <TableCell width="200px" color="secondary">
+                Secondary Text
+              </TableCell>
+              <TableCell width="200px" color="tertiary">
+                Tertiary Text
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell width="200px" color="primary" icon={<Star size={14} />}>
+                With Icon
+              </TableCell>
+              <TableCell width="200px" color="secondary">
+                Regular
+              </TableCell>
+              <TableCell width="200px">
+                <Badge type="jobStatus" variant="active" />
+              </TableCell>
+            </TableRow>
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -500,7 +700,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    maxWidth: '400px',
+    width: '1200px',
   },
   paginationDemo: {
     display: 'flex',
@@ -536,9 +736,10 @@ const styles = {
     maxWidth: '600px',
   },
   shortcutsDemo: {
-    width: '1000px',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-lg)',
-    overflow: 'hidden',
+    width: '100%',
+  },
+  tableDemo: {
+    width: '100%',
+    backgroundColor: 'var(--bg-surface)',
   },
 };

@@ -1,0 +1,63 @@
+/* Table Row Component */
+
+.table-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--color-bg-subcard);
+  border-radius: var(--radius-md);
+  min-width: max-content;
+  transition: background var(--transition-base);
+}
+
+.table-row--clickable {
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.table-row:hover {
+  background: var(--bg-hover);
+}
+
+.table-row__content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* Menu Button */
+.table-row__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0;
+  transition:
+    opacity var(--transition-base),
+    background var(--transition-base),
+    color var(--transition-base);
+}
+
+.table-row:hover .table-row__menu {
+  opacity: 1;
+}
+
+.table-row__menu:hover {
+  background: var(--white-a10);
+  color: var(--text-primary);
+}
+
+.table-row__menu:active {
+  background: var(--white-a15);
+}

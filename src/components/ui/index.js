@@ -7,3 +7,4 @@ export { Pagination } from './Pagination';
 export { SidebarButton } from './SidebarButton';
 export { User } from './User';
 export { Tabs } from './Tabs';
+export { TableHeader } from './Tables';
