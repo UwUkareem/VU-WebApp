@@ -1,0 +1,53 @@
+/* Tabs Component */
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: var(--font-medium);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--transition-base);
+}
+
+.tab:hover {
+  color: var(--text-secondary);
+}
+
+.tab--active {
+  color: var(--text-primary);
+}
+
+.tab--active:hover {
+  color: var(--text-primary);
+}
+
+.tab__label {
+  position: relative;
+  z-index: 1;
+}
+
+.tab__indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--brand-default);
+  pointer-events: none;
+  border-radius: var(--radius-full);
+}

@@ -7,6 +7,7 @@ import { Breadcrumb } from '../src/components/ui/Breadcrumb';
 import { Pagination } from '../src/components/ui/Pagination';
 import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { User } from '../src/components/ui/User';
+import { Tabs } from '../src/components/ui/Tabs';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import {
@@ -378,6 +379,29 @@ export default function App() {
             />
           </div>
         </Section>
+
+        <h1 style={styles.title}>Tabs</h1>
+
+        {/* TABS COMPONENT */}
+        <Section title="Tab Navigation" vertical>
+          <div style={styles.tabsDemo}>
+            <Tabs
+              items={[
+                { label: 'Pipeline', isActive: true },
+                { label: 'Overview', isActive: false },
+              ]}
+            />
+          </div>
+          <div style={styles.tabsDemo}>
+            <Tabs
+              items={[
+                { label: 'Full Feedback', isActive: true },
+                { label: 'Mock Replay', isActive: false },
+                { label: 'CV Analysis', isActive: false },
+              ]}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -469,5 +493,9 @@ const styles = {
     border: '1px solid var(--border-default)',
     borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',
+  },
+  tabsDemo: {
+    width: '100%',
+    maxWidth: '600px',
   },
 };
