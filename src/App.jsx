@@ -9,6 +9,7 @@ import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { User } from '../src/components/ui/User';
 import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
+import { StatsChart } from './components/ui/StatsChart';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -639,6 +640,34 @@ export default function App() {
             </TableRow>
           </div>
         </Section>
+
+        <h1 style={styles.title}>Stats Chart</h1>
+
+        {/* STATS CHART */}
+        <Section title="Stats Chart Component">
+          <div style={styles.statsDemo}>
+            <StatsChart
+              title="Title"
+              stats={[
+                { label: 'Title', value: 88 },
+                { label: 'Title', value: 88 },
+                { label: 'Title', value: 88 },
+                { label: 'Title', value: 88 },
+                { label: 'Title', value: 88 },
+              ]}
+            />
+            <StatsChart
+              title="Performance Metrics"
+              stats={[
+                { label: 'Communication', value: 95 },
+                { label: 'Technical Skills', value: 78 },
+                { label: 'Problem Solving', value: 62 },
+                { label: 'Time Management', value: 45 },
+                { label: 'Teamwork', value: 25 },
+              ]}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -741,5 +770,10 @@ const styles = {
   tableDemo: {
     width: '100%',
     backgroundColor: 'var(--bg-surface)',
+  },
+  statsDemo: {
+    display: 'flex',
+    gap: '24px',
+    flexWrap: 'wrap',
   },
 };
