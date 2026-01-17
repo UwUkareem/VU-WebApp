@@ -12,8 +12,8 @@
   border-radius: var(--btn-radius);
 
   font-family: var(--font-sans);
+  white-space: nowrap;
   cursor: pointer;
-  overflow: hidden;
 
   /* Smooth transitions for all states */
   outline: 2px solid transparent;

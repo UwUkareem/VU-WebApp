@@ -10,6 +10,7 @@ import { User } from '../src/components/ui/User';
 import { Tabs } from '../src/components/ui/Tabs';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
+import { Shortcuts } from '../src/components/layout/Shortcuts';
 import {
   TextInput,
   EmailInput,
@@ -20,7 +21,17 @@ import {
   FileInput,
 } from '../src/components/ui/Input';
 import { Info } from 'lucide-react';
-import { Briefcase, FileText, Users, Settings, Hash, Building2, UserCircle2 } from 'lucide-react';
+import {
+  Briefcase,
+  FileText,
+  Users,
+  Settings,
+  Hash,
+  Building2,
+  UserCircle2,
+  ArrowRight,
+  Plus,
+} from 'lucide-react';
 
 export default function App() {
   const [toggle1, setToggle1] = useState(true);
@@ -402,6 +413,32 @@ export default function App() {
             />
           </div>
         </Section>
+
+        <h1 style={styles.title}>Shortcuts Bar</h1>
+
+        {/* SHORTCUTS LAYOUT */}
+        <Section title="Shortcuts Layout" vertical>
+          <div style={styles.shortcutsDemo}>
+            <Shortcuts
+              filterLabel="Filters"
+              filterCount="25 Job Selected"
+              onFilterClick={() => {}}
+              searchValue=""
+              onSearchChange={() => {}}
+              searchPlaceholder="Search"
+              secondaryAction={{
+                label: '5 Active jobs',
+                icon: ArrowRight,
+                iconPosition: 'right',
+              }}
+              primaryAction={{
+                label: 'Create job',
+                icon: Plus,
+                iconPosition: 'right',
+              }}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -497,5 +534,11 @@ const styles = {
   tabsDemo: {
     width: '100%',
     maxWidth: '600px',
+  },
+  shortcutsDemo: {
+    width: '1000px',
+    border: '1px solid var(--border-default)',
+    borderRadius: 'var(--radius-lg)',
+    overflow: 'hidden',
   },
 };

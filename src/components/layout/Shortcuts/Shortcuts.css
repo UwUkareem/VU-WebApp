@@ -1,0 +1,45 @@
+/* Shortcuts Layout */
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.shortcuts__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shortcuts__separator {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--border-default);
+}
+
+.shortcuts__count {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.shortcuts__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.shortcuts .btn--secondary {
+  background-color: var(--bg-base);
+}
+
+.shortcuts .input-field {
+  height: var(--btn-height);
+  min-width: 18rem;
+}
