@@ -6,7 +6,9 @@ import { Badge, RoleBadge } from '../src/components/ui/Badge';
 import { Breadcrumb } from '../src/components/ui/Breadcrumb';
 import { Pagination } from '../src/components/ui/Pagination';
 import { SidebarButton } from '../src/components/ui/SidebarButton';
+import { User } from '../src/components/ui/User';
 import { Navbar } from '../src/components/layout/Navbar';
+import { Sidebar } from '../src/components/layout/Sidebar';
 import {
   TextInput,
   EmailInput,
@@ -17,7 +19,7 @@ import {
   FileInput,
 } from '../src/components/ui/Input';
 import { Info } from 'lucide-react';
-import { Briefcase, FileText, Users, Settings } from 'lucide-react';
+import { Briefcase, FileText, Users, Settings, Hash, Building2, UserCircle2 } from 'lucide-react';
 
 export default function App() {
   const [toggle1, setToggle1] = useState(true);
@@ -319,6 +321,63 @@ export default function App() {
             <SidebarButton icon={Users} label="Team" isActive />
           </div>
         </Section>
+
+        <h1 style={styles.title}>User Component</h1>
+
+        {/* USER COMPONENT */}
+        <Section title="User Display" vertical>
+          <div style={styles.userDemo}>
+            <User name="Hamedisntgay" email="Hamedisntgay@gmail.com" icon={Hash} />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Sidebar Layout</h1>
+
+        {/* SIDEBAR LAYOUT */}
+        <Section title="Complete Sidebar" vertical>
+          <div style={styles.sidebarLayoutDemo}>
+            <Sidebar
+              navItems={[
+                {
+                  icon: Briefcase,
+                  label: 'Candidates',
+                  isActive: false,
+                },
+                {
+                  icon: Briefcase,
+                  label: 'Jobs',
+                  isActive: true,
+                  subItems: [
+                    { label: 'Job Management', isActive: true },
+                    { label: 'Create Job', isActive: false },
+                  ],
+                },
+                {
+                  icon: FileText,
+                  label: 'Mocks',
+                },
+                {
+                  icon: Building2,
+                  label: 'Company & Team',
+                  separator: true,
+                },
+                {
+                  icon: UserCircle2,
+                  label: 'Profile',
+                },
+                {
+                  icon: Settings,
+                  label: 'Settings',
+                },
+              ]}
+              user={{
+                name: 'Hamedisntgay',
+                email: 'Hamedisntgay@gmail.com',
+                icon: Hash,
+              }}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -397,5 +456,18 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
+  },
+  userDemo: {
+    width: '280px',
+    backgroundColor: 'var(--bg-surface)',
+    borderRadius: 'var(--radius-lg)',
+    border: '1px solid var(--border-default)',
+  },
+  sidebarLayoutDemo: {
+    width: '280px',
+    height: '100vh',
+    border: '1px solid var(--border-default)',
+    borderRadius: 'var(--radius-lg)',
+    overflow: 'hidden',
   },
 };
