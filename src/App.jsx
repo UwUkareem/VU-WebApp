@@ -9,7 +9,8 @@ import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { User } from '../src/components/ui/User';
 import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
-import { StatsChart } from './components/ui/StatsChart';
+import { StatsChart } from './components/ui/Charts/StatsChart';
+import { DonutChart } from './components/ui/Charts/DonutChart';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -665,6 +666,34 @@ export default function App() {
                 { label: 'Time Management', value: 45 },
                 { label: 'Teamwork', value: 25 },
               ]}
+            />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Donut Chart</h1>
+
+        {/* DONUT CHART */}
+        <Section title="Donut Chart Component">
+          <div style={styles.statsDemo}>
+            <DonutChart
+              title="Candidate Score"
+              data={[
+                { label: 'Excellent Performers (80-100)', value: 145 },
+                { label: 'High Performers (60-79)', value: 77 },
+                { label: 'Moderate Performers (40-59)', value: 44 },
+                { label: 'Low Performers (0-39)', value: 31 },
+              ]}
+              totalLabel="Total Candidates"
+            />
+            <DonutChart
+              title="Application Status"
+              data={[
+                { label: 'Accepted', value: 42 },
+                { label: 'In Review', value: 28 },
+                { label: 'Pending', value: 15 },
+                { label: 'Rejected', value: 8 },
+              ]}
+              totalLabel="Applications"
             />
           </div>
         </Section>
