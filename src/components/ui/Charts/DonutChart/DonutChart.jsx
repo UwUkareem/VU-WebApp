@@ -4,10 +4,12 @@ import './DonutChart.css';
 
 // Default colors matching badge colors for dark mode
 const DEFAULT_COLORS = [
-  'var(--green-400)',
-  'var(--blue-400)',
-  'var(--yellow-400)',
-  'var(--red-400)',
+  'var(--green-700)',
+  'var(--blue-700)',
+  'var(--yellow-700)',
+  'var(--red-700)',
+  'var(--purple-700)',
+  'var(--teal-700)',
 ];
 
 export function DonutChart({

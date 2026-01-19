@@ -136,7 +136,7 @@
   font-size: var(--text-2xl); /* 24px */
   font-weight: var(--font-medium);
   line-height: 1.2;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 /* Percentage */
@@ -222,5 +222,5 @@
   font-size: var(--text-2xl); /* 24px */
   font-weight: var(--font-semibold);
   line-height: 1.2;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }

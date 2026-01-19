@@ -1,0 +1,87 @@
+/* Quick Info Card Component */
+
+.quick-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 18rem;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    border-color var(--transition-base);
+}
+
+/* Visible state */
+.quick-info-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Clickable state */
+.quick-info-card--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.quick-info-card:active {
+  transform: scale(0.95);
+}
+
+/* Hover effects */
+.quick-info-card:hover {
+  border-color: var(--border-default);
+}
+
+/* Icon */
+.quick-info-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  transition:
+    color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.quick-info-card__icon svg {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+}
+
+/* Number */
+.quick-info-card__number {
+  font-family: var(--font-sans);
+  font-weight: var(--font-semibold);
+  font-size: 2rem; /* 32px */
+  line-height: 1.2;
+  color: var(--text-secondary);
+  text-align: center;
+  transition:
+    color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.quick-info-card:hover .quick-info-card__number {
+  transform: scale(1.05);
+  color: var(--text-primary);
+}
+
+/* Title */
+.quick-info-card__title {
+  font-family: var(--font-sans);
+  font-weight: var(--font-regular);
+  font-size: 1rem; /* 16px */
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  margin-top: -0.5rem;
+  transition: color var(--transition-base);
+}

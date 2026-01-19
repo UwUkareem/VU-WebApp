@@ -11,6 +11,7 @@ import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
+import { QuickInfoCard } from './components/ui/Cards/QuickInfoCard';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -697,6 +698,34 @@ export default function App() {
             />
           </div>
         </Section>
+
+        <h1 style={styles.title}>Quick Info Cards</h1>
+
+        {/* QUICK INFO CARDS */}
+        <Section title="Quick Info Card Component">
+          <div style={styles.cardsDemo}>
+            <QuickInfoCard icon={<Users />} number={37} title="Total Users" />
+            <QuickInfoCard
+              icon={<Briefcase />}
+              number={1247}
+              title="Active Jobs"
+              variant="primary"
+            />
+            <QuickInfoCard
+              icon={<FileText />}
+              number={89}
+              title="Pending Reviews"
+              variant="warning"
+            />
+            <QuickInfoCard icon={<Settings />} number={12} title="System Alerts" variant="error" />
+            <QuickInfoCard
+              icon={<Users />}
+              number={2456}
+              title="Applications"
+              onClick={() => console.log('Card clicked!')}
+            />
+          </div>
+        </Section>
       </div>
     </div>
   );
@@ -804,5 +833,11 @@ const styles = {
     display: 'flex',
     gap: '24px',
     flexWrap: 'wrap',
+  },
+  cardsDemo: {
+    display: 'flex',
+    gap: '20px',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
 };
