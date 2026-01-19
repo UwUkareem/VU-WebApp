@@ -11,7 +11,7 @@ import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
-import { QuickInfoCard } from './components/ui/Cards/QuickInfoCard';
+import { QuickInfoCard, InfoCard } from './components/ui/Cards';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -696,6 +696,30 @@ export default function App() {
               ]}
               totalLabel="Applications"
             />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Info Cards</h1>
+
+        {/* INFO CARDS */}
+        <Section title="Info Card Component">
+          <div style={styles.cardsDemo}>
+            <InfoCard
+              title="Welcome to AI Platform"
+              description="Get started with intelligent automation and insights"
+              showAiIcon={true}
+            />
+            <InfoCard
+              title="Getting Started Guide"
+              description="Learn the basics and explore key features"
+            />
+            <InfoCard
+              title="Clickable Card"
+              description="This card has an interactive click handler"
+              showAiIcon={true}
+              onClick={() => console.log('Info card clicked!')}
+            />
+            <InfoCard title="Simple Title Only" showAiIcon={true} />
           </div>
         </Section>
 

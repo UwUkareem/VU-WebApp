@@ -12,7 +12,7 @@
   padding: 0.5rem 1rem;
   background: transparent;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-weight: var(--font-medium);
   font-size: 0.875rem;
@@ -73,7 +73,7 @@
   padding: 0.5rem 1rem;
   background: transparent;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-weight: var(--font-medium);
   font-size: 0.875rem;

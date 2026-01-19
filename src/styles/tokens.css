@@ -115,10 +115,10 @@
      ======================================== */
 
   /* Border Radius */
-  --radius-sm: 0.5rem; /* 8px */
-  --radius-md: 0.5rem; /* 8px */
-  --radius-lg: 0.75rem; /* 12px */
-  --radius-xl: 1rem; /* 16px */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
   --radius-full: 9999px;
 
   /* Border Width */
