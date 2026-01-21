@@ -11,7 +11,7 @@ import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
-import { QuickInfoCard, InfoCard } from './components/ui/Cards';
+import { QuickInfoCard, InfoCard, ActionCard } from './components/ui/Cards';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -720,6 +720,71 @@ export default function App() {
               onClick={() => console.log('Info card clicked!')}
             />
             <InfoCard title="Simple Title Only" showAiIcon={true} />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Action Cards</h1>
+
+        {/* ACTION CARDS */}
+        <Section title="Action Card Component">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Full example with all features */}
+            <ActionCard
+              title="Title"
+              subtitle="Subtitle"
+              caption="Caption"
+              showBadge={true}
+              badgeType="candidateState"
+              badgeVariant="accepted"
+              showButton={true}
+              buttonText="Remove"
+              onButtonClick={() => console.log('Remove clicked!')}
+              descriptionTitle="Description Title"
+              showDescriptionIcon={true}
+              descriptionNumber={99}
+              content="Excellent! You quickly identified the optimal hash map approach and implemented it correctly. Your code was clean and well-commented."
+            />
+
+            {/* Without button, only badge */}
+            <ActionCard
+              title="Project Review"
+              subtitle="Submitted for approval"
+              caption="2 hours ago"
+              showBadge={true}
+              badgeType="candidateState"
+              badgeVariant="pending"
+              descriptionTitle="Code Quality"
+              showDescriptionIcon={true}
+              descriptionNumber={87}
+              content="Great work on implementing the authentication system. The code is well-structured and follows best practices."
+            />
+
+            {/* Without badge */}
+            <ActionCard
+              title="Task Assignment"
+              subtitle="High priority task"
+              caption="Due: Today"
+              showButton={true}
+              buttonText="View Details"
+              onButtonClick={() => console.log('View clicked!')}
+              content="Complete the database migration and update all related documentation."
+            />
+
+            {/* Minimal - just title and content */}
+            <ActionCard
+              title="Simple Notification"
+              content="This is a basic action card with minimal configuration."
+            />
+
+            {/* With description but no content */}
+            <ActionCard
+              title="Performance Metrics"
+              subtitle="Last evaluation"
+              caption="Updated: 2h ago"
+              descriptionTitle="Overall Score"
+              showDescriptionIcon={true}
+              descriptionNumber={95}
+            />
           </div>
         </Section>
 

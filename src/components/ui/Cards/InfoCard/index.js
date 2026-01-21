@@ -1,1 +1,1 @@
-export { default as InfoCard } from './InfoCard';
+export { InfoCard } from './InfoCard';
