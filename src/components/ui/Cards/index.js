@@ -1,3 +1,4 @@
 export { QuickInfoCard } from './QuickInfoCard';
 export { InfoCard } from './InfoCard';
 export { ActionCard } from './ActionCard';
+export { EntityCard } from './EntityCard';

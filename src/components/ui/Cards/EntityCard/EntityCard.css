@@ -1,0 +1,283 @@
+/* Entity Card Component */
+.entity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* 24px */
+  padding: 1.5rem 2rem; /* 24px vertical, 32px horizontal */
+  background: var(--bg-surface);
+  border: 0.7px solid var(--border-subtle);
+  border-radius: 12px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    border-color var(--transition-base);
+}
+
+/* Visible state */
+.entity-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover state */
+.entity-card:hover {
+  border-color: var(--border-default);
+}
+
+/* Top section */
+.entity-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.entity-card__top-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.entity-card__user {
+  padding: 0;
+}
+
+.entity-card__top-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 12px */
+  flex-shrink: 0;
+}
+
+.entity-card__button {
+  height: 1.75rem;
+}
+/* Caption */
+.entity-card__caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm); /* 13px */
+  font-weight: var(--font-regular);
+  color: var(--text-subtle);
+  white-space: nowrap;
+}
+
+/* Save button */
+.entity-card__save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
+  padding: 0;
+}
+
+.entity-card__save:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.entity-card__save:active {
+  background: var(--bg-press);
+}
+
+/* Separator */
+.entity-card__separator {
+  width: 100%;
+  height: 1px;
+  background: var(--border-structure);
+}
+
+/* Columns section */
+.entity-card__cols {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.entity-card__cols-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; /* 24px */
+  flex: 1;
+  min-width: 0;
+}
+
+/* Individual column */
+.entity-card__col {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem; /* 8px */
+  min-width: 0;
+}
+
+.entity-card__col-icon {
+  color: var(--text-subtle);
+  flex-shrink: 0;
+  margin-top: 0.125rem; /* Align with text baseline */
+}
+
+.entity-card__col-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* 4px */
+  min-width: 0;
+}
+
+.entity-card__col-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-base); /* 15px */
+  font-weight: var(--font-medium);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entity-card__col-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm); /* 13px */
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Menu button */
+.entity-card__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem; /* 32px */
+  height: 2rem; /* 32px */
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.entity-card__menu:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.entity-card__menu:active {
+  background: var(--bg-press);
+}
+
+/* Description section */
+.entity-card__description {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 0.5rem; /* 8px */
+}
+
+.entity-card__description-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-base); /* 15px */
+  font-weight: var(--font-medium);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.entity-card__description-content {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm); /* 13px */
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  color: var(--text-subtle);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .entity-card {
+    padding: 1.25rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .entity-card__cols-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .entity-card__caption {
+    font-size: var(--text-xs);
+  }
+}
+
+@media (max-width: 468px) {
+  .entity-card {
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+  }
+
+  /* Top section */
+  .entity-card__top {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .entity-card__top-left {
+    flex: 1;
+  }
+
+  /* Hide caption (low priority on mobile) */
+  .entity-card__caption {
+    display: none;
+  }
+
+  /* Keep actions grouped */
+  .entity-card__top-right {
+    flex-shrink: 0;
+    gap: 0.5rem;
+  }
+
+  /* Columns → single column, but compact */
+  .entity-card__cols {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .entity-card__cols-content {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .entity-card__col {
+    align-items: center;
+  }
+
+  /* Description comes earlier visually */
+  .entity-card__description {
+    margin-top: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .entity-card__description-title {
+    font-size: var(--text-sm);
+  }
+}

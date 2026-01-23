@@ -11,7 +11,7 @@ import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
-import { QuickInfoCard, InfoCard, ActionCard } from './components/ui/Cards';
+import { QuickInfoCard, InfoCard, ActionCard, EntityCard } from './components/ui/Cards';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -784,6 +784,100 @@ export default function App() {
               descriptionTitle="Overall Score"
               showDescriptionIcon={true}
               descriptionNumber={95}
+            />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Entity Cards</h1>
+
+        {/* ENTITY CARDS */}
+        <Section title="Entity Card Component">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Full example with all features */}
+            <EntityCard
+              userName="John Doe"
+              userEmail="john@example.com"
+              userIcon={UserCircle2}
+              caption="1d : 7h : 13m"
+              showBadge={true}
+              badgeType="candidateState"
+              badgeVariant="accepted"
+              showButton={true}
+              buttonText="Edit"
+              buttonVariant="primary"
+              onButtonClick={() => console.log('Edit clicked!')}
+              showSave={true}
+              onSave={() => console.log('Saved!')}
+              colLeft={{ icon: Briefcase, title: 'job', subtitle: 'Subtitle' }}
+              colMid={{ icon: Star, title: 'Score', subtitle: 'Subtitle' }}
+              colRight={{ icon: Hash, title: 'Date', subtitle: 'Subtitle' }}
+              showMenu={true}
+              onMenuClick={() => console.log('Menu clicked!')}
+              showDescription={true}
+              descriptionTitle="Description Title"
+              descriptionContent="Excellent! You quickly identified the optimal hash map approach and implemented it correctly. Your code was clean and well-commented."
+            />
+
+            {/* Without description */}
+            <EntityCard
+              userName="Jane Smith"
+              userEmail="jane@example.com"
+              userIcon={UserCircle2}
+              caption="2h ago"
+              showBadge={true}
+              badgeType="candidateState"
+              badgeVariant="pending"
+              showButton={true}
+              buttonText="Review"
+              buttonVariant="secondary"
+              onButtonClick={() => console.log('Review clicked!')}
+              showSave={true}
+              colLeft={{ icon: Briefcase, title: 'Frontend Developer', subtitle: 'Engineering' }}
+              colMid={{ icon: Star, title: '95', subtitle: 'Performance' }}
+              colRight={{ icon: Hash, title: 'Today', subtitle: 'Application Date' }}
+              showMenu={true}
+            />
+
+            {/* Minimal - just user and columns */}
+            <EntityCard
+              userName="Alice Johnson"
+              userEmail="alice@example.com"
+              userIcon={UserCircle2}
+              colLeft={{ icon: Briefcase, title: 'Designer', subtitle: 'Creative Team' }}
+              colMid={{ icon: Star, title: '88', subtitle: 'Rating' }}
+              colRight={{ icon: Hash, title: 'Yesterday', subtitle: 'Last Active' }}
+            />
+
+            {/* With description, no badge */}
+            <EntityCard
+              userName="Bob Wilson"
+              userEmail="bob@example.com"
+              userIcon={UserCircle2}
+              caption="3d : 2h : 45m"
+              showButton={true}
+              buttonText="View Profile"
+              buttonVariant="secondary"
+              onButtonClick={() => console.log('View profile!')}
+              colLeft={{ icon: Briefcase, title: 'Backend Engineer', subtitle: 'Systems' }}
+              colMid={{ icon: Star, title: '92', subtitle: 'Code Quality' }}
+              colRight={{ icon: Hash, title: 'Last Week', subtitle: 'Submitted' }}
+              showDescription={true}
+              descriptionTitle="Technical Assessment"
+              descriptionContent="Strong understanding of distributed systems and microservices architecture. Implemented a scalable solution with proper error handling."
+            />
+
+            {/* With save only, no other controls */}
+            <EntityCard
+              userName="Emma Davis"
+              userEmail="emma@example.com"
+              userIcon={UserCircle2}
+              showSave={true}
+              onSave={() => console.log('Saved!')}
+              colLeft={{ icon: Briefcase, title: 'Product Manager', subtitle: 'Product Team' }}
+              colMid={{ icon: Star, title: '87', subtitle: 'Leadership' }}
+              colRight={{ icon: Hash, title: '5 days ago', subtitle: 'Interview Date' }}
+              showMenu={true}
+              onMenuClick={() => console.log('Menu opened!')}
             />
           </div>
         </Section>
