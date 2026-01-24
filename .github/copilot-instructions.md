@@ -118,7 +118,28 @@ useEffect(() => {
 
 Apply this pattern for performance-optimized entrance animations.
 
-### 7. Dropdown/Modal Patterns (Navbar)
+### 7. Collapsible/Dropdown Pattern (QuestionCard)
+
+`src/components/ui/Cards/QuestionCard/QuestionCard.jsx` demonstrates collapsible UI with CSS Grid animation:
+
+```css
+.question-card__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.question-card--expanded .question-card__content {
+  grid-template-rows: 1fr;
+}
+```
+
+- Use CSS Grid `grid-template-rows: 0fr/1fr` for smooth height transitions
+- Toggle icon rotates 180deg when expanded: `transform: rotate(180deg)`
+- Show summary when collapsed, full form when expanded
+- Prevent ref access during render (use CSS-only animations)
+
+### 8. Dropdown/Modal Patterns (Navbar)
 
 `src/components/layout/Navbar/Navbar.jsx` shows best practices for dropdowns:
 

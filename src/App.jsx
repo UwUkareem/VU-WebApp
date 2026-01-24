@@ -11,7 +11,13 @@ import { Tabs } from '../src/components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
-import { QuickInfoCard, InfoCard, ActionCard, EntityCard } from './components/ui/Cards';
+import {
+  QuickInfoCard,
+  InfoCard,
+  ActionCard,
+  EntityCard,
+  QuestionCard,
+} from './components/ui/Cards';
 import { Navbar } from '../src/components/layout/Navbar';
 import { Sidebar } from '../src/components/layout/Sidebar';
 import { Shortcuts } from '../src/components/layout/Shortcuts';
@@ -50,6 +56,16 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [tableSortColumn, setTableSortColumn] = useState(null);
   const [tableSortDirection, setTableSortDirection] = useState(null);
+  const [questions, setQuestions] = useState([
+    { id: 1, title: '', description: '', difficulty: '', estimatedTime: '' },
+    {
+      id: 2,
+      title: 'Two Sum Problem',
+      description: '',
+      difficulty: 'hard',
+      estimatedTime: '8 min',
+    },
+  ]);
 
   const tableColumns = [
     {
@@ -907,6 +923,51 @@ export default function App() {
               title="Applications"
               onClick={() => console.log('Card clicked!')}
             />
+          </div>
+        </Section>
+
+        <h1 style={styles.title}>Question Cards</h1>
+
+        {/* QUESTION CARDS */}
+        <Section title="Question Card Component - Interactive Form">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {questions.map((question, index) => (
+              <QuestionCard
+                key={question.id}
+                questionNumber={index + 1}
+                title={question.title}
+                description={question.description}
+                difficulty={question.difficulty}
+                estimatedTime={question.estimatedTime}
+                defaultExpanded={index === 0}
+                onChange={(data) => {
+                  const newQuestions = [...questions];
+                  newQuestions[index] = { ...question, ...data };
+                  setQuestions(newQuestions);
+                }}
+                onRemove={() => {
+                  setQuestions(questions.filter((q) => q.id !== question.id));
+                }}
+              />
+            ))}
+
+            <Button
+              iconLeft={<Plus size={16} />}
+              onClick={() => {
+                setQuestions([
+                  ...questions,
+                  {
+                    id: Date.now(),
+                    title: '',
+                    description: '',
+                    difficulty: '',
+                    estimatedTime: '',
+                  },
+                ]);
+              }}
+            >
+              Add Question
+            </Button>
           </div>
         </Section>
       </div>

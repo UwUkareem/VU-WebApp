@@ -249,6 +249,23 @@
   font-weight: var(--font-medium);
 }
 
+.dropdown-input__menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-input__menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-input__menu::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.dropdown-input__menu::-webkit-scrollbar-thumb:hover {
+  background: var(--input-text);
+}
+
 /* Textarea Component */
 .textarea {
   width: 100%;
@@ -259,19 +276,20 @@
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-regular);
+  max-height: 24rem;
   color: var(--input-text);
   line-height: 1.4;
   resize: vertical;
   outline: none;
   transition: border-color var(--transition-base);
-
-  /* Styled scrollbar for webkit browsers */
-  scrollbar-width: thin;
+  overflow: auto;
+  background-clip: padding-box;
+  scrollbar-gutter: stable;
   scrollbar-color: var(--text-tertiary) transparent;
 }
 
 .textarea::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .textarea::-webkit-scrollbar-track {
@@ -279,12 +297,41 @@
 }
 
 .textarea::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.textarea:hover::-webkit-scrollbar-thumb,
+.textarea:focus::-webkit-scrollbar-thumb {
   background: var(--text-tertiary);
-  border-radius: var(--radius-sm);
 }
 
 .textarea::-webkit-scrollbar-thumb:hover {
   background: var(--input-text);
+}
+
+/* Remove arrows */
+.textarea::-webkit-scrollbar-button {
+  display: none;
+}
+
+.textarea::-webkit-resizer {
+  background: linear-gradient(
+    135deg,
+    transparent 60%,
+    var(--input-border) 61%,
+    var(--input-border) 66%,
+    transparent 67%
+  );
+  background-color: transparent;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.textarea:hover::-webkit-resizer,
+.textarea:focus-visible::-webkit-resizer {
+  opacity: 0.6;
 }
 
 .textarea::placeholder {
