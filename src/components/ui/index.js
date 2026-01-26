@@ -7,5 +7,6 @@ export { Pagination } from './Pagination';
 export { SidebarButton } from './SidebarButton';
 export { User } from './User';
 export { Tabs } from './Tabs';
+export { Tags } from './Tags';
 export { TableHeader, TableRow, TableCell } from './Tables';
 export { StatsChart } from './StatsChart';

@@ -8,6 +8,7 @@ import { Pagination } from '../src/components/ui/Pagination';
 import { SidebarButton } from '../src/components/ui/SidebarButton';
 import { User } from '../src/components/ui/User';
 import { Tabs } from '../src/components/ui/Tabs';
+import { Tags } from '../src/components/ui/Tags';
 import { TableHeader, TableRow, TableCell } from './components/ui/Tables';
 import { StatsChart } from './components/ui/Charts/StatsChart';
 import { DonutChart } from './components/ui/Charts/DonutChart';
@@ -66,6 +67,19 @@ export default function App() {
       estimatedTime: '8 min',
     },
   ]);
+
+  const [editableTags, setEditableTags] = useState(['Kubernetes', 'AWS', 'Python', 'Node.js']);
+  const [readonlyTags] = useState(['React', 'TypeScript', 'Docker', 'CI/CD']);
+
+  const handleAddTag = (newTag) => {
+    if (!editableTags.includes(newTag)) {
+      setEditableTags([...editableTags, newTag]);
+    }
+  };
+
+  const handleRemoveTag = (index) => {
+    setEditableTags(editableTags.filter((_, i) => i !== index));
+  };
 
   const tableColumns = [
     {
@@ -970,6 +984,27 @@ export default function App() {
             </Button>
           </div>
         </Section>
+
+        {/* TAGS */}
+        <Section title="Tags Component" vertical>
+          <Tags
+            title="Editable Tags"
+            tags={editableTags}
+            variant="editable"
+            onAdd={handleAddTag}
+            onRemove={handleRemoveTag}
+          />
+
+          <Tags title="Read-only Tags" tags={readonlyTags} variant="readonly" />
+
+          <Tags
+            tags={['Single', 'Line', 'Tags']}
+            variant="editable"
+            showTitle={false}
+            onAdd={(tag) => console.log('Add tag:', tag)}
+            onRemove={(i) => console.log('Remove', i)}
+          />
+        </Section>
       </div>
     </div>
   );
@@ -1083,5 +1118,11 @@ const styles = {
     gap: '20px',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
+  },
+  tagsDemo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px',
+    width: '100%',
   },
 };
