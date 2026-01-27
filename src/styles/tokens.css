@@ -9,14 +9,14 @@
      ======================================== */
 
   /* Font Families */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-mono: 'Roboto Mono', ui-monospace, monospace;
 
   /* Font Weights */
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
+  --font-regular: 300;
+  --font-medium: 400;
+  --font-semibold: 500;
+  --font-bold: 600;
 
   /* Font Sizes */
   --text-xs: 0.75rem; /* 12px */
@@ -115,10 +115,10 @@
      ======================================== */
 
   /* Border Radius */
-  --radius-sm: 0.5rem; /* 8px */
-  --radius-md: 0.5rem; /* 8px */
-  --radius-lg: 0.75rem; /* 12px */
-  --radius-xl: 1rem; /* 16px */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
   --radius-full: 9999px;
 
   /* Border Width */
@@ -407,10 +407,19 @@
   /* Button - Primary */
   --btn-primary-text: var(--text-primary);
   --btn-primary-bg: var(--brand-600);
+  --btn-primary-hover: var(--black-a10);
+  --btn-primary-active: var(--black-a20);
 
   /* Button - Secondary */
   --btn-secondary-text: var(--text-secondary);
   --btn-secondary-bg: var(--gray-1200);
+  --btn-secondary-hover: var(--white-a5);
+  --btn-secondary-active: var(--white-a10);
+
+  /* Button - Ghost */
+  --btn-ghost-text: var(--text-disabled);
+  --btn-ghost-hover: var(--white-a5);
+  --btn-ghost-active: var(--white-a10);
 
   /* Button - Disabled */
   --btn-disabled-text: var(--white-a30);

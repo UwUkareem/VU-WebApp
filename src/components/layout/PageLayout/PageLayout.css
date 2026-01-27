@@ -1,0 +1,46 @@
+/* PageLayout - Main app shell layout */
+
+.page-layout {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  padding-right: 0;
+  padding-bottom: 0;
+  min-height: 100vh;
+  height: 100vh;
+  background-color: var(--bg-surface);
+  overflow: hidden;
+}
+
+/* Sidebar - Fixed width on left */
+.page-layout__sidebar {
+  width: 12.875rem;
+  flex-shrink: 0;
+  height: calc(100vh - 1rem);
+}
+
+/* Main content area - Right side */
+.page-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-base);
+  border-radius: var(--radius-xl) 0 0 0;
+  border-top: 1px solid var(--border-default);
+  border-left: 1px solid var(--border-default);
+  overflow: hidden;
+}
+
+/* Navbar - Top of main content */
+.page-layout__navbar {
+  flex-shrink: 0;
+}
+
+/* Page content area - Scrollable */
+.page-layout__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

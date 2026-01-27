@@ -1,0 +1,226 @@
+/* Donut Chart Component */
+
+.donut-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* 16px */
+  padding: 1.5rem 2rem; /* 24px vertical, 32px horizontal */
+  background: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 540px;
+  transition:
+    border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+/* Hover effect on card */
+.donut-chart:hover {
+  border-color: var(--border-default);
+}
+
+/* Title - Secondary color, headline/medium */
+.donut-chart__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl); /* 20px - headline size */
+  font-weight: var(--font-medium);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0;
+  transition: color var(--transition-base);
+}
+
+.donut-chart:hover .donut-chart__title {
+  color: var(--text-primary);
+}
+
+/* Divider below title */
+.donut-chart__divider {
+  height: 1px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  width: 100%;
+}
+
+/* Content container - flexbox for legend and chart */
+.donut-chart__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Legend container */
+.donut-chart__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 12px */
+  flex: 1;
+}
+
+/* Legend item */
+.donut-chart__legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* 4px */
+  opacity: 0;
+  transform: translateX(-8px);
+  cursor: pointer;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  transition-delay: var(--item-delay, 0ms);
+}
+
+/* Animate items when visible */
+.donut-chart--visible .donut-chart__legend-item {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  transition-delay: 0ms;
+}
+
+/* Active legend item */
+.donut-chart__legend-item--active .donut-chart__legend-label {
+  color: var(--text-secondary);
+}
+
+/* Legend header with dot and label */
+.donut-chart__legend-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px */
+}
+
+/* Colored dot */
+.donut-chart__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.donut-chart__legend-item--active .donut-chart__legend-dot {
+  transform: scale(1.25);
+}
+
+/* Label text */
+.donut-chart__legend-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs); /* 12px - footnote size */
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  transition: color 0.2s ease;
+}
+
+.donut-chart__legend-item:hover .donut-chart__legend-label {
+  color: var(--text-secondary);
+}
+
+/* Values row */
+.donut-chart__legend-values {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem; /* 8px */
+  padding-left: 1rem; /* 16px - align with label */
+}
+
+/* Count number */
+.donut-chart__legend-count {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl); /* 24px */
+  font-weight: var(--font-medium);
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+
+/* Percentage */
+.donut-chart__legend-percent {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm); /* 13px */
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* Visual container for donut */
+.donut-chart__visual {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* SVG */
+.donut-chart__svg {
+  display: block;
+}
+
+/* Background circle */
+.donut-chart__background {
+  opacity: 0.3;
+}
+
+/* Segment base styles */
+.donut-chart__segment {
+  stroke-dasharray: 0 1000;
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    stroke-dasharray 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+  transition-delay: var(--segment-delay, 0ms);
+}
+
+/* Animate segments when visible */
+.donut-chart--visible .donut-chart__segment {
+  stroke-dasharray: var(--segment-dasharray);
+  transition-delay: 0ms;
+}
+
+/* Dimmed state when another segment is hovered */
+.donut-chart__segment--dimmed {
+  opacity: 0.35;
+}
+
+/* Active state when hovered */
+.donut-chart__segment--active {
+  opacity: 1;
+}
+
+/* Center content */
+.donut-chart__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+  max-width: 80px;
+}
+
+.donut-chart__center-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs); /* 12px */
+  font-weight: var(--font-regular);
+  line-height: 1.3;
+  color: var(--text-tertiary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.donut-chart__center-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl); /* 24px */
+  font-weight: var(--font-semibold);
+  line-height: 1.2;
+  color: var(--text-secondary);
+}

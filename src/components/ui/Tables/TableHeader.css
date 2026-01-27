@@ -1,0 +1,59 @@
+/* Table Header Component */
+
+.table-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  min-width: max-content;
+  overflow-x: auto;
+  max-height: 2.5rem;
+  overflow: hidden;
+}
+
+.table-header__cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.table-header__cell--sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition-base);
+}
+
+.table-header__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-header__cell:hover .table-header__label {
+  color: var(--text-primary);
+}
+
+.table-header__sort {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  flex-shrink: 0;
+}
+
+.table-header__sort-icon {
+  display: block;
+  color: var(--white-a25);
+  transition: color var(--transition-base);
+}
+
+.table-header__sort-icon--active {
+  color: var(--text-primary);
+}

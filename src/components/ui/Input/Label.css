@@ -1,0 +1,77 @@
+/* Label Component */
+
+.input-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.375rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.4;
+  color: var(--input-text);
+  cursor: pointer;
+}
+
+.input-label__text {
+  display: inline-flex;
+  align-items: center;
+}
+
+.input-label__required {
+  margin-left: 0.125rem;
+  color: var(--red-400);
+  font-weight: var(--font-medium);
+}
+
+.input-label__info-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.input-label__info {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  cursor: help;
+  transition: color 0.15s ease;
+}
+
+.input-label:hover .input-label__info,
+.input-label__info:hover {
+  color: var(--text-primary);
+}
+
+.input-label__tooltip {
+  position: absolute;
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: var(--gray-900);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px var(--black-a30);
+  font-size: var(--text-xs);
+  font-weight: var(--font-regular);
+  color: var(--text-primary);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.input-label__tooltip::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: var(--gray-900);
+}
+
+.input-label__info-wrapper:hover .input-label__tooltip {
+  opacity: 1;
+}

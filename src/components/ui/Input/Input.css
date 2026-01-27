@@ -1,0 +1,7 @@
+/* Input Composition Component */
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

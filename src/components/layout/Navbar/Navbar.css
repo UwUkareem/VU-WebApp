@@ -1,0 +1,72 @@
+/* Navbar Component */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.navbar__breadcrumb {
+  flex: 1;
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar__notification-wrapper {
+  position: relative;
+}
+
+.navbar__notification-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
+}
+
+.navbar__notification-button:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.navbar__notification-button--active {
+  background: var(--bg-press);
+  color: var(--text-primary);
+}
+
+.navbar__notification-badge {
+  position: absolute;
+  top: -0.125rem;
+  right: -0.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  background: var(--red-500);
+  border: 2px solid var(--bg-surface);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: var(--font-semibold);
+  color: var(--white);
+  line-height: 1;
+}

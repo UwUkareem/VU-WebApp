@@ -1,0 +1,41 @@
+/* Table Cell Component */
+
+.table-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.table-cell__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.table-cell__content {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Color Variants */
+.table-cell--primary .table-cell__content,
+.table-cell--primary .table-cell__icon {
+  color: var(--text-primary);
+}
+
+.table-cell--secondary .table-cell__content,
+.table-cell--secondary .table-cell__icon {
+  color: var(--text-secondary);
+}
+
+.table-cell--tertiary .table-cell__content,
+.table-cell--tertiary .table-cell__icon {
+  color: var(--text-tertiary);
+}
