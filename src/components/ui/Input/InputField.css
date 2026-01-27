@@ -208,10 +208,21 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
   box-shadow: 0 4px 12px var(--black-a30);
-  animation: dropIn 0.12s ease-out;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
   overflow: hidden;
   max-height: 16rem;
   overflow-y: auto;
+}
+
+.dropdown-input__menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 @keyframes dropIn {

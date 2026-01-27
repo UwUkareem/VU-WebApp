@@ -54,7 +54,7 @@ export function Navbar({ breadcrumbItems = [], className = '' }) {
               <span className="navbar__notification-badge">{notificationCount}</span>
             )}
           </button>
-          {isNotificationOpen && <NotificationDropdown onClose={close} />}
+          <NotificationDropdown open={isNotificationOpen} onClose={close} />
         </div>
       </div>
     </nav>

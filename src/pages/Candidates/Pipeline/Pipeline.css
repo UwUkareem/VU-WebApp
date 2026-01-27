@@ -1,0 +1,65 @@
+/* Pipeline Page Styles */
+
+.pipeline-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Dashboard container - has padding around the content box */
+.pipeline-page__dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem 1rem;
+  min-height: 0;
+}
+
+/* Content box with background and border */
+.pipeline-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Table container */
+.pipeline-page__table {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+}
+
+/* Rows container - scrollable */
+.pipeline-page__rows {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Pagination - fixed at bottom */
+.pipeline-page__pagination {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  flex-shrink: 0;
+}
+
+/* Overview placeholder */
+.pipeline-page__overview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}

@@ -2,9 +2,15 @@
 
 .notification-dropdown {
   position: absolute;
-  top: calc(100% + 0.4rem);
+  top: calc(100% + 8px);
   right: 0;
-  z-index: 100;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  z-index: 1000;
   width: 24rem;
   max-height: 32rem;
   background: var(--bg-surface);
@@ -13,18 +19,23 @@
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.35),
     0 8px 24px rgba(0, 0, 0, 0.45);
-  animation: dropIn 0.2s ease-out;
   overflow: hidden;
+}
+
+.notification-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 @keyframes dropIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
@@ -51,7 +62,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -73,7 +84,7 @@
 
 .notification-dropdown__close:hover {
   background: var(--bg-hover);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 .notification-dropdown__body {
@@ -133,7 +144,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 .notification-item__content {
@@ -153,7 +164,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -171,7 +182,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-regular);
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -221,7 +232,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 

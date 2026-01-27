@@ -46,12 +46,12 @@ const DUMMY_NOTIFICATIONS = [
   },
 ];
 
-export function NotificationDropdown({ onClose }) {
+export function NotificationDropdown({ onClose, open }) {
   const notifications = DUMMY_NOTIFICATIONS;
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className="notification-dropdown">
+    <div className={`notification-dropdown${open ? ' open' : ''}`}>
       <div className="notification-dropdown__header">
         <div className="notification-dropdown__title-wrapper">
           <Bell size={18} className="notification-dropdown__icon" />
@@ -109,4 +109,5 @@ export function NotificationDropdown({ onClose }) {
 
 NotificationDropdown.propTypes = {
   onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
 };

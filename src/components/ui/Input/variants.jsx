@@ -287,22 +287,20 @@ export const DropdownInput = forwardRef(
             </span>
             <ChevronDown size={16} className="dropdown-input__icon" aria-hidden="true" />
           </button>
-          {isOpen && (
-            <div className="dropdown-input__menu" role="listbox">
-              {options.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="option"
-                  aria-selected={option.value === value}
-                  className={`dropdown-input__option${option.value === value ? ' dropdown-input__option--selected' : ''}`}
-                  onClick={() => handleSelect(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className={`dropdown-input__menu${isOpen ? ' open' : ''}`} role="listbox">
+            {options.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={option.value === value}
+                className={`dropdown-input__option${option.value === value ? ' dropdown-input__option--selected' : ''}`}
+                onClick={() => handleSelect(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
         {showHint && hint && (
           <Hint id={hintId} error={error}>
