@@ -3,118 +3,97 @@
 .pagination {
   display: inline-flex;
   align-items: center;
+  gap: 1rem;
+}
+
+.pagination__info {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.pagination__list {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.pagination__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  color: var(--text-secondary);
+  user-select: none;
 }
 
-.pagination__item {
+.pagination__input {
+  position: relative;
   display: flex;
   align-items: center;
+  text-align: center;
+  width: 3.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color var(--transition-base),
+    background-color var(--transition-base);
+}
+
+.pagination__input:hover {
+  border-color: var(--input-border-hover);
+}
+
+.pagination__input:focus {
+  border-color: var(--input-border-focus);
+  outline: none;
+}
+
+.pagination__input::-webkit-inner-spin-button,
+.pagination__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pagination__input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .pagination__button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-width: 2.5rem;
+  width: 2.5rem;
   height: 2.5rem;
-  padding: 0 0.75rem;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
+  padding: 0;
   color: var(--text-secondary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition:
-    background-color var(--transition-base),
     border-color var(--transition-base),
-    color var(--transition-base);
+    background-color var(--transition-base);
 }
 
 .pagination__button:hover:not(:disabled) {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  border-color: var(--input-border-hover);
 }
 
 .pagination__button:active:not(:disabled) {
-  background: var(--bg-press);
+  border-color: var(--input-border-focus);
+  outline: none;
+}
+
+.pagination__button:focus:not(:disabled) {
+  border-color: var(--input-border-focus);
+  outline: none;
 }
 
 .pagination__button:disabled {
-  color: var(--text-tertiary);
+  color: var(--text-disabled);
+  border-color: var(--border-subtle);
   cursor: not-allowed;
-  opacity: 0.5;
-}
-
-/* Page Number Buttons */
-.pagination__button--page {
-  min-width: 2.5rem;
-  width: 2.5rem;
-  padding: 0;
-  border-color: var(--border-default);
-}
-
-.pagination__button--page:hover:not(:disabled) {
-  border-color: var(--border-strong);
-  background: var(--bg-hover);
-}
-
-.pagination__button--page.pagination__button--active {
-  background: var(--btn-primary-bg);
-  border-color: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  cursor: default;
-}
-
-.pagination__button--page.pagination__button--active:hover {
-  background: var(--btn-primary-bg);
-  border-color: var(--btn-primary-bg);
-}
-
-/* Navigation Buttons (Back/Next) */
-.pagination__button--nav {
-  padding: 0 1rem;
-  border-color: var(--border-default);
-}
-
-.pagination__button--nav:hover:not(:disabled) {
-  border-color: var(--border-strong);
-}
-
-.pagination__nav-text {
-  font-weight: var(--font-medium);
-}
-
-/* Dots */
-.pagination__dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  color: var(--text-tertiary);
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .pagination__nav-text {
-    display: none;
-  }
-
-  .pagination__button--nav {
-    min-width: 2.5rem;
-    width: 2.5rem;
-    padding: 0;
-  }
+  opacity: 0.4;
 }

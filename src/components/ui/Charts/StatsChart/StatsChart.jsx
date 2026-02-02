@@ -2,37 +2,30 @@ import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import './StatsChart.css';
 
-/**
- * Interpolate between brand colors based on value (0-100)
- * Uses HSL interpolation for smooth color transitions
- * brand-100 (#ffdacc) -> brand-default (#ff5d31)
- */
-function getBarColor(value) {
-  // Clamp value between 0 and 100
-  const v = Math.min(Math.max(value, 0), 100);
+const DEFAULT_COLORS = [
+  'var(--green-700)',
+  'var(--blue-700)',
+  'var(--yellow-700)',
+  'var(--red-700)',
+  'var(--purple-700)',
+  'var(--teal-700)',
+];
 
-  // HSL values for brand-100 to brand-default
-  // brand-100: hsl(17, 100%, 90%)
-  // brand-default: hsl(13, 100%, 60%)
-  const startHue = 17;
-  const endHue = 13;
-  const startSat = 100;
-  const endSat = 100;
-  const startLight = 90;
-  const endLight = 60;
-
-  // Interpolate based on value (0 = lightest, 100 = most vibrant)
-  const t = v / 100;
-  const hue = startHue + (endHue - startHue) * t;
-  const sat = startSat + (endSat - startSat) * t;
-  const light = startLight + (endLight - startLight) * t;
-
-  return `hsl(${hue}, ${sat}%, ${light}%)`;
+function getBarGradient(index, colors) {
+  const color = colors[index % colors.length];
+  return `
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, ${color} 40%, transparent),
+      ${color}
+    )
+  `;
 }
 
-export function StatsChart({ title, stats = [], className = '', animated = true }) {
+export function StatsChart({ title, stats = [], colors = [], className = '', animated = true }) {
   const [isVisible, setIsVisible] = useState(!animated);
   const chartRef = useRef(null);
+  const resolvedColors = Array.isArray(colors) && colors.length > 0 ? colors : DEFAULT_COLORS;
 
   useEffect(() => {
     if (!animated) return;
@@ -59,8 +52,9 @@ export function StatsChart({ title, stats = [], className = '', animated = true 
       ref={chartRef}
       className={`stats-chart ${isVisible ? 'stats-chart--visible' : ''} ${className}`.trim()}
     >
-      {title && <h3 className="stats-chart__title">{title}</h3>}
-      {title && <div className="stats-chart__divider" />}
+      <div className="stats-chart__header">
+        {title && <h3 className="stats-chart__title">{title}</h3>}
+      </div>
       <div className="stats-chart__list">
         {stats.map((stat, index) => (
           <div
@@ -77,7 +71,7 @@ export function StatsChart({ title, stats = [], className = '', animated = true 
                 className="stats-chart__bar-fill"
                 style={{
                   '--bar-width': `${Math.min(Math.max(stat.value, 0), 100)}%`,
-                  '--bar-color': getBarColor(stat.value),
+                  background: getBarGradient(index, resolvedColors),
                 }}
               />
             </div>
@@ -96,6 +90,7 @@ StatsChart.propTypes = {
       value: PropTypes.number.isRequired,
     })
   ),
+  colors: PropTypes.arrayOf(PropTypes.string),
   className: PropTypes.string,
   animated: PropTypes.bool,
 };

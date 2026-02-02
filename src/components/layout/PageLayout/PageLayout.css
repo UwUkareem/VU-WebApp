@@ -3,9 +3,7 @@
 .page-layout {
   display: flex;
   gap: 1rem;
-  padding: 1rem;
-  padding-right: 0;
-  padding-bottom: 0;
+  padding-top: 1rem;
   min-height: 100vh;
   height: 100vh;
   background-color: var(--bg-surface);

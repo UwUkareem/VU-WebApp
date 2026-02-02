@@ -17,7 +17,7 @@
   transition:
     opacity 0.4s ease,
     transform 0.4s ease,
-    border-color var(--transition-base);
+    border-color 0.4s ease;
 }
 
 /* Visible state */
@@ -42,6 +42,22 @@
 }
 
 /* Icon */
+.quick-info-card__icon {
+  position: relative;
+}
+
+/* Base state */
+.quick-info-card__lottie {
+  filter: brightness(0) saturate(100%) invert(100%) brightness(70%) contrast(100%);
+  transition: filter 0.5s ease;
+}
+
+/* Hover */
+.quick-info-card:hover .quick-info-card__lottie {
+  filter: brightness(0) saturate(100%) invert(100%) brightness(80%) contrast(100%)
+    drop-shadow(0 0 15px var(--icon-color));
+}
+
 .quick-info-card__icon {
   display: flex;
   align-items: center;
@@ -72,7 +88,6 @@
 
 .quick-info-card:hover .quick-info-card__number {
   transform: scale(1.05);
-  color: var(--text-primary);
 }
 
 /* Title */

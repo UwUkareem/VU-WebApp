@@ -5,6 +5,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
+  padding-bottom: 0.75rem;
 }
 
 .shortcuts__left {
@@ -33,10 +34,6 @@
   align-items: center;
   gap: 1rem;
   margin-left: auto;
-}
-
-.shortcuts .btn--secondary {
-  background-color: var(--bg-base);
 }
 
 .shortcuts .input-field {

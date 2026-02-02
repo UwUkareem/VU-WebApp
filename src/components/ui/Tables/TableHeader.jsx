@@ -2,7 +2,13 @@ import PropTypes from 'prop-types';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import './TableHeader.css';
 
-export function TableHeader({ columns = [], onSort, className = '' }) {
+export function TableHeader({
+  columns = [],
+  onSort,
+  className = '',
+  gridTemplateColumns,
+  showMenu,
+}) {
   const handleSort = (column, currentSort) => {
     if (!column.sortable || !onSort) return;
 
@@ -17,12 +23,15 @@ export function TableHeader({ columns = [], onSort, className = '' }) {
   };
 
   return (
-    <div className={`table-header ${className}`.trim()} role="row">
+    <div
+      className={`table-header ${className}`.trim()}
+      role="row"
+      style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : {}}
+    >
       {columns.map((column, index) => (
         <div
           key={index}
           className={`table-header__cell${column.sortable ? ' table-header__cell--sortable' : ''}`}
-          style={{ width: column.width }}
           onClick={() => column.sortable && handleSort(column, column.sortState)}
           role="columnheader"
         >
@@ -41,6 +50,7 @@ export function TableHeader({ columns = [], onSort, className = '' }) {
           )}
         </div>
       ))}
+      {showMenu && <div className="table-header__cell" aria-hidden="true" />}
     </div>
   );
 }
@@ -57,4 +67,6 @@ TableHeader.propTypes = {
   ),
   onSort: PropTypes.func,
   className: PropTypes.string,
+  gridTemplateColumns: PropTypes.string,
+  showMenu: PropTypes.bool,
 };

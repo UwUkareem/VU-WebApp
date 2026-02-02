@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PageLayout } from './components/layout/PageLayout';
 import { Pipeline } from './pages/Candidates';
 import { Users, Briefcase, FileText, Building2, UserCircle2, Settings, Hash } from 'lucide-react';
+import { ComponentShowcase } from './pages/_showcase';
 
 /**
  * App - Main application entry point
@@ -27,6 +28,11 @@ export default function App() {
       icon: Briefcase,
       label: 'Jobs',
       isActive: activePage === 'jobs',
+      subItems: [
+        { label: 'Job Management', isActive: false },
+        { label: 'Create Job', isActive: false },
+        { label: 'Pipeline', isActive: false },
+      ],
       onClick: () => setActivePage('jobs'),
     },
     {
@@ -89,7 +95,7 @@ export default function App() {
       case 'candidates':
         return <Pipeline />;
       case 'jobs':
-        return <PlaceholderPage title="Jobs" />;
+        return <ComponentShowcase />;
       case 'mocks':
         return <PlaceholderPage title="Mocks" />;
       case 'company':

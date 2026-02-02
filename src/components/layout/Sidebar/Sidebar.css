@@ -13,6 +13,7 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-left: 1rem;
 }
 
 .sidebar__logo {
@@ -42,10 +43,11 @@
 .sidebar__separator {
   height: 1px;
   background: var(--border-default);
-  margin: 0.75rem 0;
+  margin: 0.5rem 0;
 }
 
 .sidebar__user {
-  padding: 1rem 0;
+  padding: 1rem;
+  padding-right: 0;
   margin-top: auto;
 }

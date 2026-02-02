@@ -1,17 +1,32 @@
 /* Tabs Component */
 
 .tabs {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2.5rem;
   border-bottom: 1px solid var(--border-default);
 }
 
+.tabs__indicator {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--brand-default);
+  pointer-events: none;
+  border-radius: var(--radius-full);
+  transition:
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
 .tab {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 1rem 0;
+  padding-bottom: 1rem;
   background: transparent;
   border: none;
   font-family: var(--font-sans);
@@ -39,15 +54,4 @@
 .tab__label {
   position: relative;
   z-index: 1;
-}
-
-.tab__indicator {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: var(--brand-default);
-  pointer-events: none;
-  border-radius: var(--radius-full);
 }
