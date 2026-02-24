@@ -4,15 +4,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 2.5rem;
-  border-bottom: 1px solid var(--border-default);
+  gap: var(--gap-3xl);
+  border-bottom: var(--border-sm) solid var(--border-default);
 }
 
 .tabs__indicator {
   position: absolute;
   left: 0;
   bottom: -1px;
-  height: 2px;
+  height: var(--border-md);
   background: var(--brand-default);
   pointer-events: none;
   border-radius: var(--radius-full);
@@ -26,7 +26,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  padding-bottom: 1rem;
+  padding-bottom: var(--padding-lg);
   background: transparent;
   border: none;
   font-family: var(--font-sans);
@@ -36,7 +36,7 @@
   color: var(--text-tertiary);
   text-align: left;
   cursor: pointer;
-  transition: color var(--transition-base);
+  transition: color var(--transition-fast);
 }
 
 .tab:hover {

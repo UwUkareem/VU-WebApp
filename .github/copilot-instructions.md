@@ -396,34 +396,106 @@ TextInput.displayName = 'TextInput';
 
 ### 8. Animation Patterns
 
-**Entrance animations** (IntersectionObserver):
+This project uses **three distinct CSS animation strategies** — pick based on context.
+
+---
+
+**A. Entrance via IntersectionObserver** (all Cards, Charts)
+
+Every animated component wraps in `memo`, uses `animated` prop (default `true`), and fires once:
 
 ```jsx
-const [isVisible, setIsVisible] = useState(!animated);
-const cardRef = useRef(null);
+export const QuickInfoCard = memo(function QuickInfoCard({ animated = true, ... }) {
+  const [isVisible, setIsVisible] = useState(!animated); // skip state if animated=false
+  const cardRef = useRef(null);
 
-useEffect(() => {
-  if (!animated) return;
+  useEffect(() => {
+    if (!animated) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [animated]);
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-        observer.disconnect();
-      }
-    },
-    { threshold: 0.2 }
-  );
-
-  if (cardRef.current) observer.observe(cardRef.current);
-  return () => observer.disconnect();
-}, [animated]);
-
-// Apply visibility class
-<div className={`card ${isVisible ? 'card--visible' : ''}`} ref={cardRef}>
+  return (
+    <div ref={cardRef} className={`quick-info-card${isVisible ? ' quick-info-card--visible' : ''}`}>
 ```
 
-**Collapsible UI** (CSS Grid for smooth height transitions):
+CSS pattern — hidden by default, visible via modifier class:
+
+```css
+.quick-info-card {
+  opacity: 0;
+  transform: translateY(var(--size-4)); /* translateY(var(--size-8)) for larger cards */
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+}
+.quick-info-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+```
+
+> **Hover states** are added separately with `border-color`, `box-shadow`, and `background-color` transitions. Left-border accent (`border-left-color: var(--brand-600)`) is used on InfoCard and QuickInfoCard for the hover highlight.
+
+---
+
+**B. Staggered entrance via CSS custom property** (chart lists, table rows)
+
+Each item gets `style={{ '--item-delay': `${index \* 100}ms` }}` in JSX. CSS reads it:
+
+```jsx
+// StatsChart.jsx / DonutChart.jsx
+{stats.map((stat, index) => (
+  <div key={index} className="stats-chart__item" style={{ '--item-delay': `${index * 100}ms` }}>
+```
+
+```css
+/* StatsChart.css */
+.stats-chart__item {
+  opacity: 0;
+  transition-delay: var(--item-delay, 0ms);
+}
+.stats-chart--visible .stats-chart__item {
+  opacity: 1;
+}
+```
+
+---
+
+**C. Staggered CSS `@keyframes`** (Breadcrumb items)
+
+When transitions aren't enough, use `animation-delay` with a per-item CSS variable:
+
+```jsx
+// Breadcrumb.jsx
+<li style={{ '--item-index': index }} className="breadcrumb__item">
+```
+
+```css
+/* Breadcrumb.css */
+.breadcrumb__item {
+  animation: breadcrumb-fade-in var(--transition-slow) both;
+  animation-delay: calc(var(--item-index, 0) * 50ms);
+}
+@keyframes breadcrumb-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--size-2)));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+```
+
+---
+
+**D. Collapsible/expand** (CSS Grid height transition)
 
 ```css
 .card__content {
@@ -431,15 +503,37 @@ useEffect(() => {
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .card--expanded .card__content {
   grid-template-rows: 1fr;
 }
-
 .card__content > div {
   overflow: hidden;
 }
 ```
+
+**E. Immediate entrance via `requestAnimationFrame`** (QuestionCard — dynamically added to a list)
+
+When an item is programmatically added (e.g. "Add Question" button), use `requestAnimationFrame` instead of IntersectionObserver so the animation fires on the very next paint:
+
+```jsx
+// QuestionCard.jsx
+const [isVisible, setIsVisible] = useState(false);
+const [isRemoving, setIsRemoving] = useState(false);
+
+useEffect(() => {
+  requestAnimationFrame(() => setIsVisible(true));
+}, []);
+
+const handleRemove = () => {
+  setIsRemoving(true);
+  setTimeout(() => onRemove?.(), 300); // match CSS transition duration
+};
+
+// className combines all three states:
+`question-card ${isExpanded ? 'question-card--expanded' : ''} ${isVisible ? 'question-card--visible' : ''} ${isRemoving ? 'question-card--removing' : ''}`;
+```
+
+The `question-card--removing` class plays an exit animation (opacity → 0, scale down) before the item is actually removed from the DOM.
 
 ### 9. Dropdown/Modal Patterns
 
@@ -595,9 +689,46 @@ export function Pipeline() {
 1. Create folder: `src/pages/{PageName}/`
 2. Create `{PageName}.jsx`, `{PageName}.css`, `index.js`
 3. Add to `App.jsx`:
-   - Add case in `renderPage()` switch
-   - Add nav item in `navItems` array
-   - Add breadcrumb in `getBreadcrumbItems()`
+   - Add nav item in `navItems` array with `onClick` that calls `setActivePage()` and `setBreadcrumbItems()`
+   - Add case in the `renderPage()` switch
+
+### Candidates: Drill-Down Navigation Pattern
+
+Sub-page navigation within a page is **flat state inside the parent page** — no routing. `Pipeline` owns `selectedCandidate` state:
+
+```jsx
+// Pipeline.jsx
+const [selectedCandidate, setSelectedCandidate] = useState(null);
+
+// Row click → drill in
+const handleRowClick = (candidate) => setSelectedCandidate(candidate);
+
+// Back button → back to list
+const handleBack = () => setSelectedCandidate(null);
+
+// Conditional render — replaces the whole pipeline view
+return selectedCandidate ? (
+  <CandidateDetails candidate={selectedCandidate} onBack={handleBack} />
+) : (
+  <div className="pipeline">...</div>
+);
+```
+
+`CandidateDetails` receives the full candidate object as a prop and derives all display data locally via `useMemo` (skill distribution, AI insights, question review, completed mocks). It **does not fetch** — all data is currently generated/mocked from the candidate object.
+
+```jsx
+// CandidateDetails.jsx
+export function CandidateDetails({ candidate }) {
+  const skillDistribution = useMemo(
+    () => buildSkillDistribution(candidate.score),
+    [candidate.score]
+  );
+  const aiInsights = useMemo(() => buildAIInsights(candidate), [candidate]);
+  // ...
+}
+```
+
+When backend integration arrives, replace the `build*()` helper functions with API calls, keeping the component signature unchanged.
 
 ---
 

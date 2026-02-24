@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import './SidebarButton.css';
 
-export function SidebarButton({
+export const SidebarButton = memo(function SidebarButton({
   icon: Icon,
   label,
   isActive = false,
@@ -14,10 +15,12 @@ export function SidebarButton({
   const isButtonActive = isActive || hasActiveSubItem;
 
   return (
-    <div className={`sidebar-button-wrapper ${className}`.trim()}>
+    <div className={['sidebar-button-wrapper', className].filter(Boolean).join(' ')}>
       <button
         type="button"
-        className={`sidebar-button${isButtonActive ? ' sidebar-button--active' : ''}`}
+        className={['sidebar-button', isButtonActive && 'sidebar-button--active']
+          .filter(Boolean)
+          .join(' ')}
         onClick={onClick}
       >
         {Icon && (
@@ -42,20 +45,22 @@ export function SidebarButton({
       )}
     </div>
   );
-}
+});
 
-function SidebarSubItem({ label, isActive, onClick }) {
+const SidebarSubItem = memo(function SidebarSubItem({ label, isActive, onClick }) {
   return (
     <button
       type="button"
-      className={`sidebar-subitem${isActive ? ' sidebar-subitem--active' : ''}`}
+      className={['sidebar-subitem', isActive && 'sidebar-subitem--active']
+        .filter(Boolean)
+        .join(' ')}
       onClick={onClick}
     >
       {isActive && <span className="sidebar-subitem__indicator" aria-hidden="true" />}
       <span className="sidebar-subitem__label">{label}</span>
     </button>
   );
-}
+});
 
 SidebarButton.propTypes = {
   icon: PropTypes.elementType,

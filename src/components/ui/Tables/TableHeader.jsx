@@ -1,51 +1,52 @@
+import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import './TableHeader.css';
 
-export function TableHeader({
+export const TableHeader = memo(function TableHeader({
   columns = [],
   onSort,
   className = '',
   gridTemplateColumns,
   showMenu,
 }) {
-  const handleSort = (column, currentSort) => {
-    if (!column.sortable || !onSort) return;
-
-    let newSort = 'asc';
-    if (currentSort === 'asc') {
-      newSort = 'desc';
-    } else if (currentSort === 'desc') {
-      newSort = null;
-    }
-
-    onSort(column.key, newSort);
-  };
+  const handleSort = useCallback(
+    (column) => {
+      if (!column.sortable || !onSort) return;
+      const next = column.sortState === 'asc' ? 'desc' : column.sortState === 'desc' ? null : 'asc';
+      onSort(column.key, next);
+    },
+    [onSort]
+  );
 
   return (
     <div
-      className={`table-header ${className}`.trim()}
+      className={['table-header', className].filter(Boolean).join(' ')}
       role="row"
-      style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : {}}
+      style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : undefined}
     >
-      {columns.map((column, index) => (
+      {columns.map((column) => (
         <div
-          key={index}
-          className={`table-header__cell${column.sortable ? ' table-header__cell--sortable' : ''}`}
-          onClick={() => column.sortable && handleSort(column, column.sortState)}
+          key={column.key}
+          className={['table-header__cell', column.sortable && 'table-header__cell--sortable']
+            .filter(Boolean)
+            .join(' ')}
+          onClick={() => handleSort(column)}
           role="columnheader"
         >
           <span className="table-header__label">{column.label}</span>
           {column.sortable && (
-            <span className="table-header__sort" aria-hidden="true">
-              <ChevronUp
-                size={12}
-                className={`table-header__sort-icon${column.sortState === 'asc' ? ' table-header__sort-icon--active' : ''}`}
-              />
-              <ChevronDown
-                size={12}
-                className={`table-header__sort-icon${column.sortState === 'desc' ? ' table-header__sort-icon--active' : ''}`}
-              />
+            <span
+              className={['table-header__sort', column.sortState && 'table-header__sort--active']
+                .filter(Boolean)
+                .join(' ')}
+              aria-hidden="true"
+            >
+              {column.sortState === 'desc' ? (
+                <ChevronDown size={14} strokeWidth={2} />
+              ) : (
+                <ChevronUp size={14} strokeWidth={2} />
+              )}
             </span>
           )}
         </div>
@@ -53,7 +54,7 @@ export function TableHeader({
       {showMenu && <div className="table-header__cell" aria-hidden="true" />}
     </div>
   );
-}
+});
 
 TableHeader.propTypes = {
   columns: PropTypes.arrayOf(

@@ -15,6 +15,7 @@ import { ComponentShowcase } from './pages/_showcase';
  */
 export default function App() {
   const [activePage, setActivePage] = useState('candidates');
+  const [breadcrumbItems, setBreadcrumbItems] = useState([{ label: 'Candidates' }]);
 
   // Navigation items for sidebar
   const navItems = [
@@ -22,7 +23,10 @@ export default function App() {
       icon: Users,
       label: 'Candidates',
       isActive: activePage === 'candidates',
-      onClick: () => setActivePage('candidates'),
+      onClick: () => {
+        setActivePage('candidates');
+        setBreadcrumbItems([{ label: 'Candidates' }]);
+      },
     },
     {
       icon: Briefcase,
@@ -33,32 +37,47 @@ export default function App() {
         { label: 'Create Job', isActive: false },
         { label: 'Pipeline', isActive: false },
       ],
-      onClick: () => setActivePage('jobs'),
+      onClick: () => {
+        setActivePage('jobs');
+        setBreadcrumbItems([{ label: 'Jobs' }]);
+      },
     },
     {
       icon: FileText,
       label: 'Mocks',
       isActive: activePage === 'mocks',
-      onClick: () => setActivePage('mocks'),
+      onClick: () => {
+        setActivePage('mocks');
+        setBreadcrumbItems([{ label: 'Mocks' }]);
+      },
     },
     {
       icon: Building2,
       label: 'Company & Team',
       isActive: activePage === 'company',
-      onClick: () => setActivePage('company'),
+      onClick: () => {
+        setActivePage('company');
+        setBreadcrumbItems([{ label: 'Company & Team' }]);
+      },
       separator: true,
     },
     {
       icon: UserCircle2,
       label: 'Profile',
       isActive: activePage === 'profile',
-      onClick: () => setActivePage('profile'),
+      onClick: () => {
+        setActivePage('profile');
+        setBreadcrumbItems([{ label: 'Profile' }]);
+      },
     },
     {
       icon: Settings,
       label: 'Settings',
       isActive: activePage === 'settings',
-      onClick: () => setActivePage('settings'),
+      onClick: () => {
+        setActivePage('settings');
+        setBreadcrumbItems([{ label: 'Settings' }]);
+      },
     },
   ];
 
@@ -69,31 +88,16 @@ export default function App() {
     icon: Hash,
   };
 
-  // Breadcrumb items based on current page
-  const getBreadcrumbItems = () => {
-    switch (activePage) {
-      case 'candidates':
-        return [{ label: 'Candidates' }];
-      case 'jobs':
-        return [{ label: 'Jobs' }];
-      case 'mocks':
-        return [{ label: 'Mocks' }];
-      case 'company':
-        return [{ label: 'Company & Team' }];
-      case 'profile':
-        return [{ label: 'Profile' }];
-      case 'settings':
-        return [{ label: 'Settings' }];
-      default:
-        return [];
-    }
+  // Breadcrumb update handler
+  const handleBreadcrumbUpdate = (items) => {
+    setBreadcrumbItems(items);
   };
 
   // Render page content based on active page
   const renderPage = () => {
     switch (activePage) {
       case 'candidates':
-        return <Pipeline />;
+        return <Pipeline onBreadcrumbUpdate={handleBreadcrumbUpdate} />;
       case 'jobs':
         return <ComponentShowcase />;
       case 'mocks':
@@ -105,12 +109,12 @@ export default function App() {
       case 'settings':
         return <PlaceholderPage title="Settings" />;
       default:
-        return <Pipeline />;
+        return <Pipeline onBreadcrumbUpdate={handleBreadcrumbUpdate} />;
     }
   };
 
   return (
-    <PageLayout navItems={navItems} user={user} breadcrumbItems={getBreadcrumbItems()}>
+    <PageLayout navItems={navItems} user={user} breadcrumbItems={breadcrumbItems}>
       {renderPage()}
     </PageLayout>
   );

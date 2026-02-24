@@ -1,8 +1,8 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Bell, X } from 'lucide-react';
 import './NotificationDropdown.css';
 
-// Dummy notification data
 const DUMMY_NOTIFICATIONS = [
   {
     id: 1,
@@ -46,12 +46,12 @@ const DUMMY_NOTIFICATIONS = [
   },
 ];
 
-export function NotificationDropdown({ onClose, open }) {
+export const NotificationDropdown = memo(function NotificationDropdown({ onClose, open }) {
   const notifications = DUMMY_NOTIFICATIONS;
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className={`notification-dropdown${open ? ' open' : ''}`}>
+    <div className={['notification-dropdown', open && 'open'].filter(Boolean).join(' ')}>
       <div className="notification-dropdown__header">
         <div className="notification-dropdown__title-wrapper">
           <Bell size={18} className="notification-dropdown__icon" />
@@ -74,7 +74,12 @@ export function NotificationDropdown({ onClose, open }) {
               {notifications.map((notification) => (
                 <li
                   key={notification.id}
-                  className={`notification-item${notification.unread ? ' notification-item--unread' : ''}`}
+                  className={[
+                    'notification-item',
+                    notification.unread && 'notification-item--unread',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                 >
                   <div className="notification-item__avatar">{notification.userAvatar}</div>
                   <div className="notification-item__content">
@@ -98,14 +103,14 @@ export function NotificationDropdown({ onClose, open }) {
             <Bell size={48} className="notification-dropdown__empty-icon" />
             <h4 className="notification-dropdown__empty-title">No notifications yet</h4>
             <p className="notification-dropdown__empty-text">
-              When you get notifications, they'll show up here
+              When you get notifications, they&apos;ll show up here
             </p>
           </div>
         )}
       </div>
     </div>
   );
-}
+});
 
 NotificationDropdown.propTypes = {
   onClose: PropTypes.func.isRequired,

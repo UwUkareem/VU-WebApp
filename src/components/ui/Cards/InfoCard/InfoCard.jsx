@@ -1,12 +1,12 @@
+import { useEffect, useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useRef } from 'react';
-import { Sparkles } from 'lucide-react';
 import './InfoCard.css';
 
-export function InfoCard({
+const INTERSECTION_THRESHOLD = 0.2;
+
+export const InfoCard = memo(function InfoCard({
   title,
   description,
-  showAiIcon = false,
   className = '',
   animated = true,
   onClick,
@@ -24,7 +24,7 @@ export function InfoCard({
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: INTERSECTION_THRESHOLD }
     );
 
     if (cardRef.current) {
@@ -39,35 +39,20 @@ export function InfoCard({
   return (
     <div
       ref={cardRef}
-      className={`info-card ${
-        isVisible ? 'info-card--visible' : ''
-      } ${isClickable ? 'info-card--clickable' : ''} ${showAiIcon ? 'info-card--has-ai' : ''} ${className}`.trim()}
+      className={['info-card', isVisible && 'info-card--visible', isClickable && 'info-card--clickable', className].filter(Boolean).join(' ')}
       onClick={onClick}
       role={isClickable ? 'button' : undefined}
       tabIndex={isClickable ? 0 : undefined}
     >
-      {/* Inner content wrapper */}
-      <div className="info-card__inner">
-        {/* Content */}
-        <div className="info-card__header">
-          <h3 className="info-card__title">{title}</h3>
-          {showAiIcon && (
-            <div className="info-card__ai-icon">
-              <Sparkles size={16} />
-            </div>
-          )}
-        </div>
-
-        {description && <p className="info-card__description">{description}</p>}
-      </div>
+      <h3 className="info-card__title">{title}</h3>
+      {description && <p className="info-card__description">{description}</p>}
     </div>
   );
-}
+});
 
 InfoCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  showAiIcon: PropTypes.bool,
   className: PropTypes.string,
   animated: PropTypes.bool,
   onClick: PropTypes.func,

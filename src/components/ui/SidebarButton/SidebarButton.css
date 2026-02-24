@@ -7,37 +7,40 @@
 .sidebar-button {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--gap-sm);
   width: 100%;
-  padding: 0.25rem 1rem;
-  min-height: 2rem;
+  padding: var(--padding-xs) var(--padding-lg);
+  min-height: var(--size-8);
   background: transparent;
   border: none;
+  border-left: var(--border-md) solid transparent;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-weight: var(--font-medium);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: var(--text-tertiary);
   text-align: left;
   cursor: pointer;
   transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .sidebar-button:hover {
-  background: var(--bg-hover);
+  background: var(--white-a5);
   color: var(--text-secondary);
 }
 
 .sidebar-button--active {
-  background: var(--bg-base);
-  color: var(--text-secondary);
+  background: rgba(230, 79, 40, 0.06);
+  color: var(--text-primary);
+  border-left-color: var(--brand-default);
 }
 
 .sidebar-button--active:hover {
-  background: var(--bg-base);
+  background: rgba(230, 79, 40, 0.08);
 }
 
 .sidebar-button__icon {
@@ -48,8 +51,8 @@
 }
 
 .sidebar-button__icon svg {
-  width: 1rem;
-  height: 1rem;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 .sidebar-button__label {
@@ -61,34 +64,34 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: var(--gap-xs);
+  margin-top: var(--gap-xs);
 }
 
 .sidebar-subitem {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  width: calc(100% - 0.5rem);
-  padding: 0.5rem 1rem;
+  gap: var(--gap-sm);
+  width: calc(100% - var(--size-2));
+  padding: var(--padding-sm) var(--padding-lg);
   background: transparent;
   border: none;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-weight: var(--font-medium);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: var(--text-tertiary);
   text-align: left;
   cursor: pointer;
   transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .sidebar-subitem:hover {
-  background: var(--bg-hover);
+  background: var(--white-a5);
   color: var(--text-secondary);
 }
 
@@ -101,16 +104,16 @@
   background: var(--bg-card);
 }
 
-/* Orange indicator */
+/* Brand indicator */
 .sidebar-subitem__indicator {
   position: absolute;
-  left: -1.5rem;
+  left: calc(-1 * var(--size-6));
   top: 50%;
   transform: translateY(-50%);
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 1rem 1px;
+  border-width: var(--size-4) var(--size-px);
   border-radius: var(--radius-full);
   border-color: var(--brand-default);
   pointer-events: none;

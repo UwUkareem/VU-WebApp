@@ -1,0 +1,101 @@
+/* RadarChart Component */
+
+.radar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  padding: var(--padding-xl) var(--padding-2xl);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 100%;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.radar-chart:hover {
+  border-color: var(--border-default);
+  box-shadow: 0 var(--size-0-5) var(--size-3) var(--black-a20);
+}
+
+.radar-chart__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  transition: color var(--transition-base);
+}
+
+.radar-chart:hover .radar-chart__title {
+  color: var(--text-primary);
+}
+
+.radar-chart__divider {
+  height: 1px;
+  background: var(--border-subtle);
+  width: 100%;
+}
+
+.radar-chart__body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Recharts overrides ── */
+.radar-chart .recharts-wrapper,
+.radar-chart .recharts-surface,
+.radar-chart .recharts-radar-polygon,
+.radar-chart .recharts-polygon,
+.radar-chart .recharts-dot,
+.radar-chart .recharts-active-dot {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.radar-chart .recharts-wrapper:focus,
+.radar-chart .recharts-surface:focus,
+.radar-chart .recharts-wrapper:focus-visible,
+.radar-chart .recharts-surface:focus-visible {
+  outline: none !important;
+}
+
+.radar-chart .recharts-tooltip-wrapper {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: none !important;
+}
+
+.radar-chart *:focus {
+  outline: none !important;
+}
+
+/* Tooltip */
+.radar-chart__tooltip {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: var(--padding-sm) var(--padding-md);
+  background: var(--bg-elevated);
+  border: var(--border-sm) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.radar-chart__tooltip-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.radar-chart__tooltip-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}

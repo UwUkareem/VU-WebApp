@@ -3,20 +3,20 @@
 .shortcuts {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  padding-bottom: 0.75rem;
+  gap: var(--gap-lg);
+  padding: var(--padding-lg);
+  padding-bottom: var(--padding-md);
 }
 
 .shortcuts__left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--gap-lg);
 }
 
 .shortcuts__separator {
-  width: 1px;
-  height: 1.5rem;
+  width: var(--border-sm);
+  height: var(--size-6);
   background: var(--border-default);
 }
 
@@ -32,11 +32,16 @@
 .shortcuts__right {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--gap-lg);
   margin-left: auto;
 }
 
 .shortcuts .input-field {
   height: var(--btn-height);
   min-width: 18rem;
+  background-color: var(--bg-surface);
+}
+
+.shortcuts .btn--secondary {
+  background-color: var(--bg-surface);
 }

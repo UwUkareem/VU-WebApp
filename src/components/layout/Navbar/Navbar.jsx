@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Bell } from 'lucide-react';
 import { Breadcrumb } from '../../ui/Breadcrumb';
 import { NotificationDropdown } from './NotificationDropdown';
 import './Navbar.css';
 
-export function Navbar({ breadcrumbItems = [], className = '' }) {
+const Navbar = memo(function Navbar({ breadcrumbItems = [], className = '' }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
   const dropdownRef = useRef(null);
@@ -36,7 +36,7 @@ export function Navbar({ breadcrumbItems = [], className = '' }) {
   };
 
   return (
-    <nav className={`navbar ${className}`.trim()}>
+    <nav className={['navbar', className].filter(Boolean).join(' ')}>
       <div className="navbar__breadcrumb">
         {breadcrumbItems.length > 0 && <Breadcrumb items={breadcrumbItems} />}
       </div>
@@ -44,7 +44,12 @@ export function Navbar({ breadcrumbItems = [], className = '' }) {
         <div ref={dropdownRef} className="navbar__notification-wrapper">
           <button
             type="button"
-            className={`navbar__notification-button${isNotificationOpen ? ' navbar__notification-button--active' : ''}`}
+            className={[
+              'navbar__notification-button',
+              isNotificationOpen && 'navbar__notification-button--active',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             onClick={handleNotificationClick}
             aria-label="Notifications"
             aria-expanded={isNotificationOpen}
@@ -59,7 +64,9 @@ export function Navbar({ breadcrumbItems = [], className = '' }) {
       </div>
     </nav>
   );
-}
+});
+
+export { Navbar };
 
 Navbar.propTypes = {
   breadcrumbItems: PropTypes.arrayOf(

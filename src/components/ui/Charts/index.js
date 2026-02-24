@@ -1,2 +1,4 @@
-export { StatsChart } from './StatsChart';
-export { DonutChart } from './DonutChart';
+export { RadarChart } from './RadarChart';
+export { RadialBarChart } from './RadialBarChart';
+export { AreaChart } from './AreaChart';
+export { BarChart } from './BarChart';

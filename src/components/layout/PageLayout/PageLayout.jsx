@@ -1,26 +1,10 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Sidebar } from '../Sidebar';
 import { Navbar } from '../Navbar';
 import './PageLayout.css';
 
-/**
- * PageLayout - Main layout wrapper for all pages
- *
- * Provides the consistent app shell with:
- * - Fixed sidebar on the left
- * - Navbar with breadcrumb at the top
- * - Main content area that fills remaining space
- *
- * Usage:
- * <PageLayout
- *   navItems={sidebarNavItems}
- *   user={currentUser}
- *   breadcrumbItems={[{ label: 'Candidates' }, { label: 'Pipeline' }]}
- * >
- *   <YourPageContent />
- * </PageLayout>
- */
-export function PageLayout({
+export const PageLayout = memo(function PageLayout({
   navItems = [],
   user,
   breadcrumbItems = [],
@@ -29,7 +13,7 @@ export function PageLayout({
   className = '',
 }) {
   return (
-    <div className={`page-layout ${className}`.trim()}>
+    <div className={['page-layout', className].filter(Boolean).join(' ')}>
       <Sidebar logo={logo} navItems={navItems} user={user} className="page-layout__sidebar" />
       <div className="page-layout__main">
         <Navbar breadcrumbItems={breadcrumbItems} className="page-layout__navbar" />
@@ -37,7 +21,7 @@ export function PageLayout({
       </div>
     </div>
   );
-}
+});
 
 PageLayout.propTypes = {
   /** Navigation items for the sidebar */

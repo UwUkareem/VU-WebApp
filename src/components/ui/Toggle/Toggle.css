@@ -15,7 +15,7 @@
   --toggle-thumb-on: var(--white);
 
   /* Animation */
-  --toggle-timing: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  --toggle-timing: cubic-bezier(0.25, 1, 0.5, 1);
 
   position: relative;
   display: inline-flex;
@@ -52,11 +52,12 @@
   height: var(--toggle-thumb-size);
   background-color: var(--toggle-thumb-off);
   border-radius: var(--radius-full);
+  transform: translateX(0);
   transition:
-    left 0.4s var(--toggle-timing),
-    width 0.4s var(--toggle-timing),
+    transform 0.3s var(--toggle-timing),
+    width 0.3s var(--toggle-timing),
     background-color 0.2s ease;
-  will-change: left, width;
+  will-change: transform, width;
 }
 
 /* Checked */
@@ -65,7 +66,9 @@
 }
 
 .toggle__input:checked ~ .toggle__track .toggle__thumb {
-  left: calc(var(--toggle-width) - var(--toggle-thumb-size) - var(--toggle-padding));
+  transform: translateX(
+    calc(var(--toggle-width) - var(--toggle-thumb-size) - (var(--toggle-padding) * 2))
+  );
   background-color: var(--toggle-thumb-on);
 }
 
@@ -75,8 +78,11 @@
 }
 
 .toggle:active:not(.toggle--disabled) .toggle__input:checked ~ .toggle__track .toggle__thumb {
-  left: calc(
-    var(--toggle-width) - var(--toggle-thumb-size) - var(--toggle-padding) - var(--toggle-stretch)
+  transform: translateX(
+    calc(
+      var(--toggle-width) - var(--toggle-thumb-size) - (var(--toggle-padding) * 2) -
+        var(--toggle-stretch)
+    )
   );
 }
 

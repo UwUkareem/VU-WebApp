@@ -3,8 +3,8 @@
 .input-label {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 0.375rem;
+  gap: var(--gap-xs);
+  margin-bottom: var(--size-1-5);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-regular);
@@ -19,7 +19,7 @@
 }
 
 .input-label__required {
-  margin-left: 0.125rem;
+  margin-left: var(--size-0-5);
   color: var(--red-400);
   font-weight: var(--font-medium);
 }
@@ -34,7 +34,7 @@
   flex-shrink: 0;
   color: var(--text-tertiary);
   cursor: help;
-  transition: color 0.15s ease;
+  transition: color var(--transition-fast);
 }
 
 .input-label:hover .input-label__info,
@@ -48,7 +48,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
-  padding: 0.5rem 0.75rem;
+  padding: var(--padding-sm) var(--padding-md);
   background: var(--gray-900);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
@@ -59,7 +59,7 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .input-label__tooltip::before {

@@ -1,11 +1,13 @@
+import { memo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { MoreHorizontal } from 'lucide-react';
 import { RowMenu } from '../RowMenu';
 import './TableRow.css';
 
-export function TableRow({
+export const TableRow = memo(function TableRow({
   children,
   showMenu = false,
+  selected = false,
   onMenuClick,
   onMenuSelect,
   onClick,
@@ -15,37 +17,57 @@ export function TableRow({
   onMenuClose,
 }) {
   const isClickable = !!onClick;
+  const menuBtnRef = useRef(null);
+
+  const handleMenuClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      onMenuClick?.(e);
+    },
+    [onMenuClick]
+  );
 
   return (
     <div
-      className={`table-row${isClickable ? ' table-row--clickable' : ''} ${className}`.trim()}
+      className={[
+        'table-row',
+        isClickable && 'table-row--clickable',
+        selected && 'table-row--selected',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       onClick={onClick}
       role="row"
-      style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : {}}
+      style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : undefined}
     >
       {children}
       {showMenu && (
         <div className="table-row__menu-wrapper">
           <button
+            ref={menuBtnRef}
             className="table-row__menu"
-            onClick={(e) => {
-              e.stopPropagation();
-              onMenuClick?.(e);
-            }}
+            onClick={handleMenuClick}
             aria-label="Row actions"
           >
             <MoreHorizontal size={16} />
           </button>
-          <RowMenu open={menuOpen} onClose={onMenuClose} onSelect={onMenuSelect} />
+          <RowMenu
+            open={menuOpen}
+            onClose={onMenuClose}
+            onSelect={onMenuSelect}
+            triggerRef={menuBtnRef}
+          />
         </div>
       )}
     </div>
   );
-}
+});
 
 TableRow.propTypes = {
   children: PropTypes.node.isRequired,
   showMenu: PropTypes.bool,
+  selected: PropTypes.bool,
   onMenuClick: PropTypes.func,
   onMenuSelect: PropTypes.func,
   onClick: PropTypes.func,

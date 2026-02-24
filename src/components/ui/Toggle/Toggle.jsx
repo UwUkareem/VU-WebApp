@@ -1,7 +1,8 @@
-import './Toggle.css';
+import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import './Toggle.css';
 
-export function Toggle({
+export const Toggle = memo(function Toggle({
   checked = false,
   disabled = false,
   onChange,
@@ -10,15 +11,16 @@ export function Toggle({
   className = '',
   ...props
 }) {
-  const handleChange = (e) => {
-    if (!disabled && onChange) {
-      onChange(e.target.checked);
-    }
-  };
+  const handleChange = useCallback(
+    (e) => {
+      if (!disabled) onChange?.(e.target.checked);
+    },
+    [disabled, onChange]
+  );
 
   return (
     <label
-      className={`toggle ${disabled ? 'toggle--disabled' : ''} ${className}`.trim()}
+      className={['toggle', disabled && 'toggle--disabled', className].filter(Boolean).join(' ')}
       {...props}
     >
       <input
@@ -35,7 +37,7 @@ export function Toggle({
       </span>
     </label>
   );
-}
+});
 
 Toggle.propTypes = {
   checked: PropTypes.bool,

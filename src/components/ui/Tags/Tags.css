@@ -84,7 +84,7 @@
   background: transparent;
   border: none;
   border-radius: var(--radius-sm);
-  color: rgba(255, 99, 89, 0.6);
+  color: var(--status-error-text);
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
@@ -93,14 +93,14 @@
 }
 
 .tags__tag-remove:hover {
-  background-color: rgba(255, 59, 48, 0.12);
+  background-color: var(--status-error-bg);
   color: var(--red-400);
   transform: scale(1.15);
 }
 
 .tags__tag-remove:active {
   transform: scale(0.9);
-  background-color: rgba(255, 59, 48, 0.18);
+  background-color: var(--status-error-hover);
 }
 
 /* Add Button */

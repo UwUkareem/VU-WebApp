@@ -5,3 +5,11 @@
   flex-direction: column;
   width: 100%;
 }
+
+/* Variant: oncard — for inputs rendered on card surfaces */
+.input--oncard .input-field,
+.input--oncard .dropdown-input__trigger,
+.input--oncard .textarea,
+.input--oncard .file-input {
+  background: var(--input-bg-oncard);
+}

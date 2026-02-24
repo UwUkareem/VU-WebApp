@@ -3,15 +3,15 @@
 .user {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--gap-md);
 }
 
 .user__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--size-10);
+  height: var(--size-10);
   background: var(--bg-base);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
@@ -21,7 +21,7 @@
 .user__info {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: var(--size-0-5);
   flex: 1;
   min-width: 0;
 }
@@ -31,7 +31,7 @@
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

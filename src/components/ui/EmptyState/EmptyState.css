@@ -1,0 +1,71 @@
+/* Empty State Component */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  height: 100%;
+  min-height: 320px;
+  padding: 3rem 2rem;
+  text-align: center;
+  animation: emptyFadeIn 0.5s ease both;
+}
+
+@keyframes emptyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Icon container */
+.empty-state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  transition:
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+.empty-state:hover .empty-state__icon {
+  border-color: var(--brand-900);
+  color: var(--brand-default);
+}
+
+/* Title */
+.empty-state__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Description */
+.empty-state__description {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  color: var(--text-subtle);
+  max-width: 28rem;
+  margin: 0;
+}
+
+/* Optional action button wrapper */
+.empty-state__action {
+  margin-top: 0.5rem;
+}

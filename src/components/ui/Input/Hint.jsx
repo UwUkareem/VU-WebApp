@@ -1,20 +1,21 @@
 import './Hint.css';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 
-export function Hint({ error, children, className = '', id }) {
+export const Hint = memo(function Hint({ error, children, className = '', id }) {
   if (!children) return null;
 
   return (
     <span
       id={id}
-      className={`input-hint${error ? ' input-hint--error' : ''} ${className}`.trim()}
+      className={['input-hint', error && 'input-hint--error', className].filter(Boolean).join(' ')}
       role={error ? 'alert' : undefined}
       aria-live={error ? 'assertive' : undefined}
     >
       {children}
     </span>
   );
-}
+});
 
 Hint.propTypes = {
   error: PropTypes.bool,

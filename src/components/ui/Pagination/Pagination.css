@@ -1,99 +1,126 @@
 /* Pagination Component */
 
 .pagination {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.pagination__info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.pagination__label {
+/* Left — result summary */
+.pagination__summary {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--font-regular);
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   user-select: none;
+  white-space: nowrap;
 }
 
-.pagination__input {
-  position: relative;
+.pagination__summary-range {
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+}
+
+/* Right — navigation cluster */
+.pagination__nav {
   display: flex;
   align-items: center;
-  text-align: center;
-  width: 3.5rem;
-  height: 2.5rem;
-  padding: 0 0.75rem;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--text-secondary);
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius-sm);
-  transition:
-    border-color var(--transition-base),
-    background-color var(--transition-base);
+  gap: var(--gap-xs);
 }
 
-.pagination__input:hover {
-  border-color: var(--input-border-hover);
+/* Page number buttons */
+.pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
-.pagination__input:focus {
-  border-color: var(--input-border-focus);
-  outline: none;
-}
-
-.pagination__input::-webkit-inner-spin-button,
-.pagination__input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.pagination__input[type='number'] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-.pagination__button {
+.pagination__page {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  color: var(--text-secondary);
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
+  min-width: var(--size-8);
+  height: var(--size-8);
+  padding: 0 var(--padding-xs);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  background: transparent;
+  border: var(--border-sm) solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition:
-    border-color var(--transition-base),
-    background-color var(--transition-base);
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
-.pagination__button:hover:not(:disabled) {
-  border-color: var(--input-border-hover);
+.pagination__page:hover {
+  color: var(--text-secondary);
+  background: var(--white-a5);
 }
 
-.pagination__button:active:not(:disabled) {
+.pagination__page--active {
+  color: var(--text-primary);
+  background: var(--white-a10);
+  border-color: var(--border-default);
+}
+
+.pagination__page--active:hover {
+  background: var(--white-a10);
+}
+
+.pagination__ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-6);
+  height: var(--size-8);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-disabled);
+  user-select: none;
+}
+
+/* Arrow buttons (prev / next) */
+.pagination__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-8);
+  height: var(--size-8);
+  padding: 0;
+  color: var(--text-secondary);
+  background: transparent;
+  border: var(--border-sm) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.pagination__arrow:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: var(--white-a5);
+}
+
+.pagination__arrow:active:not(:disabled) {
+  background: var(--white-a10);
+}
+
+.pagination__arrow:focus-visible {
   border-color: var(--input-border-focus);
   outline: none;
 }
 
-.pagination__button:focus:not(:disabled) {
-  border-color: var(--input-border-focus);
-  outline: none;
-}
-
-.pagination__button:disabled {
+.pagination__arrow:disabled {
   color: var(--text-disabled);
   border-color: var(--border-subtle);
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.5;
 }

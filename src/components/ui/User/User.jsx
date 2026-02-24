@@ -1,21 +1,22 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import './User.css';
 
-export function User({ name, email, icon: Icon, className = '' }) {
+export const User = memo(function User({ name, email, icon: Icon, className = '' }) {
   return (
-    <div className={`user ${className}`.trim()}>
+    <div className={['user', className].filter(Boolean).join(' ')}>
       {Icon && (
         <div className="user__icon" aria-hidden="true">
           <Icon size={20} />
         </div>
       )}
       <div className="user__info">
-        <div className="user__name">{name}</div>
-        <div className="user__email">{email}</div>
+        <span className="user__name">{name}</span>
+        <span className="user__email">{email}</span>
       </div>
     </div>
   );
-}
+});
 
 User.propTypes = {
   name: PropTypes.string.isRequired,

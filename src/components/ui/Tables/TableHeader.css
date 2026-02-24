@@ -3,55 +3,68 @@
 .table-header {
   display: grid;
   align-items: center;
-  gap: 1rem;
-  padding: 0.5rem 2rem;
-  background: var(--bg-card);
-  border-top-left-radius: var(--radius-sm);
-  border-top-right-radius: var(--radius-sm);
+  gap: var(--gap-xl);
+  padding: var(--padding-md) var(--padding-xl) var(--padding-sm);
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border-bottom: var(--border-sm) solid rgba(255, 255, 255, 0.05);
   min-width: 0;
 }
 
 .table-header__cell {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-height: 1.5rem;
+  gap: var(--gap-xs);
+  min-height: var(--size-6);
 }
 
 .table-header__cell--sortable {
   cursor: pointer;
   user-select: none;
-  transition: color var(--transition-base);
+  border-radius: var(--radius-xs);
+  padding: var(--padding-xs) var(--padding-sm);
+  margin: 0 calc(-1 * var(--padding-sm));
+  transition: color var(--transition-fast);
 }
 
 .table-header__label {
   font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--font-regular);
-  line-height: 1.5;
-  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  font-weight: var(--font-semibold);
+  line-height: 1;
+  color: var(--text-tertiary);
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color var(--transition-fast);
 }
 
-.table-header__cell:hover .table-header__label {
-  color: var(--text-primary);
+.table-header__cell--sortable:hover .table-header__label {
+  color: var(--text-secondary);
 }
 
+/* Sort indicator — hidden by default, visible on hover or when active */
 .table-header__sort {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0px;
   flex-shrink: 0;
+  color: var(--text-tertiary);
+  opacity: 0;
+  transition:
+    opacity var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.table-header__sort-icon {
-  display: block;
-  color: var(--white-a25);
-  transition: color var(--transition-base);
+.table-header__cell--sortable:hover .table-header__sort {
+  opacity: 0.5;
 }
 
-.table-header__sort-icon--active {
-  color: var(--text-primary);
+.table-header__sort--active {
+  opacity: 1;
+  color: var(--text-secondary);
+}
+
+.table-header__cell--sortable:hover .table-header__sort--active {
+  opacity: 1;
 }

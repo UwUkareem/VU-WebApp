@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { ChevronDown, Trash2, Check } from 'lucide-react';
 import { TextInput, Textarea, DropdownInput } from '../../Input';
 import { Button } from '../../Button';
 import './QuestionCard.css';
 
-export function QuestionCard({
+export const QuestionCard = memo(function QuestionCard({
   questionNumber = 1,
   title: titleProp,
   description: descriptionProp,
@@ -103,7 +103,15 @@ export function QuestionCard({
   return (
     <div
       ref={cardRef}
-      className={`question-card ${isExpanded ? 'question-card--expanded' : ''} ${isVisible ? 'question-card--visible' : ''} ${isRemoving ? 'question-card--removing' : ''} ${className}`.trim()}
+      className={[
+        'question-card',
+        isExpanded && 'question-card--expanded',
+        isVisible && 'question-card--visible',
+        isRemoving && 'question-card--removing',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
       {/* Header - Always visible */}
       <div className="question-card__header">
@@ -115,9 +123,12 @@ export function QuestionCard({
         </div>
 
         <div
-          className={`question-card__summary-row ${
-            isExpanded ? 'question-card__summary-row--hidden' : ''
-          }`}
+          className={[
+            'question-card__summary-row',
+            isExpanded && 'question-card__summary-row--hidden',
+          ]
+            .filter(Boolean)
+            .join(' ')}
         >
           <div className="question-card__summary-inner">
             <div className="question-card__summary">
@@ -148,6 +159,7 @@ export function QuestionCard({
             placeholder="Two sum problem"
             value={title}
             onChange={handleTitleChange}
+            variant="oncard"
             required
           />
 
@@ -158,6 +170,7 @@ export function QuestionCard({
             value={description}
             onChange={handleDescriptionChange}
             rows={5}
+            variant="oncard"
             required
           />
 
@@ -169,6 +182,7 @@ export function QuestionCard({
               options={difficultyOptions}
               value={difficulty}
               onChange={handleDifficultyChange}
+              variant="oncard"
               required
             />
             <DropdownInput
@@ -177,34 +191,25 @@ export function QuestionCard({
               options={estimatedTimeOptions}
               value={estimatedTime}
               onChange={handleEstimatedTimeChange}
+              variant="oncard"
               required
             />
           </div>
 
           {/* Actions */}
           <div className="question-card__actions">
-            <button
-              type="button"
-              className="question-card__action-btn question-card__action-btn--delete"
-              onClick={handleRemove}
-              aria-label="Delete question"
-            >
-              <Trash2 size={18} />
-            </button>
-            <button
-              type="button"
-              className="question-card__action-btn question-card__action-btn--done"
-              onClick={handleDone}
-              aria-label="Done editing"
-            >
-              <Check size={18} />
-            </button>
+            <Button variant="secondary" onClick={handleRemove} aria-label="Delete question">
+              Delete
+            </Button>
+            <Button variant="primary" onClick={handleDone} aria-label="Done editing">
+              Done
+            </Button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+});
 
 QuestionCard.propTypes = {
   questionNumber: PropTypes.number,

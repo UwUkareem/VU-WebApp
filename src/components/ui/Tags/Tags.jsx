@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { X, Plus, Check } from 'lucide-react';
 import './Tags.css';
 
-export function Tags({
+export const Tags = memo(function Tags({
   title,
   tags = [],
   onAdd,
@@ -17,66 +17,61 @@ export function Tags({
   const [newTagValue, setNewTagValue] = useState('');
   const inputRef = useRef(null);
 
-  // Entrance animation
   useEffect(() => {
-    requestAnimationFrame(() => {
-      setIsVisible(true);
-    });
+    requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
-  // Focus input when adding mode is activated
   useEffect(() => {
-    if (isAdding && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (isAdding) inputRef.current?.focus();
   }, [isAdding]);
 
   const isEditable = variant === 'editable';
 
-  const handleRemoveTag = (index, e) => {
-    e.stopPropagation();
-    onRemove?.(index);
-  };
+  const handleRemoveTag = useCallback(
+    (index, e) => {
+      e.stopPropagation();
+      onRemove?.(index);
+    },
+    [onRemove]
+  );
 
-  const handleAddClick = () => {
-    setIsAdding(true);
-  };
-
-  const handleSubmitTag = () => {
-    const trimmedValue = newTagValue.trim();
-    if (trimmedValue && onAdd) {
-      onAdd(trimmedValue);
+  const handleSubmitTag = useCallback(() => {
+    const trimmed = newTagValue.trim();
+    if (trimmed && onAdd) {
+      onAdd(trimmed);
       setNewTagValue('');
-      // Keep input open for multi-add
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      inputRef.current?.focus();
     }
-  };
+  }, [newTagValue, onAdd]);
 
-  const handleCancelAdd = () => {
+  const handleCancelAdd = useCallback(() => {
     setNewTagValue('');
     setIsAdding(false);
-  };
+  }, []);
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSubmitTag();
-    } else if (e.key === 'Escape') {
-      handleCancelAdd();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSubmitTag();
+      } else if (e.key === 'Escape') {
+        handleCancelAdd();
+      }
+    },
+    [handleSubmitTag, handleCancelAdd]
+  );
+
+  const handleAddClick = useCallback(() => setIsAdding(true), []);
 
   return (
-    <div className={`tags ${isVisible ? 'tags--visible' : ''} ${className}`.trim()}>
+    <div className={['tags', isVisible && 'tags--visible', className].filter(Boolean).join(' ')}>
       {showTitle && title && <h3 className="tags__title">{title}</h3>}
 
       <div className="tags__container">
         {tags.map((tag, index) => (
           <div
             key={index}
-            className={`tags__tag ${isVisible ? 'tags__tag--visible' : ''}`}
+            className={['tags__tag', isVisible && 'tags__tag--visible'].filter(Boolean).join(' ')}
             style={{ '--tag-index': index }}
           >
             <span className="tags__tag-text">{tag}</span>
@@ -133,7 +128,7 @@ export function Tags({
       </div>
     </div>
   );
-}
+});
 
 Tags.propTypes = {
   title: PropTypes.string,
