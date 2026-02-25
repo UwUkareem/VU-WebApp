@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, useRef, memo } from 'react';
-import { ChevronDown, Trash2, Check } from 'lucide-react';
+import { ChevronDown, Trash2, Star } from 'lucide-react';
 import { TextInput, Textarea, DropdownInput } from '../../Input';
 import { Button } from '../../Button';
 import './QuestionCard.css';
 
 export const QuestionCard = memo(function QuestionCard({
   questionNumber = 1,
+  variant = 'edit',
   title: titleProp,
   description: descriptionProp,
   difficulty: difficultyProp,
@@ -15,12 +16,15 @@ export const QuestionCard = memo(function QuestionCard({
   defaultDescription = '',
   defaultDifficulty = '',
   defaultEstimatedTime = '',
+  score,
+  answer,
   onRemove,
   onDone,
   onChange,
   defaultExpanded = false,
   className = '',
 }) {
+  const isReview = variant === 'review';
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [title, setTitle] = useState(titleProp || defaultTitle);
   const [description, setDescription] = useState(descriptionProp || defaultDescription);
@@ -105,6 +109,7 @@ export const QuestionCard = memo(function QuestionCard({
       ref={cardRef}
       className={[
         'question-card',
+        isReview && 'question-card--review',
         isExpanded && 'question-card--expanded',
         isVisible && 'question-card--visible',
         isRemoving && 'question-card--removing',
@@ -136,16 +141,26 @@ export const QuestionCard = memo(function QuestionCard({
               {summaryMeta && <span className="question-card__summary-meta">{summaryMeta}</span>}
             </div>
 
-            <button
-              type="button"
-              className="question-card__delete-icon"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemove();
-              }}
-            >
-              <Trash2 size={18} />
-            </button>
+            {isReview ? (
+              score != null && (
+                <div className="question-card__score">
+                  <span className="question-card__score-label">Score</span>
+                  <Star size={14} className="question-card__score-icon" />
+                  <span className="question-card__score-value">{score}</span>
+                </div>
+              )
+            ) : (
+              <button
+                type="button"
+                className="question-card__delete-icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemove();
+                }}
+              >
+                <Trash2 size={18} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -153,58 +168,93 @@ export const QuestionCard = memo(function QuestionCard({
       {/* Content - Collapsible */}
       <div className="question-card__content">
         <div className="question-card__content-inner">
-          {/* Question Title Input */}
-          <TextInput
-            label="Question Title"
-            placeholder="Two sum problem"
-            value={title}
-            onChange={handleTitleChange}
-            variant="oncard"
-            required
-          />
+          {isReview ? (
+            <div className="question-card__review-body">
+              <div className="question-card__review-fields">
+                <div className="question-card__review-field">
+                  <span className="question-card__review-label">Title</span>
+                  <span className="question-card__review-value">{title}</span>
+                </div>
+                {description && (
+                  <div className="question-card__review-field">
+                    <span className="question-card__review-label">Description</span>
+                    <span className="question-card__review-value">{description}</span>
+                  </div>
+                )}
+                <div className="question-card__review-row">
+                  {difficulty && (
+                    <div className="question-card__review-field">
+                      <span className="question-card__review-label">Difficulty</span>
+                      <span className="question-card__review-value">{getDifficultyLabel()}</span>
+                    </div>
+                  )}
+                  {estimatedTime && (
+                    <div className="question-card__review-field">
+                      <span className="question-card__review-label">Time</span>
+                      <span className="question-card__review-value">{estimatedTime}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {answer && (
+                <div className="question-card__answer">
+                  <span className="question-card__answer-label">Candidate Answer</span>
+                  <p className="question-card__answer-text">{answer}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <TextInput
+                label="Question Title"
+                placeholder="Two sum problem"
+                value={title}
+                onChange={handleTitleChange}
+                variant="oncard"
+                required
+              />
 
-          {/* Question Description Textarea */}
-          <Textarea
-            label="Question Description"
-            placeholder="Text here"
-            value={description}
-            onChange={handleDescriptionChange}
-            rows={5}
-            variant="oncard"
-            required
-          />
+              <Textarea
+                label="Question Description"
+                placeholder="Text here"
+                value={description}
+                onChange={handleDescriptionChange}
+                rows={5}
+                variant="oncard"
+                required
+              />
 
-          {/* Bottom Row - Difficulty and Estimated Time */}
-          <div className="question-card__row">
-            <DropdownInput
-              label="Difficulty"
-              placeholder="Select difficulty"
-              options={difficultyOptions}
-              value={difficulty}
-              onChange={handleDifficultyChange}
-              variant="oncard"
-              required
-            />
-            <DropdownInput
-              label="Estimated Time"
-              placeholder="Select time"
-              options={estimatedTimeOptions}
-              value={estimatedTime}
-              onChange={handleEstimatedTimeChange}
-              variant="oncard"
-              required
-            />
-          </div>
+              <div className="question-card__row">
+                <DropdownInput
+                  label="Difficulty"
+                  placeholder="Select difficulty"
+                  options={difficultyOptions}
+                  value={difficulty}
+                  onChange={handleDifficultyChange}
+                  variant="oncard"
+                  required
+                />
+                <DropdownInput
+                  label="Estimated Time"
+                  placeholder="Select time"
+                  options={estimatedTimeOptions}
+                  value={estimatedTime}
+                  onChange={handleEstimatedTimeChange}
+                  variant="oncard"
+                  required
+                />
+              </div>
 
-          {/* Actions */}
-          <div className="question-card__actions">
-            <Button variant="secondary" onClick={handleRemove} aria-label="Delete question">
-              Delete
-            </Button>
-            <Button variant="primary" onClick={handleDone} aria-label="Done editing">
-              Done
-            </Button>
-          </div>
+              <div className="question-card__actions">
+                <Button variant="secondary" onClick={handleRemove} aria-label="Delete question">
+                  Delete
+                </Button>
+                <Button variant="primary" onClick={handleDone} aria-label="Done editing">
+                  Done
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -213,6 +263,7 @@ export const QuestionCard = memo(function QuestionCard({
 
 QuestionCard.propTypes = {
   questionNumber: PropTypes.number,
+  variant: PropTypes.oneOf(['edit', 'review']),
   title: PropTypes.string,
   description: PropTypes.string,
   difficulty: PropTypes.string,
@@ -221,6 +272,8 @@ QuestionCard.propTypes = {
   defaultDescription: PropTypes.string,
   defaultDifficulty: PropTypes.string,
   defaultEstimatedTime: PropTypes.string,
+  score: PropTypes.number,
+  answer: PropTypes.string,
   onRemove: PropTypes.func,
   onDone: PropTypes.func,
   onChange: PropTypes.func,

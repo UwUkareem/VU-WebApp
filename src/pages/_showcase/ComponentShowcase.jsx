@@ -785,8 +785,9 @@ export default function ComponentShowcase() {
             subtitle="Subtitle"
             caption="Caption"
             showBadge={true}
-            badgeType="candidateState"
-            badgeVariant="accepted"
+            badgeType="cheatingFlag"
+            badgeVariant="clean"
+            badgeIcon={true}
             showButton={true}
             buttonText="Remove"
             onButtonClick={() => console.log('Remove clicked!')}

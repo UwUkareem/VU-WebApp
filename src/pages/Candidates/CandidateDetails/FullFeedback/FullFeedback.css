@@ -1,0 +1,91 @@
+/* Full Feedback Tab */
+
+.full-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2xl);
+  padding-top: var(--gap-xs);
+  padding-bottom: var(--gap-xl);
+}
+
+/* Charts — bar 2fr, radar 1fr */
+
+.full-feedback__charts {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--gap-lg);
+}
+
+.full-feedback__charts > * {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Sections */
+
+.full-feedback__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+.full-feedback__section .section-title {
+  margin-top: var(--size-4);
+}
+
+/* Insights container */
+
+.full-feedback__insights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+/* 3 InfoCards in a row */
+
+.full-feedback__insights-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-lg);
+}
+
+/* InfoCard overrides inside insights — subtle surface treatment */
+
+.full-feedback__insights-row .info-card__title {
+  font-size: var(--text-sm);
+}
+
+.full-feedback__insights-row .info-card__description {
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+/* ActionCard override inside insights */
+
+.full-feedback__insights .action-card {
+  padding: var(--padding-xl) var(--padding-2xl);
+}
+
+.full-feedback__insights .action-card__title {
+  font-size: var(--text-base);
+}
+
+/* Questions */
+
+.full-feedback__questions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .full-feedback__charts {
+    grid-template-columns: 1fr;
+  }
+
+  .full-feedback__insights-row {
+    grid-template-columns: 1fr;
+  }
+}

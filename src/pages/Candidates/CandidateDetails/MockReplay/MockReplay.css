@@ -1,0 +1,102 @@
+/* Mock Replay Tab */
+
+.mock-replay {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2xl);
+  padding-top: var(--gap-xs);
+  padding-bottom: var(--gap-xl);
+}
+
+/* Shared section rhythm */
+
+.mock-replay__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+/* ── Video Player ── */
+
+.mock-replay__player {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--bg-base);
+  border: var(--border-sm) solid var(--border-subtle);
+  aspect-ratio: 16 / 9;
+}
+
+.mock-replay__video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: var(--bg-base);
+}
+
+/* ── Transcript ── */
+
+.mock-replay__transcript {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.mock-replay__section .section-title {
+  margin-top: var(--size-4);
+}
+
+.mock-replay__entry--candidate {
+  background: var(--bg-subcard);
+  margin-left: 16px;
+  width: auto;
+}
+
+.mock-replay__entry--ai {
+  border: none;
+}
+.mock-replay__entry--ai .action-card__title {
+  color: var(--blue-500);
+}
+
+.mock-replay__entry--candidate .action-card__title {
+  color: var(--brand-default);
+}
+
+/* ActionCard overrides for transcript entries */
+
+.mock-replay__entry.action-card {
+  padding: var(--padding-lg) var(--padding-xl);
+  gap: var(--gap-sm);
+}
+
+.mock-replay__entry .action-card__title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+}
+
+.mock-replay__entry .action-card__subtitle {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.mock-replay__entry .action-card__caption {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+}
+
+.mock-replay__entry .action-card__description-meta {
+  margin-top: var(--gap-xs);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .mock-replay__player {
+    aspect-ratio: 4 / 3;
+  }
+}

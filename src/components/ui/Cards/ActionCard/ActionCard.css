@@ -93,6 +93,7 @@
   color: var(--brand-default);
   fill: var(--brand-default);
   flex-shrink: 0;
+  margin-right: calc(-1 * var(--size-1));
 }
 
 .action-card__description-number {
@@ -100,7 +101,6 @@
   font-size: var(--text-base);
   font-weight: var(--font-medium);
   color: var(--text-secondary);
-  min-width: var(--size-6);
 }
 
 .action-card__description-title {

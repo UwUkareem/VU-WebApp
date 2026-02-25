@@ -10,10 +10,15 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
-import { CHART_PALETTE, CHART_AXIS_X, CHART_AXIS_Y, CHART_GRID } from '../chartTokens';
+import { useMemo } from 'react';
+import {
+  CHART_BRAND,
+  CHART_BAR_NEUTRAL,
+  CHART_AXIS_X,
+  CHART_AXIS_Y,
+  CHART_GRID,
+} from '../chartTokens';
 import './BarChart.css';
-
-const DEFAULT_COLORS = CHART_PALETTE;
 
 /* Custom Tooltip */
 function ChartTooltip({ active, payload, label, barColor }) {
@@ -35,9 +40,20 @@ function ChartTooltip({ active, payload, label, barColor }) {
   );
 }
 
-/* Custom X Tick */
+/* Custom X Tick — wraps long labels into 2 lines */
 function CustomXTick({ x, y, payload }) {
-  const label = payload.value.length > 12 ? payload.value.slice(0, 11) + '…' : payload.value;
+  const text = payload.value;
+  const words = text.split(' ');
+  let lines;
+
+  if (words.length >= 2) {
+    const mid = Math.ceil(words.length / 2);
+    lines = [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+  } else if (text.length > 10) {
+    lines = [text.slice(0, Math.ceil(text.length / 2)), text.slice(Math.ceil(text.length / 2))];
+  } else {
+    lines = [text];
+  }
 
   return (
     <text
@@ -48,7 +64,11 @@ function CustomXTick({ x, y, payload }) {
       fontSize={11}
       fontFamily="Inter, sans-serif"
     >
-      {label}
+      {lines.map((line, i) => (
+        <tspan key={i} x={x} dy={i === 0 ? 0 : 13}>
+          {line}
+        </tspan>
+      ))}
     </text>
   );
 }
@@ -74,11 +94,25 @@ export const BarChart = memo(function BarChart({
   data = [],
   dataKeys = [{ key: 'value', label: 'Value' }],
   xKey = 'label',
-  colors = DEFAULT_COLORS,
   className = '',
   animated = true,
 }) {
   const isMultiBar = dataKeys.length > 1;
+
+  /* Index of the highest-value bar (accent highlight) */
+  const maxIdx = useMemo(() => {
+    if (!data.length || isMultiBar) return -1;
+    const key = dataKeys[0].key;
+    let best = -Infinity;
+    let idx = 0;
+    data.forEach((d, i) => {
+      if (d[key] > best) {
+        best = d[key];
+        idx = i;
+      }
+    });
+    return idx;
+  }, [data, dataKeys, isMultiBar]);
 
   return (
     <div className={['bar-chart', className].filter(Boolean).join(' ')}>
@@ -89,8 +123,9 @@ export const BarChart = memo(function BarChart({
         <ResponsiveContainer width="100%" height={240}>
           <RechartsBar
             data={data}
-            margin={{ top: 8, right: 8, bottom: 0, left: -16 }}
-            barCategoryGap="25%"
+            margin={{ top: 8, right: 8, bottom: 14, left: -16 }}
+            barCategoryGap="38%"
+            maxBarSize={30}
           >
             <CartesianGrid stroke={CHART_GRID} strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey={xKey} tick={<CustomXTick />} axisLine={false} tickLine={false} />
@@ -98,7 +133,12 @@ export const BarChart = memo(function BarChart({
             <Tooltip
               content={(props) => {
                 const idx = data.findIndex((d) => d[xKey] === props.label);
-                const barColor = !isMultiBar && idx >= 0 ? colors[idx % colors.length] : null;
+                const barColor =
+                  !isMultiBar && idx >= 0
+                    ? idx === maxIdx
+                      ? CHART_BRAND
+                      : CHART_BAR_NEUTRAL
+                    : null;
                 return <ChartTooltip {...props} barColor={barColor} />;
               }}
               cursor={{ fill: 'transparent' }}
@@ -106,12 +146,12 @@ export const BarChart = memo(function BarChart({
               wrapperStyle={{ outline: 'none', pointerEvents: 'none' }}
             />
 
-            {dataKeys.map((dk, keyIdx) => (
+            {dataKeys.map((dk) => (
               <Bar
                 key={dk.key}
                 dataKey={dk.key}
                 name={dk.label}
-                fill={colors[keyIdx % colors.length]}
+                fill={CHART_BAR_NEUTRAL}
                 radius={[4, 4, 0, 0]}
                 isAnimationActive={animated}
                 animationDuration={800}
@@ -120,7 +160,11 @@ export const BarChart = memo(function BarChart({
               >
                 {!isMultiBar &&
                   data.map((_, index) => (
-                    <Cell key={index} fill={colors[index % colors.length]} fillOpacity={0.6} />
+                    <Cell
+                      key={index}
+                      fill={index === maxIdx ? CHART_BRAND : CHART_BAR_NEUTRAL}
+                      fillOpacity={0.7}
+                    />
                   ))}
               </Bar>
             ))}
@@ -141,7 +185,6 @@ BarChart.propTypes = {
     })
   ),
   xKey: PropTypes.string,
-  colors: PropTypes.arrayOf(PropTypes.string),
   className: PropTypes.string,
   animated: PropTypes.bool,
 };

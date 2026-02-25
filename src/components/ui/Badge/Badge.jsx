@@ -45,7 +45,7 @@ export const Badge = memo(function Badge({
           {iconLeft === true ? <Icon size={ICON_SIZE} /> : iconLeft}
         </span>
       )}
-      <span className="badge__label">{children || label}</span>
+      <span className="badge__label">{children != null && children !== '' ? children : label}</span>
       {iconRight && (
         <span className="badge__icon">
           {iconRight === true ? <Icon size={ICON_SIZE} /> : iconRight}

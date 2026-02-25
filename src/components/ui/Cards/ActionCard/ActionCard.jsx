@@ -13,9 +13,10 @@ export const ActionCard = memo(function ActionCard({
   subtitle,
   caption,
   showBadge = false,
-  badgeText = 'Accepted',
+  badgeText,
   badgeType = 'candidateState',
   badgeVariant = 'accepted',
+  badgeIcon = false,
   showButton = false,
   buttonText = 'Remove',
   onButtonClick,
@@ -52,7 +53,9 @@ export const ActionCard = memo(function ActionCard({
   return (
     <div
       ref={cardRef}
-      className={['action-card', isVisible && 'action-card--visible', className].filter(Boolean).join(' ')}
+      className={['action-card', isVisible && 'action-card--visible', className]
+        .filter(Boolean)
+        .join(' ')}
     >
       {/* Header row - Title, Caption, Badge, and Button */}
       <div className="action-card__header">
@@ -60,7 +63,7 @@ export const ActionCard = memo(function ActionCard({
         <div className="action-card__header-right">
           {caption && <span className="action-card__caption">{caption}</span>}
           {showBadge && (
-            <Badge type={badgeType} variant={badgeVariant}>
+            <Badge type={badgeType} variant={badgeVariant} iconLeft={badgeIcon}>
               {badgeText}
             </Badge>
           )}
@@ -103,6 +106,7 @@ ActionCard.propTypes = {
   showBadge: PropTypes.bool,
   badgeText: PropTypes.string,
   badgeType: PropTypes.oneOf(['candidateState', 'cheatingFlag', 'jobStatus', 'role']),
+  badgeIcon: PropTypes.bool,
   badgeVariant: PropTypes.string,
   showButton: PropTypes.bool,
   buttonText: PropTypes.string,

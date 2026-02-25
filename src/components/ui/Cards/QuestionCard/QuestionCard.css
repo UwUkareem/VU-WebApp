@@ -265,6 +265,100 @@
   gap: var(--gap-md);
 }
 
+/* ───────────────────── Review Variant ───────────────────── */
+
+.question-card--review .question-card__header-top {
+  cursor: pointer;
+}
+
+.question-card--review.question-card--expanded .question-card__content {
+  max-height: 800px;
+}
+
+/* Score display in summary row */
+.question-card__score {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+}
+
+.question-card__score-label {
+  color: var(--text-tertiary);
+}
+
+.question-card__score-icon {
+  color: var(--brand-default);
+  fill: var(--brand-default);
+}
+
+.question-card__score-value {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+/* Review body — expanded content */
+.question-card__review-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2xl);
+}
+
+.question-card__review-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+}
+
+.question-card__review-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-lg);
+}
+
+.question-card__review-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+}
+
+.question-card__review-label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-regular);
+  color: var(--text-subtle);
+}
+
+.question-card__review-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* Candidate answer section */
+.question-card__answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding-top: var(--gap-xl);
+  border-top: var(--border-sm) solid var(--border-subtle);
+}
+
+.question-card__answer-label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-subtle);
+}
+
+.question-card__answer-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
 /* Focus styles for accessibility */
 .question-card__toggle:focus-visible,
 .question-card__delete-icon:focus-visible {

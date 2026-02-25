@@ -1,392 +1,159 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Briefcase,
-  Star,
-  CalendarDays,
-  ShieldAlert,
-  ShieldCheck,
-  ShieldX,
-  ChevronRight,
-} from 'lucide-react';
-import { EntityCard, InfoCard, ActionCard } from '../../../components/ui/Cards';
+import { Briefcase, MapPin, Calendar, Check, List, X } from 'lucide-react';
+import { EntityCard } from '../../../components/ui/Cards';
 import { Tabs } from '../../../components/ui/Tabs';
-import { Badge } from '../../../components/ui/Badge';
-import { Button } from '../../../components/ui/Button';
-import { RadarChart } from '../../../components/ui/Charts';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
+import { ActionCard } from '../../../components/ui/Cards';
+import { FullFeedback } from './FullFeedback';
+import { MockReplay } from './MockReplay';
+import { CVAnalysis } from './CVAnalysis';
 import './CandidateDetails.css';
 
-// Score icon used in description meta
-const SCORE_ICON = <Star size={16} fill="var(--brand-600)" stroke="var(--brand-600)" />;
+const COMPLETED_MOCKS = [
+  {
+    id: 1,
+    title: 'Technical Coding Challenge',
+    subtitle: 'Hard • Technical • 60min',
+    score: 95,
+  },
+  {
+    id: 2,
+    title: 'System Design Interview',
+    subtitle: 'Medium \u2022 Architecture \u2022 45min',
+    score: 77,
+  },
+  {
+    id: 3,
+    title: 'Behavioral Assessment',
+    subtitle: 'Easy \u2022 Soft Skills \u2022 30min',
+    score: 88,
+  },
+];
 
-// Cheating flag icon map
-const CHEAT_ICON_MAP = {
-  clean: ShieldCheck,
-  flagged: ShieldAlert,
-  critical: ShieldX,
-};
+const DECISION_ACTIONS = [
+  { id: 'accept', label: 'Accept', icon: Check, className: 'candidate-details__decision--accept' },
+  {
+    id: 'shortlist',
+    label: 'Shortlist',
+    icon: List,
+    className: 'candidate-details__decision--shortlist',
+  },
+  { id: 'reject', label: 'Reject', icon: X, className: 'candidate-details__decision--reject' },
+];
 
-const CHEAT_COLOR_MAP = {
-  clean: 'var(--green-500)',
-  flagged: 'var(--yellow-500)',
-  critical: 'var(--red-500)',
-};
-
-const CHEAT_LABEL_MAP = {
-  clean: 'No Cheating Detected',
-  flagged: 'Suspicious Activity Flagged',
-  critical: 'Critical: Cheating Detected',
-};
-
-const CHEAT_DESC_MAP = {
-  clean:
-    "The anti-cheat system did not detect any suspicious behavior during this candidate's mock sessions. All responses appear authentic and consistent.",
-  flagged:
-    "Minor anomalies were detected in the candidate's session — such as tab-switching or unusual timing patterns. A manual review is recommended.",
-  critical:
-    'Multiple high-confidence cheating indicators were found, including copy-paste patterns, external resource access, and response timing inconsistencies.',
-};
-
-// ---------- Mock data generators ----------
-
-function buildSkillDistribution(score) {
-  const base = score;
-  return [
-    { label: 'Problem Solving', value: Math.min(100, base + 4) },
-    { label: 'Communication', value: Math.min(100, base - 2) },
-    { label: 'Technical Knowledge', value: Math.min(100, base + 1) },
-    { label: 'Code Quality', value: Math.min(100, base - 5) },
-  ];
-}
-
-function buildAIInsights(candidate) {
-  return [
-    {
-      title: 'Strongest Area',
-      description: `${candidate.name} excels in problem solving with structured, logical approaches. Their solutions demonstrate strong analytical thinking and attention to edge cases.`,
-    },
-    {
-      title: 'Improvement Needed',
-      description: `Communication clarity could be improved — responses tend to be technically accurate but lack concise explanations that non-technical stakeholders could follow.`,
-    },
-    {
-      title: 'Overall Assessment',
-      description: `With a score of ${candidate.score}%, ${candidate.name} is a ${candidate.score >= 85 ? 'strong' : candidate.score >= 70 ? 'solid' : 'developing'} candidate for the ${candidate.job} position. ${candidate.score >= 85 ? 'Highly recommended for next stage.' : 'May benefit from further evaluation.'}`,
-    },
-  ];
-}
-
-function buildQuestionReview(candidate) {
-  const questions = [
-    {
-      title: 'System Design: URL Shortener',
-      subtitle: 'Design a scalable URL shortening service similar to bit.ly',
-      score: Math.min(100, candidate.score + 3),
-      feedback:
-        'Strong understanding of distributed systems. Proposed a well-structured design with proper caching layers and database partitioning. Could improve on discussing trade-offs more explicitly.',
-    },
-    {
-      title: 'Algorithm: Binary Tree Traversal',
-      subtitle: 'Implement in-order, pre-order, and post-order traversals',
-      score: Math.min(100, candidate.score - 2),
-      feedback:
-        'Correctly implemented all three traversal methods with clean, readable code. Time complexity analysis was accurate. Recursive solutions were well-structured.',
-    },
-    {
-      title: 'Behavioral: Team Conflict Resolution',
-      subtitle: 'Describe a time you resolved a disagreement within your team',
-      score: Math.min(100, candidate.score + 6),
-      feedback:
-        'Provided a compelling real-world example with clear context, actions taken, and measurable outcomes. Demonstrated strong leadership and empathy.',
-    },
-    {
-      title: 'Coding: REST API Implementation',
-      subtitle: 'Build a RESTful API for a task management app',
-      score: Math.min(100, candidate.score - 8),
-      feedback:
-        'Functional implementation with proper HTTP methods and status codes. Error handling was minimal — could benefit from input validation and more comprehensive error responses.',
-    },
-  ];
-  return questions;
-}
-
-function buildCompletedMocks(candidate) {
-  return [
-    {
-      title: 'Technical Mock Interview',
-      subtitle: 'Completed Feb 5, 2025 • 45 min',
-      score: candidate.score,
-    },
-    {
-      title: 'System Design Session',
-      subtitle: 'Completed Feb 3, 2025 • 60 min',
-      score: Math.min(100, candidate.score - 4),
-    },
-    {
-      title: 'Behavioral Assessment',
-      subtitle: 'Completed Jan 30, 2025 • 30 min',
-      score: Math.min(100, candidate.score + 5),
-    },
-  ];
-}
-
-// Skill distribution chart colors
-const SKILL_COLORS = ['#22c55e', '#3b82f6', '#eab308', '#ef4444'];
-
-// ---------- Component ----------
-
-export function CandidateDetails({ candidate }) {
+export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
   const [activeTab, setActiveTab] = useState('feedback');
 
-  // Memoize derived data
-  const skillDistribution = useMemo(
-    () => buildSkillDistribution(candidate.score),
-    [candidate.score]
+  const handleTabChange = useCallback((tab) => {
+    setActiveTab(tab);
+  }, []);
+
+  const tabs = useMemo(
+    () => [
+      {
+        label: 'Full Feedback',
+        isActive: activeTab === 'feedback',
+        onClick: () => handleTabChange('feedback'),
+      },
+      {
+        label: 'Mock Replay',
+        isActive: activeTab === 'replay',
+        onClick: () => handleTabChange('replay'),
+      },
+      {
+        label: 'CV Analysis',
+        isActive: activeTab === 'analysis',
+        onClick: () => handleTabChange('analysis'),
+      },
+    ],
+    [activeTab, handleTabChange]
   );
-  const aiInsights = useMemo(() => buildAIInsights(candidate), [candidate]);
-  const questionReview = useMemo(() => buildQuestionReview(candidate), [candidate]);
-  const completedMocks = useMemo(() => buildCompletedMocks(candidate), [candidate]);
 
-  const CheatIcon = CHEAT_ICON_MAP[candidate.antiCheat] || ShieldCheck;
-
-  const tabs = [
-    {
-      label: 'Full Feedback',
-      isActive: activeTab === 'feedback',
-      onClick: () => setActiveTab('feedback'),
+  const handleDecision = useCallback(
+    (action) => {
+      console.log(`Decision: ${action} for`, candidate.name);
     },
-    {
-      label: 'Mock Replay',
-      isActive: activeTab === 'replay',
-      onClick: () => setActiveTab('replay'),
-    },
-    {
-      label: 'CV Analysis',
-      isActive: activeTab === 'cv',
-      onClick: () => setActiveTab('cv'),
-    },
-  ];
+    [candidate.name]
+  );
 
   return (
     <div className="candidate-details">
-      {/* Two-column layout */}
-      <div className="candidate-details__layout">
-        {/* -------- Left Column -------- */}
-        <div className="candidate-details__left">
-          {/* Entity Card - Sticky */}
-          <EntityCard
-            userName={candidate.name}
-            userEmail={`${candidate.name.toLowerCase().replace(/\s+/g, '.')}@email.com`}
-            showBadge
-            badgeType="candidateState"
-            badgeVariant={candidate.status}
-            colLeft={{ icon: Briefcase, title: candidate.job, subtitle: 'Position' }}
-            colMid={{ icon: Star, title: `${candidate.score}%`, subtitle: 'Overall Score' }}
-            colRight={{ icon: CalendarDays, title: candidate.date, subtitle: 'Applied' }}
-            className="candidate-details__entity-card"
-          />
+      {/* Left Section */}
+      <div className="candidate-details__main">
+        <EntityCard
+          userName={candidate.name}
+          userEmail={`${candidate.name.toLowerCase().replace(/\s+/g, '.')}@email.com`}
+          showBadge
+          badgeType="candidateState"
+          badgeVariant={candidate.status}
+          score={candidate.score}
+          colLeft={{ icon: Briefcase, title: candidate.job, subtitle: 'Applied Job' }}
+          colMid={{ icon: MapPin, title: 'Cairo, Egypt', subtitle: 'Location' }}
+          colRight={{ icon: Calendar, title: candidate.date, subtitle: 'Applied Date' }}
+          animated={false}
+        />
 
-          {/* Tabs and Content Container */}
-          <div className="candidate-details__tabs-container">
-            {/* Tabs */}
-            <Tabs items={tabs} className="candidate-details__tabs" />
+        <div className="candidate-details__tabs-container">
+          <Tabs items={tabs} />
 
-            {/* Tab Content - Scrollable */}
-            <div className="candidate-details__tab-content-wrapper">
-              {activeTab === 'feedback' && (
-                <div className="candidate-details__tab-content">
-                  {/* Skill Distribution - Primary Section */}
-                  <div className="candidate-details__primary-section">
-                    <RadarChart
-                      title="Skill Distribution"
-                      stats={skillDistribution}
-                      colors={SKILL_COLORS}
-                      animated
-                    />
-                  </div>
-
-                  {/* AI Insights */}
-                  <div className="candidate-details__section">
-                    <SectionTitle>AI Insights</SectionTitle>
-                    <div className="candidate-details__insights-grid">
-                      {aiInsights.map((insight, i) => (
-                        <InfoCard
-                          key={i}
-                          title={insight.title}
-                          description={insight.description}
-                          animated
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Cheating Detection */}
-                  <div className="candidate-details__section">
-                    <SectionTitle>Cheating Detection</SectionTitle>
-                    <div className="candidate-details__cheat-card">
-                      <div className="candidate-details__cheat-header">
-                        <CheatIcon
-                          size={20}
-                          style={{ color: CHEAT_COLOR_MAP[candidate.antiCheat] }}
-                        />
-                        <span className="candidate-details__cheat-label">
-                          {CHEAT_LABEL_MAP[candidate.antiCheat]}
-                        </span>
-                        <Badge type="cheatingFlag" variant={candidate.antiCheat} iconLeft />
-                      </div>
-                      <p className="candidate-details__cheat-desc">
-                        {CHEAT_DESC_MAP[candidate.antiCheat]}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Question-by-Question Review */}
-                  <div className="candidate-details__section">
-                    <SectionTitle>Question-by-Question Review</SectionTitle>
-                    <div className="candidate-details__questions">
-                      {questionReview.map((q, i) => (
-                        <ActionCard
-                          key={i}
-                          title={q.title}
-                          subtitle={q.subtitle}
-                          descriptionTitle="Score"
-                          showDescriptionIcon
-                          descriptionNumber={`${q.score}%`}
-                          content={q.feedback}
-                          animated
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'replay' && (
-                <div className="candidate-details__tab-content candidate-details__tab-placeholder">
-                  <div className="candidate-details__placeholder-icon">▶</div>
-                  <p>Mock replay will be available here.</p>
-                  <span>
-                    Watch the recorded mock interview sessions with timestamped annotations.
-                  </span>
-                </div>
-              )}
-
-              {activeTab === 'cv' && (
-                <div className="candidate-details__tab-content candidate-details__tab-placeholder">
-                  <div className="candidate-details__placeholder-icon">📄</div>
-                  <p>CV analysis will be available here.</p>
-                  <span>AI-powered resume parsing and skill extraction insights.</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* -------- Right Column -------- */}
-        <div className="candidate-details__right">
-          {/* Quick Score Summary - Top */}
-          <div className="candidate-details__score-summary">
-            <div className="candidate-details__score-ring">
-              <svg viewBox="0 0 120 120" className="candidate-details__score-svg">
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  fill="none"
-                  stroke="var(--border-subtle)"
-                  strokeWidth="8"
-                />
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  fill="none"
-                  stroke={
-                    candidate.score >= 85
-                      ? '#22c55e'
-                      : candidate.score >= 70
-                        ? '#3b82f6'
-                        : candidate.score >= 50
-                          ? '#eab308'
-                          : '#ef4444'
-                  }
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeDasharray={`${(candidate.score / 100) * 2 * Math.PI * 52} ${2 * Math.PI * 52}`}
-                  transform="rotate(-90 60 60)"
-                  className="candidate-details__score-progress"
-                />
-              </svg>
-              <div className="candidate-details__score-value">
-                <span className="candidate-details__score-number">{candidate.score}</span>
-                <span className="candidate-details__score-percent">%</span>
-              </div>
-            </div>
-            <span className="candidate-details__score-label">Overall Score</span>
-          </div>
-
-          {/* Completed Mocks - Middle */}
-          <div className="candidate-details__mocks-container">
-            <h3 className="candidate-details__sidebar-title">Completed Mocks</h3>
-            <div className="candidate-details__mocks-list">
-              {completedMocks.map((mock, i) => (
-                <ActionCard
-                  key={i}
-                  title={mock.title}
-                  subtitle={mock.subtitle}
-                  descriptionTitle="Score"
-                  showDescriptionIcon
-                  descriptionNumber={`${mock.score}%`}
-                  animated
-                  className="candidate-details__mock-card"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Decision Buttons - Bottom */}
-          <div className="candidate-details__decisions">
-            <h3 className="candidate-details__sidebar-title">Select decision</h3>
-            <div className="candidate-details__decision-buttons">
-              <Button
-                variant="primary"
-                className="candidate-details__btn candidate-details__btn--accept"
-                onClick={() => console.log('Accept', candidate.name)}
-              >
-                Accept
-              </Button>
-              <Button
-                variant="primary"
-                className="candidate-details__btn candidate-details__btn--shortlist"
-                onClick={() => console.log('Shortlist', candidate.name)}
-              >
-                Shortlist
-              </Button>
-              <Button
-                variant="primary"
-                className="candidate-details__btn candidate-details__btn--reject"
-                onClick={() => console.log('Reject', candidate.name)}
-              >
-                Reject
-              </Button>
-            </div>
+          <div className="candidate-details__tab-content">
+            {activeTab === 'feedback' && <FullFeedback candidate={candidate} />}
+            {activeTab === 'replay' && <MockReplay candidate={candidate} />}
+            {activeTab === 'analysis' && <CVAnalysis candidate={candidate} />}
           </div>
         </div>
       </div>
+
+      {/* Right Section */}
+      <aside className="candidate-details__sidebar">
+        <div className="candidate-details__sidebar-section candidate-details__sidebar-section--decision">
+          <SectionTitle>Select Decision</SectionTitle>
+          <div className="candidate-details__decisions">
+            {DECISION_ACTIONS.map((action) => (
+              <button
+                key={action.id}
+                className={['candidate-details__decision-btn', action.className]
+                  .filter(Boolean)
+                  .join(' ')}
+                onClick={() => handleDecision(action.id)}
+              >
+                <action.icon size={18} className="candidate-details__decision-icon" />
+                <span>{action.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="candidate-details__sidebar-section">
+          <SectionTitle>Completed Mocks</SectionTitle>
+          <div className="candidate-details__mocks">
+            {COMPLETED_MOCKS.map((mock) => (
+              <ActionCard
+                key={mock.id}
+                title={mock.title}
+                subtitle={mock.subtitle}
+                descriptionTitle="Score"
+                showDescriptionIcon
+                descriptionNumber={mock.score}
+                animated
+              />
+            ))}
+          </div>
+        </div>
+      </aside>
     </div>
   );
-}
+});
 
 CandidateDetails.propTypes = {
   candidate: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     job: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,
     date: PropTypes.string.isRequired,
-    antiCheat: PropTypes.oneOf(['clean', 'flagged', 'critical']).isRequired,
+    antiCheat: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
   }).isRequired,
-  onBack: PropTypes.func,
 };

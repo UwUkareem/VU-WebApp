@@ -1,0 +1,291 @@
+/* CV Analysis Tab */
+
+.cv-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2xl);
+  padding-top: var(--gap-xs);
+  padding-bottom: var(--gap-xl);
+}
+
+/* Shared section rhythm — mirrors FullFeedback / MockReplay */
+
+.cv-analysis__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+.cv-analysis__section + .cv-analysis__section {
+  margin-top: var(--gap-sm);
+}
+
+/* ──────────────────────────────────────────
+   1 — Job Match Overview
+   ────────────────────────────────────────── */
+
+.cv-analysis__match-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding: var(--padding-xl) var(--padding-2xl);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.cv-analysis__match-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  letter-spacing: 0.01em;
+}
+
+.cv-analysis__match-score-block {
+  display: flex;
+  align-items: baseline;
+  gap: var(--gap-md);
+}
+
+.cv-analysis__match-number {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl, 1.5rem);
+  font-weight: var(--font-bold, 700);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.cv-analysis__match-verdict {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+}
+
+.cv-analysis__match-verdict--strong {
+  color: var(--green-600);
+}
+
+.cv-analysis__match-verdict--partial {
+  color: var(--yellow-500);
+}
+
+.cv-analysis__match-verdict--weak {
+  color: var(--red-500);
+}
+
+/* Progress bar — subtle, thin, doesn't compete with the number */
+
+.cv-analysis__match-bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: var(--gap-xs);
+}
+
+.cv-analysis__match-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--brand-default);
+  opacity: 0.5;
+  transition: width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ──────────────────────────────────────────
+   2 — Extracted Skills
+   ────────────────────────────────────────── */
+
+.cv-analysis__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+}
+
+.cv-analysis__skill-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--padding-sm) var(--padding-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  border-radius: var(--radius-md);
+  border: var(--border-sm) solid;
+  cursor: default;
+  user-select: none;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* Strong — green tint */
+.cv-analysis__skill-tag--strong {
+  color: var(--green-500);
+  background: rgba(52, 199, 89, 0.06);
+  border-color: rgba(52, 199, 89, 0.18);
+}
+
+.cv-analysis__skill-tag--strong:hover {
+  background: rgba(52, 199, 89, 0.12);
+}
+
+/* Bonus — yellow tint */
+.cv-analysis__skill-tag--bonus {
+  color: var(--yellow-400);
+  background: rgba(255, 204, 0, 0.05);
+  border-color: rgba(255, 204, 0, 0.15);
+}
+
+.cv-analysis__skill-tag--bonus:hover {
+  background: rgba(255, 204, 0, 0.1);
+}
+
+/* Missing — red tint, dashed border */
+.cv-analysis__skill-tag--missing {
+  color: var(--red-400);
+  background: rgba(255, 59, 48, 0.04);
+  border-color: rgba(255, 59, 48, 0.15);
+  border-style: dashed;
+}
+
+.cv-analysis__skill-tag--missing:hover {
+  background: rgba(255, 59, 48, 0.1);
+}
+
+/* Native tooltip via title attr — no extra CSS needed */
+
+/* ──────────────────────────────────────────
+   3 — Experience Summary
+   ────────────────────────────────────────── */
+
+.cv-analysis__experience {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+/* ──────────────────────────────────────────
+   4 — Gap Analysis
+   ────────────────────────────────────────── */
+
+.cv-analysis__gap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-xl);
+}
+
+.cv-analysis__gap-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.cv-analysis__gap-heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  margin: 0;
+}
+
+.cv-analysis__gap-heading--strengths {
+  color: var(--green-500);
+}
+
+.cv-analysis__gap-heading--gaps {
+  color: var(--red-400);
+}
+
+.cv-analysis__gap-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+/* InfoCard inside gap list — compact */
+
+.cv-analysis__gap-list .info-card__title {
+  font-size: var(--text-sm);
+}
+
+.cv-analysis__gap-list .info-card__description {
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+/* ──────────────────────────────────────────
+   5 — Full CV (collapsible)
+   ────────────────────────────────────────── */
+
+.cv-analysis__cv-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.cv-analysis__cv-toggle .section-title {
+  flex: 1;
+}
+
+.cv-analysis__cv-toggle:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.cv-analysis__cv-chevron {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform var(--transition-base);
+}
+
+.cv-analysis__cv-chevron--open {
+  transform: rotate(180deg);
+}
+
+.cv-analysis__cv-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 300ms ease;
+}
+
+.cv-analysis__cv-content--open {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+.cv-analysis__cv-inner {
+  padding: var(--padding-xl) var(--padding-2xl);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.cv-analysis__cv-text {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  line-height: 1.8;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 768px) {
+  .cv-analysis__gap-grid {
+    grid-template-columns: 1fr;
+  }
+}
