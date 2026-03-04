@@ -1,6 +1,16 @@
 import { memo, useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Building2, CalendarDays, UserX, Activity, CheckCircle2, XCircle } from 'lucide-react';
+import {
+  Building2,
+  CalendarDays,
+  UserX,
+  Activity,
+  CheckCircle2,
+  XCircle,
+  Phone,
+  MapPin,
+  Mail,
+} from 'lucide-react';
 import { EntityCard } from '../../../components/ui/Cards';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
@@ -128,23 +138,32 @@ export const MemberDetails = memo(function MemberDetails({
           <div className="member-details__card">
             <SectionTitle variant="inline">Request Info</SectionTitle>
 
-            <div className="member-details__info-group">
-              <span className="member-details__info-label">Email</span>
-              <span className="member-details__info-value">{request.email}</span>
+            <div className="member-details__info-row">
+              <Mail size={14} className="member-details__info-icon" />
+              <div className="member-details__info-group">
+                <span className="member-details__info-label">Email</span>
+                <span className="member-details__info-value">{request.email}</span>
+              </div>
             </div>
 
             <div className="member-details__divider" />
 
-            <div className="member-details__info-group">
-              <span className="member-details__info-label">Department</span>
-              <span className="member-details__info-value">{request.department}</span>
+            <div className="member-details__info-row">
+              <Building2 size={14} className="member-details__info-icon" />
+              <div className="member-details__info-group">
+                <span className="member-details__info-label">Department</span>
+                <span className="member-details__info-value">{request.department}</span>
+              </div>
             </div>
 
             <div className="member-details__divider" />
 
-            <div className="member-details__info-group">
-              <span className="member-details__info-label">Submitted</span>
-              <span className="member-details__info-value">{request.submittedDate}</span>
+            <div className="member-details__info-row">
+              <CalendarDays size={14} className="member-details__info-icon" />
+              <div className="member-details__info-group">
+                <span className="member-details__info-label">Submitted</span>
+                <span className="member-details__info-value">{request.submittedDate}</span>
+              </div>
             </div>
           </div>
         </aside>
@@ -255,23 +274,58 @@ export const MemberDetails = memo(function MemberDetails({
         <div className="member-details__card">
           <SectionTitle variant="inline">Member Info</SectionTitle>
 
-          <div className="member-details__info-group">
-            <span className="member-details__info-label">Email</span>
-            <span className="member-details__info-value">{member.email}</span>
+          <div className="member-details__info-row">
+            <Mail size={14} className="member-details__info-icon" />
+            <div className="member-details__info-group">
+              <span className="member-details__info-label">Email</span>
+              <span className="member-details__info-value">{member.email}</span>
+            </div>
+          </div>
+
+          {member.phone && (
+            <>
+              <div className="member-details__divider" />
+              <div className="member-details__info-row">
+                <Phone size={14} className="member-details__info-icon" />
+                <div className="member-details__info-group">
+                  <span className="member-details__info-label">Phone</span>
+                  <span className="member-details__info-value">{member.phone}</span>
+                </div>
+              </div>
+            </>
+          )}
+
+          {member.location && (
+            <>
+              <div className="member-details__divider" />
+              <div className="member-details__info-row">
+                <MapPin size={14} className="member-details__info-icon" />
+                <div className="member-details__info-group">
+                  <span className="member-details__info-label">Location</span>
+                  <span className="member-details__info-value">{member.location}</span>
+                </div>
+              </div>
+            </>
+          )}
+
+          <div className="member-details__divider" />
+
+          <div className="member-details__info-row">
+            <Building2 size={14} className="member-details__info-icon" />
+            <div className="member-details__info-group">
+              <span className="member-details__info-label">Department</span>
+              <span className="member-details__info-value">{member.department}</span>
+            </div>
           </div>
 
           <div className="member-details__divider" />
 
-          <div className="member-details__info-group">
-            <span className="member-details__info-label">Department</span>
-            <span className="member-details__info-value">{member.department}</span>
-          </div>
-
-          <div className="member-details__divider" />
-
-          <div className="member-details__info-group">
-            <span className="member-details__info-label">Joined</span>
-            <span className="member-details__info-value">{member.joinedDate}</span>
+          <div className="member-details__info-row">
+            <CalendarDays size={14} className="member-details__info-icon" />
+            <div className="member-details__info-group">
+              <span className="member-details__info-label">Joined</span>
+              <span className="member-details__info-value">{member.joinedDate}</span>
+            </div>
           </div>
 
           <div className="member-details__divider" />

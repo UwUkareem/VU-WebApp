@@ -78,6 +78,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Sep 12, 2024',
     lastActivity: '2 hours ago',
     avatar: null,
+    phone: '+966 55 900 0001',
+    location: 'Riyadh, Saudi Arabia',
   },
   {
     id: 2,
@@ -88,6 +90,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Oct 5, 2024',
     lastActivity: '15 min ago',
     avatar: null,
+    phone: '+1 415 555 0102',
+    location: 'San Francisco, USA',
   },
   {
     id: 3,
@@ -98,6 +102,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Nov 18, 2024',
     lastActivity: '1 day ago',
     avatar: null,
+    phone: '+971 50 123 4567',
+    location: 'Dubai, UAE',
   },
   {
     id: 4,
@@ -108,6 +114,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Dec 3, 2024',
     lastActivity: '3 days ago',
     avatar: null,
+    phone: '+381 11 123 4567',
+    location: 'Belgrade, Serbia',
   },
   {
     id: 5,
@@ -118,6 +126,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Jan 10, 2025',
     lastActivity: '5 hours ago',
     avatar: null,
+    phone: '+82 10 1234 5678',
+    location: 'Seoul, South Korea',
   },
   {
     id: 6,
@@ -128,6 +138,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Feb 1, 2025',
     lastActivity: '6 hours ago',
     avatar: null,
+    phone: '+91 98765 43210',
+    location: 'Mumbai, India',
   },
   {
     id: 7,
@@ -138,6 +150,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Sep 15, 2024',
     lastActivity: '30 min ago',
     avatar: null,
+    phone: '+44 7911 123456',
+    location: 'London, UK',
   },
   {
     id: 8,
@@ -148,6 +162,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Mar 12, 2025',
     lastActivity: '2 days ago',
     avatar: null,
+    phone: '+966 55 234 5678',
+    location: 'Jeddah, Saudi Arabia',
   },
   {
     id: 9,
@@ -158,6 +174,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Apr 1, 2025',
     lastActivity: '1 week ago',
     avatar: null,
+    phone: '+1 312 555 0193',
+    location: 'Chicago, USA',
   },
   {
     id: 10,
@@ -168,6 +186,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'May 20, 2025',
     lastActivity: '4 hours ago',
     avatar: null,
+    phone: '+20 100 123 4567',
+    location: 'Cairo, Egypt',
   },
   {
     id: 11,
@@ -178,6 +198,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Jun 3, 2025',
     lastActivity: '2 days ago',
     avatar: null,
+    phone: '+353 87 123 4567',
+    location: 'Dublin, Ireland',
   },
   {
     id: 12,
@@ -188,6 +210,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Jun 15, 2025',
     lastActivity: '3 hours ago',
     avatar: null,
+    phone: '+47 920 12 345',
+    location: 'Oslo, Norway',
   },
   {
     id: 13,
@@ -198,6 +222,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Jul 1, 2025',
     lastActivity: '1 hour ago',
     avatar: null,
+    phone: '+962 7 9012 3456',
+    location: 'Amman, Jordan',
   },
   {
     id: 14,
@@ -208,6 +234,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Jul 22, 2025',
     lastActivity: '5 days ago',
     avatar: null,
+    phone: '+86 138 0013 8000',
+    location: 'Shanghai, China',
   },
   {
     id: 15,
@@ -218,6 +246,8 @@ export const TEAM_MEMBERS = [
     joinedDate: 'Aug 8, 2025',
     lastActivity: '45 min ago',
     avatar: null,
+    phone: '+351 912 345 678',
+    location: 'Lisbon, Portugal',
   },
 ];
 

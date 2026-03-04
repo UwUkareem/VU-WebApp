@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { PageLayout } from './components/layout/PageLayout';
 import { Pipeline } from './pages/Candidates';
 import { JobList } from './pages/Jobs/JobManagement/JobList';
@@ -7,6 +7,7 @@ import { CreateConfig, EditConfig } from './pages/Jobs/JobConfigPage';
 import { MockList, MockDetails } from './pages/Mocks/MockManagement';
 import { CreateMockConfig, EditMockConfig } from './pages/Mocks/MockConfigPage';
 import { Overview, MemberDetails, AddMembers, CompanySettings } from './pages/CompanyTeam';
+import { ProfilePage } from './pages/Profile';
 import { getJoinRequestById } from './pages/CompanyTeam/_shared/companyData';
 import { Users, Briefcase, FileText, Building2, UserCircle2, Settings, Hash } from 'lucide-react';
 import { ComponentShowcase } from './pages/_showcase';
@@ -176,6 +177,23 @@ export default function App() {
   const handleBreadcrumbUpdate = (items) => {
     setBreadcrumbItems(items);
   };
+
+  // Navbar avatar dropdown navigation
+  const handleNavigate = useCallback((page) => {
+    if (page === 'profile') {
+      setActivePage('profile');
+      setBreadcrumbItems([{ label: 'My Profile' }]);
+    } else if (page === 'settings') {
+      setActivePage('settings');
+      setBreadcrumbItems([{ label: 'Settings' }]);
+    } else if (page === 'company-settings') {
+      setActivePage('company');
+      setActiveCompanyPage('company-settings');
+      setSelectedMemberId(null);
+      setSelectedRequestId(null);
+      setBreadcrumbItems([{ label: 'Company Settings' }]);
+    }
+  }, []);
 
   // Render page content based on active page
   const renderPage = () => {
@@ -474,7 +492,7 @@ export default function App() {
           />
         );
       case 'profile':
-        return <PlaceholderPage title="Profile" />;
+        return <ProfilePage />;
       case 'settings':
         return <ComponentShowcase />;
       default:
@@ -483,7 +501,12 @@ export default function App() {
   };
 
   return (
-    <PageLayout navItems={navItems} user={CURRENT_USER} breadcrumbItems={breadcrumbItems}>
+    <PageLayout
+      navItems={navItems}
+      user={CURRENT_USER}
+      breadcrumbItems={breadcrumbItems}
+      onNavigate={handleNavigate}
+    >
       {renderPage()}
     </PageLayout>
   );

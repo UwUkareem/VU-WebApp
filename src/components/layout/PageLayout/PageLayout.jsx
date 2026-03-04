@@ -14,12 +14,18 @@ export const PageLayout = memo(function PageLayout({
   logo,
   children,
   className = '',
+  onNavigate,
 }) {
   return (
     <div className={['page-layout', className].filter(Boolean).join(' ')}>
       <Sidebar logo={logo} navItems={navItems} user={user} className="page-layout__sidebar" />
       <div className="page-layout__main">
-        <Navbar breadcrumbItems={breadcrumbItems} className="page-layout__navbar" />
+        <Navbar
+          breadcrumbItems={breadcrumbItems}
+          className="page-layout__navbar"
+          user={user}
+          onNavigate={onNavigate}
+        />
         <main className="page-layout__content">{children}</main>
       </div>
     </div>
@@ -64,4 +70,6 @@ PageLayout.propTypes = {
   children: PropTypes.node,
   /** Additional CSS classes */
   className: PropTypes.string,
+  /** Callback for navbar avatar dropdown navigation */
+  onNavigate: PropTypes.func,
 };
