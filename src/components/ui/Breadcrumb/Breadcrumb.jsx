@@ -4,8 +4,9 @@ import { ChevronRight } from 'lucide-react';
 import './Breadcrumb.css';
 
 const SEPARATOR_SIZE = 14;
+const EMPTY_ITEMS = [];
 
-export const Breadcrumb = memo(function Breadcrumb({ items = [], className = '' }) {
+export const Breadcrumb = memo(function Breadcrumb({ items = EMPTY_ITEMS, className = '' }) {
   if (!items.length) return null;
 
   return (

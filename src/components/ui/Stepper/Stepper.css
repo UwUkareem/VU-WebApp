@@ -1,0 +1,143 @@
+/* Stepper Component */
+
+.stepper {
+  width: 100%;
+  padding: var(--padding-md) 0;
+}
+
+.stepper__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Step item */
+.stepper__step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.stepper__step:first-child {
+  flex: 0 0 auto;
+}
+
+/* Connector line between steps */
+.stepper__connector {
+  flex: 1;
+  height: 1px;
+  margin: 0 var(--gap-sm);
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-slow);
+}
+
+.stepper__connector--filled {
+  background-color: var(--brand-default);
+}
+
+/* Button wrapper for each step */
+.stepper__button {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  padding: var(--padding-xs) var(--padding-sm);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  cursor: default;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.stepper__step--completed .stepper__button,
+.stepper__step--reachable .stepper__button {
+  cursor: pointer;
+}
+
+.stepper__step--completed .stepper__button:hover,
+.stepper__step--reachable .stepper__button:hover {
+  background-color: var(--white-a5);
+}
+
+.stepper__button:disabled {
+  cursor: default;
+}
+
+/* Circular indicator */
+.stepper__indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-6);
+  height: var(--size-6);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  flex-shrink: 0;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* Upcoming */
+.stepper__step--upcoming .stepper__indicator {
+  background-color: var(--bg-surface);
+  color: var(--text-subtle);
+  border: var(--border-sm) solid var(--border-subtle);
+}
+
+/* Active */
+.stepper__step--active .stepper__indicator {
+  background-color: var(--brand-default);
+  color: var(--white);
+  border: var(--border-sm) solid var(--brand-600);
+}
+
+/* Completed */
+.stepper__step--completed .stepper__indicator {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+  border: var(--border-sm) solid transparent;
+}
+
+/* Reachable (future but valid to click) */
+.stepper__step--reachable .stepper__indicator {
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  border: var(--border-sm) solid var(--border-default);
+}
+
+/* Number inside indicator */
+.stepper__number {
+  line-height: 1;
+}
+
+/* Label text */
+.stepper__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  transition: color var(--transition-base);
+}
+
+.stepper__step--upcoming .stepper__label {
+  color: var(--text-subtle);
+}
+
+.stepper__step--active .stepper__label {
+  color: var(--text-primary);
+}
+
+.stepper__step--completed .stepper__label {
+  color: var(--text-secondary);
+}
+
+.stepper__step--reachable .stepper__label {
+  color: var(--text-tertiary);
+}

@@ -7,11 +7,16 @@ export const SectionTitle = memo(function SectionTitle({
   description,
   action,
   className = '',
+  variant,
   as = 'h3',
 }) {
   const Tag = as;
   return (
-    <div className={['section-title', className].filter(Boolean).join(' ')}>
+    <div
+      className={['section-title', variant && `section-title--${variant}`, className]
+        .filter(Boolean)
+        .join(' ')}
+    >
       <div className="section-title__content">
         <Tag className="section-title__heading">{children}</Tag>
         {description && <p className="section-title__description">{description}</p>}
@@ -26,5 +31,6 @@ SectionTitle.propTypes = {
   description: PropTypes.string,
   action: PropTypes.node,
   className: PropTypes.string,
+  variant: PropTypes.oneOf(['inline']),
   as: PropTypes.elementType,
 };

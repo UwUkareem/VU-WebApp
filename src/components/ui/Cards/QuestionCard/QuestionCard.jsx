@@ -5,6 +5,21 @@ import { TextInput, Textarea, DropdownInput } from '../../Input';
 import { Button } from '../../Button';
 import './QuestionCard.css';
 
+const DIFFICULTY_OPTIONS = [
+  { label: 'Easy', value: 'easy' },
+  { label: 'Medium', value: 'medium' },
+  { label: 'Hard', value: 'hard' },
+];
+
+const ESTIMATED_TIME_OPTIONS = [
+  { label: '5 minutes', value: '5 minutes' },
+  { label: '10 minutes', value: '10 minutes' },
+  { label: '15 minutes', value: '15 minutes' },
+  { label: '20 minutes', value: '20 minutes' },
+  { label: '30 minutes', value: '30 minutes' },
+  { label: '45 minutes', value: '45 minutes' },
+];
+
 export const QuestionCard = memo(function QuestionCard({
   questionNumber = 1,
   variant = 'edit',
@@ -41,21 +56,6 @@ export const QuestionCard = memo(function QuestionCard({
       setIsVisible(true);
     });
   }, []);
-
-  const difficultyOptions = [
-    { label: 'Easy', value: 'easy' },
-    { label: 'Medium', value: 'medium' },
-    { label: 'Hard', value: 'hard' },
-  ];
-
-  const estimatedTimeOptions = [
-    { label: '5 minutes', value: '5 minutes' },
-    { label: '10 minutes', value: '10 minutes' },
-    { label: '15 minutes', value: '15 minutes' },
-    { label: '20 minutes', value: '20 minutes' },
-    { label: '30 minutes', value: '30 minutes' },
-    { label: '45 minutes', value: '45 minutes' },
-  ];
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -97,7 +97,7 @@ export const QuestionCard = memo(function QuestionCard({
 
   // Display summary when collapsed
   const getDifficultyLabel = () => {
-    const option = difficultyOptions.find((opt) => opt.value === difficulty);
+    const option = DIFFICULTY_OPTIONS.find((opt) => opt.value === difficulty);
     return option ? option.label : '';
   };
 
@@ -228,7 +228,7 @@ export const QuestionCard = memo(function QuestionCard({
                 <DropdownInput
                   label="Difficulty"
                   placeholder="Select difficulty"
-                  options={difficultyOptions}
+                  options={DIFFICULTY_OPTIONS}
                   value={difficulty}
                   onChange={handleDifficultyChange}
                   variant="oncard"
@@ -237,7 +237,7 @@ export const QuestionCard = memo(function QuestionCard({
                 <DropdownInput
                   label="Estimated Time"
                   placeholder="Select time"
-                  options={estimatedTimeOptions}
+                  options={ESTIMATED_TIME_OPTIONS}
                   value={estimatedTime}
                   onChange={handleEstimatedTimeChange}
                   variant="oncard"

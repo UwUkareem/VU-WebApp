@@ -4,10 +4,13 @@ import { Sidebar } from '../Sidebar';
 import { Navbar } from '../Navbar';
 import './PageLayout.css';
 
+const EMPTY_NAV = [];
+const EMPTY_BREADCRUMBS = [];
+
 export const PageLayout = memo(function PageLayout({
-  navItems = [],
+  navItems = EMPTY_NAV,
   user,
-  breadcrumbItems = [],
+  breadcrumbItems = EMPTY_BREADCRUMBS,
   logo,
   children,
   className = '',

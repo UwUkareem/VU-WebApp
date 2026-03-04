@@ -1,0 +1,107 @@
+/* QuickSort Component */
+
+.quick-sort {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-lg);
+  padding: var(--padding-sm) var(--padding-lg);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  width: 100%;
+}
+
+.quick-sort::-webkit-scrollbar {
+  background: transparent;
+  height: 0;
+}
+
+.quick-sort__group {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+  flex-shrink: 0;
+  padding-right: var(--padding-md);
+  border-right: var(--border-sm) solid var(--border-structure);
+}
+
+.quick-sort__group:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.quick-sort__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.quick-sort__options {
+  display: flex;
+  gap: var(--gap-xs);
+}
+
+.quick-sort__btn {
+  padding: var(--padding-xs) var(--padding-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-regular);
+  color: var(--text-tertiary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.quick-sort__btn:hover {
+  color: var(--text-secondary);
+  background: var(--white-a5);
+}
+
+.quick-sort__btn--active {
+  color: var(--text-primary);
+  background: var(--white-a10);
+}
+
+/* ──────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .quick-sort {
+    gap: var(--gap-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-sort {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-md);
+  }
+
+  .quick-sort__options {
+    flex-wrap: wrap;
+  }
+
+  .quick-sort__group {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: var(--border-sm) solid var(--border-structure);
+    padding-bottom: var(--padding-sm);
+    width: 100%;
+  }
+
+  .quick-sort__group:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}

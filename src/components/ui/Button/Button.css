@@ -121,6 +121,20 @@
   color: var(--red-300);
 }
 
+/* Dashed: Outlined placeholder action */
+.btn--dashed {
+  background-color: transparent;
+  color: var(--text-tertiary);
+  border: var(--border-sm) dashed var(--border-default);
+  width: 100%;
+}
+
+.btn--dashed:hover:not(:disabled) {
+  border-color: var(--brand-default);
+  color: var(--brand-default);
+  background-color: var(--white-a5);
+}
+
 /* ======================================== 
    ACCESSIBILITY & UTILITIES
    ======================================== */

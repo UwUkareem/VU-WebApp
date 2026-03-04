@@ -63,9 +63,9 @@
 .sidebar-button__subitems {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: var(--gap-xs);
+  gap: 0;
   margin-top: var(--gap-xs);
+  padding-left: var(--padding-2xl);
 }
 
 .sidebar-subitem {
@@ -73,50 +73,41 @@
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  width: calc(100% - var(--size-2));
-  padding: var(--padding-sm) var(--padding-lg);
+  width: 100%;
+  padding: var(--padding-xs) var(--padding-md);
   background: transparent;
   border: none;
-  border-radius: var(--radius-sm);
+  border-left: var(--border-sm) solid var(--border-subtle);
+  border-radius: 0;
   font-family: var(--font-sans);
-  font-weight: var(--font-medium);
-  font-size: var(--text-base);
+  font-weight: var(--font-regular);
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--text-tertiary);
   text-align: left;
   cursor: pointer;
   transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast);
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .sidebar-subitem:hover {
-  background: var(--white-a5);
   color: var(--text-secondary);
 }
 
 .sidebar-subitem--active {
-  background: var(--bg-card);
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  border-left-color: var(--brand-default);
+  font-weight: var(--font-medium);
 }
 
 .sidebar-subitem--active:hover {
-  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
-/* Brand indicator */
+/* Indicator — hidden, using border-left instead */
 .sidebar-subitem__indicator {
-  position: absolute;
-  left: calc(-1 * var(--size-6));
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: var(--size-4) var(--size-px);
-  border-radius: var(--radius-full);
-  border-color: var(--brand-default);
-  pointer-events: none;
+  display: none;
 }
 
 .sidebar-subitem__label {

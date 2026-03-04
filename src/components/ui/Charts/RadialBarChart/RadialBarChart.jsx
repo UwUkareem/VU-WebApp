@@ -1,14 +1,20 @@
-import { memo, useMemo, useState, useCallback } from 'react';
+import { memo, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { RadialBarChart as RechartsRadialBar, RadialBar, ResponsiveContainer } from 'recharts';
+import {
+  RadialBarChart as RechartsRadialBar,
+  RadialBar,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts';
 import { CHART_PALETTE, CHART_GRID } from '../chartTokens';
 import './RadialBarChart.css';
 
 const DEFAULT_COLORS = CHART_PALETTE;
+const EMPTY_DATA = [];
 
 export const RadialBarChart = memo(function RadialBarChart({
   title,
-  data = [],
+  data = EMPTY_DATA,
   colors = DEFAULT_COLORS,
   className = '',
   animated = true,
@@ -35,14 +41,6 @@ export const RadialBarChart = memo(function RadialBarChart({
     if (activeIndex === null) return null;
     return chartData[activeIndex];
   }, [activeIndex, chartData]);
-
-  const handleMouseEnter = useCallback((_, index) => {
-    setActiveIndex(index);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setActiveIndex(null);
-  }, []);
 
   return (
     <div className={['radial-bar-chart', className].filter(Boolean).join(' ')}>
@@ -100,9 +98,16 @@ export const RadialBarChart = memo(function RadialBarChart({
                 isAnimationActive={animated}
                 animationDuration={800}
                 animationEasing="ease-out"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              />
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    cursor="pointer"
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onMouseLeave={() => setActiveIndex(null)}
+                  />
+                ))}
+              </RadialBar>
             </RechartsRadialBar>
           </ResponsiveContainer>
 

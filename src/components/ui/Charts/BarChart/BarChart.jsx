@@ -89,10 +89,13 @@ function CustomYTick({ x, y, payload }) {
   );
 }
 
+const EMPTY_DATA = [];
+const DEFAULT_DATA_KEYS = [{ key: 'value', label: 'Value' }];
+
 export const BarChart = memo(function BarChart({
   title,
-  data = [],
-  dataKeys = [{ key: 'value', label: 'Value' }],
+  data = EMPTY_DATA,
+  dataKeys = DEFAULT_DATA_KEYS,
   xKey = 'label',
   className = '',
   animated = true,

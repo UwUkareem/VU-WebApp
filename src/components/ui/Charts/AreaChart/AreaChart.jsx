@@ -62,10 +62,13 @@ function CustomYTick({ x, y, payload }) {
   );
 }
 
+const EMPTY_DATA = [];
+const DEFAULT_DATA_KEYS = [{ key: 'value', label: 'Value', color: STROKE_COLOR }];
+
 export const AreaChart = memo(function AreaChart({
   title,
-  data = [],
-  dataKeys = [{ key: 'value', label: 'Value', color: STROKE_COLOR }],
+  data = EMPTY_DATA,
+  dataKeys = DEFAULT_DATA_KEYS,
   xKey = 'label',
   className = '',
   animated = true,

@@ -14,10 +14,15 @@ export const Shortcuts = memo(function Shortcuts({
   searchPlaceholder = 'Search',
   secondaryAction,
   primaryAction,
+  children,
   className = '',
 }) {
   return (
-    <div className={['shortcuts', className].filter(Boolean).join(' ')}>
+    <div
+      className={['shortcuts', children && 'shortcuts--with-inline', className]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {/* Left Section */}
       <div className="shortcuts__left">
         <Button variant="secondary" iconRight={<Filter size={16} />} onClick={onFilterClick}>
@@ -27,6 +32,12 @@ export const Shortcuts = memo(function Shortcuts({
           <>
             <span className="shortcuts__separator" />
             <span className="shortcuts__count">{filterCount}</span>
+          </>
+        )}
+        {children && (
+          <>
+            <span className="shortcuts__separator" />
+            {children}
           </>
         )}
       </div>
@@ -80,5 +91,6 @@ Shortcuts.propTypes = {
     iconPosition: PropTypes.oneOf(['left', 'right']),
     onClick: PropTypes.func,
   }),
+  children: PropTypes.node,
   className: PropTypes.string,
 };

@@ -5,7 +5,9 @@ import { Breadcrumb } from '../../ui/Breadcrumb';
 import { NotificationDropdown } from './NotificationDropdown';
 import './Navbar.css';
 
-const Navbar = memo(function Navbar({ breadcrumbItems = [], className = '' }) {
+const EMPTY_BREADCRUMBS = [];
+
+const Navbar = memo(function Navbar({ breadcrumbItems = EMPTY_BREADCRUMBS, className = '' }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
   const dropdownRef = useRef(null);

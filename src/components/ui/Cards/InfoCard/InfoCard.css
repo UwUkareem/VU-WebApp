@@ -15,7 +15,6 @@
     opacity var(--transition-slow),
     transform var(--transition-slow),
     border-color var(--transition-base),
-    background-color var(--transition-base),
     box-shadow var(--transition-base);
   position: relative;
   overflow: hidden;

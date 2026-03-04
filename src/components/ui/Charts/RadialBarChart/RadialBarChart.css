@@ -141,6 +141,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.radial-bar-chart .recharts-radial-bar-background-sector {
+  pointer-events: none;
+}
+
 .radial-bar-chart .recharts-wrapper:focus,
 .radial-bar-chart .recharts-surface:focus,
 .radial-bar-chart .recharts-wrapper:focus-visible,

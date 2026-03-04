@@ -45,3 +45,18 @@
 .shortcuts .btn--secondary {
   background-color: var(--bg-surface);
 }
+
+/* Inline QuickSort variation */
+.shortcuts--with-inline .shortcuts__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.shortcuts--with-inline .quick-sort {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}

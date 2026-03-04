@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { X, Plus, Check } from 'lucide-react';
+import { Button } from '../Button';
 import './Tags.css';
+
+const EMPTY_TAGS = [];
 
 export const Tags = memo(function Tags({
   title,
-  tags = [],
+  tags = EMPTY_TAGS,
   onAdd,
   onRemove,
   variant = 'editable',
@@ -115,15 +118,14 @@ export const Tags = memo(function Tags({
               </button>
             </div>
           ) : (
-            <button
-              type="button"
-              className="tags__add-btn"
+            <Button
+              variant="primary"
+              size="sm"
+              iconRight={<Plus size={14} />}
               onClick={handleAddClick}
-              aria-label="Add tag"
             >
-              <span>Add</span>
-              <Plus size={16} />
-            </button>
+              Add
+            </Button>
           ))}
       </div>
     </div>

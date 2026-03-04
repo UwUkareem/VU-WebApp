@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback, useState, memo } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Check, ListFilter, X, Eye } from 'lucide-react';
 import './RowMenu.css';
@@ -34,7 +35,8 @@ export const RowMenu = memo(function RowMenu({
     if (!open) return;
 
     const handleClickOutside = (e) => {
-      if (e.target.closest('.table-row__menu')) return;
+      if (e.target.closest('.table-row__menu') || e.target.closest('.entity-card__menu-trigger'))
+        return;
       if (menuRef.current && !menuRef.current.contains(e.target)) onClose?.();
     };
 
@@ -62,26 +64,29 @@ export const RowMenu = memo(function RowMenu({
     [onSelect, onClose]
   );
 
-  return (
+  return createPortal(
     <div
       ref={menuRef}
       className={['row-menu', open && 'row-menu--open'].filter(Boolean).join(' ')}
       role="menu"
       style={{ top: pos.top, left: pos.left }}
     >
-      {options.map(({ id, label, icon: Icon, variant = 'default' }) => (
-        <button
-          key={id}
-          type="button"
-          role="menuitem"
-          className={`row-menu__item row-menu__item--${variant}`}
-          onClick={() => handleOptionClick(id)}
-        >
-          {Icon && <Icon size={16} className="row-menu__icon" />}
-          <span className="row-menu__label">{label}</span>
-        </button>
+      {options.map(({ id, label, icon: Icon, variant = 'default', separator }) => (
+        <div key={id}>
+          {separator && <div className="row-menu__separator" />}
+          <button
+            type="button"
+            role="menuitem"
+            className={`row-menu__item row-menu__item--${variant}`}
+            onClick={() => handleOptionClick(id)}
+          >
+            {Icon && <Icon size={16} className="row-menu__icon" />}
+            <span className="row-menu__label">{label}</span>
+          </button>
+        </div>
       ))}
-    </div>
+    </div>,
+    document.body
   );
 });
 
@@ -92,6 +97,7 @@ RowMenu.propTypes = {
       label: PropTypes.string.isRequired,
       icon: PropTypes.elementType,
       variant: PropTypes.oneOf(['default', 'success', 'info', 'danger']),
+      separator: PropTypes.bool,
     })
   ),
   onSelect: PropTypes.func,

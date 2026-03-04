@@ -1,0 +1,53 @@
+/* Mock List Page */
+
+.mock-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mock-list__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+  padding: 0 var(--padding-lg) var(--padding-lg);
+  min-height: 0;
+}
+
+/* ──────────────────────────────────────────
+   Cards Grid
+   ────────────────────────────────────────── */
+
+.mock-list__cards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.mock-list__cards::-webkit-scrollbar {
+  background: transparent;
+  width: 0;
+}
+
+/* ──────────────────────────────────────────
+   Pagination
+   ────────────────────────────────────────── */
+
+.mock-list__pagination {
+  flex-shrink: 0;
+  padding: 0;
+}
+
+/* ──────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .mock-list__content {
+    padding: 0 var(--padding-md) var(--padding-md);
+  }
+}

@@ -50,9 +50,12 @@ function AxisTick({ x, y, payload, textAnchor }) {
     </text>
   );
 }
+
+const EMPTY_STATS = [];
+
 export const RadarChart = memo(function RadarChart({
   title,
-  stats = [],
+  stats = EMPTY_STATS,
   className = '',
   animated = true,
 }) {

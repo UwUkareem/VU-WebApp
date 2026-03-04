@@ -1,0 +1,1 @@
+export { MockDetails } from './MockDetails';

@@ -1,0 +1,172 @@
+/* Company Settings Page — styled like create/edit pages */
+
+.company-settings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: var(--padding-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.company-settings::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.company-settings__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  max-width: 52rem;
+  width: 100%;
+}
+
+/* ── Section card ── */
+
+.company-settings__section {
+  background-color: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--padding-xl) var(--padding-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+/* ── Form rows ── */
+
+.company-settings__row {
+  display: grid;
+  gap: var(--gap-lg);
+}
+
+.company-settings__row--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ── Field ── */
+
+.company-settings__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.company-settings__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Input wrapper (with icon) ── */
+
+.company-settings__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.company-settings__input-icon {
+  position: absolute;
+  left: var(--padding-md);
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+.company-settings__input {
+  width: 100%;
+  padding: var(--padding-sm) var(--padding-md) var(--padding-sm) var(--padding-2xl);
+  background: var(--bg-card);
+  border: var(--border-sm) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.company-settings__input:focus {
+  border-color: var(--border-focus);
+}
+
+/* ── Select ── */
+
+.company-settings__select {
+  width: 100%;
+  padding: var(--padding-sm) var(--padding-md);
+  background: var(--bg-card);
+  border: var(--border-sm) solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color var(--transition-fast);
+}
+
+.company-settings__select:focus {
+  border-color: var(--border-focus);
+}
+
+/* ── Logo upload ── */
+
+.company-settings__logo-upload {
+  display: flex;
+}
+
+.company-settings__logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-sm);
+  width: 200px;
+  height: 80px;
+  background: var(--bg-card);
+  border: var(--border-sm) dashed var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-subtle);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.company-settings__logo-placeholder:hover {
+  border-color: var(--border-strong);
+  color: var(--text-tertiary);
+}
+
+/* ── Separator (like create/edit pages) ── */
+
+.company-settings__separator {
+  width: 100%;
+  height: var(--border-sm);
+  background: var(--border-subtle);
+}
+
+/* ── Footer actions (like create/edit pages) ── */
+
+.company-settings__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: var(--padding-md) 0;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 768px) {
+  .company-settings__row--2 {
+    grid-template-columns: 1fr;
+  }
+}

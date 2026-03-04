@@ -32,6 +32,11 @@
   background-color: var(--bg-card);
   border: var(--border-sm) solid var(--border-subtle);
   border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.cv-analysis__match-card:hover {
+  border-color: var(--border-default);
 }
 
 .cv-analysis__match-title {
@@ -162,7 +167,7 @@
 .cv-analysis__experience {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-sm);
+  gap: var(--gap-md);
 }
 
 /* ──────────────────────────────────────────
@@ -199,7 +204,7 @@
 .cv-analysis__gap-list {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-sm);
+  gap: var(--gap-md);
 }
 
 /* InfoCard inside gap list — compact */
@@ -269,6 +274,11 @@
   background-color: var(--bg-card);
   border: var(--border-sm) solid var(--border-subtle);
   border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.cv-analysis__cv-inner:hover {
+  border-color: var(--border-default);
 }
 
 .cv-analysis__cv-text {

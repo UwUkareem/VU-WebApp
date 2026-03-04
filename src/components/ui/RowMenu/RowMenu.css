@@ -46,8 +46,10 @@
     color var(--transition-fast);
 }
 
-.row-menu__item + .row-menu__item {
-  border-top: var(--border-sm) solid var(--border-subtle);
+.row-menu__separator {
+  height: var(--border-sm);
+  background: var(--border-structure);
+  margin: var(--padding-xs) 0;
 }
 
 .row-menu__item:hover {

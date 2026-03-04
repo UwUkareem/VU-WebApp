@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import './TableHeader.css';
 
+const EMPTY_COLUMNS = [];
+
 export const TableHeader = memo(function TableHeader({
-  columns = [],
+  columns = EMPTY_COLUMNS,
   onSort,
   className = '',
   gridTemplateColumns,

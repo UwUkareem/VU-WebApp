@@ -1,0 +1,357 @@
+import { memo, useState, useMemo, useCallback } from 'react';
+import {
+  Pencil,
+  PauseCircle,
+  XCircle,
+  Copy,
+  Users,
+  Clock,
+  Briefcase,
+  MapPin,
+  Target,
+  TrendingUp,
+  CalendarDays,
+  PlayCircle,
+  Rocket,
+} from 'lucide-react';
+import { EntityCard, QuickInfoCard } from '../../../../components/ui/Cards';
+import { Button } from '../../../../components/ui/Button';
+import { Badge } from '../../../../components/ui/Badge';
+import { SectionTitle } from '../../../../components/ui/SectionTitle/SectionTitle';
+import { TableHeader, TableRow, TableCell } from '../../../../components/ui/Tables';
+import { RadarChart, AreaChart, RadialBarChart } from '../../../../components/ui/Charts';
+import { getJobById, updateJob, duplicateJob } from '../_shared/jobData';
+import './JobDetails.css';
+
+/* -------------------------------------------------
+   Table config — mirrors Pipeline table structure
+   ------------------------------------------------- */
+const TABLE_COLUMNS = [
+  { key: 'name', label: 'Name', sortable: true, fr: 1.2 },
+  { key: 'score', label: 'Score', sortable: true, fr: 1.5 },
+  { key: 'date', label: 'Date', sortable: true, fr: 1 },
+  { key: 'antiCheat', label: 'Anti-cheat', sortable: false, fr: 1 },
+  { key: 'status', label: 'Status', sortable: false, fr: 1 },
+];
+const GRID_TEMPLATE = TABLE_COLUMNS.map((c) => `${c.fr}fr`).join(' ');
+
+const getScoreColor = (score) => {
+  const t = Math.max(0, Math.min(1, (score - 40) / 60));
+  const h = Math.round(14 * t);
+  const s = Math.round(100 * t);
+  const l = Math.round(30 + 30 * t);
+  return `hsl(${h}, ${s}%, ${l}%)`;
+};
+
+const ICON_SM = 14;
+
+/* -------------------------------------------------
+   JobDetails
+   ------------------------------------------------- */
+export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplicate, onViewJob }) {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const _ = refreshKey; // consume to trigger re-render on mutation
+  const job = getJobById(jobId);
+
+  const totalDuration = useMemo(
+    () => (job ? job.mocks.reduce((s, m) => s + m.durationMin, 0) : 0),
+    [job]
+  );
+
+  const mockRadarData = useMemo(
+    () => (job ? job.mocks.map((m) => ({ label: m.name, value: m.avgScore })) : []),
+    [job]
+  );
+
+  const candidateBreakdown = useMemo(
+    () =>
+      job
+        ? [
+            { label: 'Shortlisted', value: job.shortlisted },
+            { label: 'Accepted', value: job.accepted },
+            { label: 'Pending', value: job.pending },
+            { label: 'Rejected', value: job.rejected },
+          ]
+        : [],
+    [job]
+  );
+
+  const handleEdit = useCallback(() => onEdit?.(jobId), [onEdit, jobId]);
+
+  const handleClose = useCallback(() => {
+    updateJob(jobId, { status: 'closed' });
+    setRefreshKey((k) => k + 1);
+  }, [jobId]);
+
+  const handlePause = useCallback(() => {
+    updateJob(jobId, { status: 'scheduled' });
+    setRefreshKey((k) => k + 1);
+  }, [jobId]);
+
+  const handlePublish = useCallback(() => {
+    updateJob(jobId, { status: 'active' });
+    setRefreshKey((k) => k + 1);
+  }, [jobId]);
+
+  const handleDuplicate = useCallback(() => {
+    const dup = duplicateJob(jobId);
+    if (dup && onDuplicate) onDuplicate(dup.id);
+    else if (dup && onViewJob) onViewJob(dup.id);
+  }, [jobId, onDuplicate, onViewJob]);
+
+  if (!job) {
+    return (
+      <div className="job-details job-details--empty">
+        <span>Job not found.</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="job-details">
+      {/* ── MAIN ── */}
+      <div className="job-details__main">
+        <div className="job-details__scroll">
+          {/* 1. Job header */}
+          <EntityCard
+            showAvatar={false}
+            userName={job.title}
+            userEmail={`${job.department} · ${job.seniority}`}
+            showBadge
+            badgeType="jobStatus"
+            badgeVariant={job.status}
+            colLeft={{ icon: Briefcase, title: job.jobType, subtitle: 'Job Type' }}
+            colMid={{ icon: MapPin, title: job.location, subtitle: job.locationType }}
+            colRight={{
+              icon: Clock,
+              title: `${totalDuration} min`,
+              subtitle: `${job.mocks.length} Interviews`,
+            }}
+            tags={job.skills}
+            tagsLimit={5}
+            showDescription
+            descriptionTitle="Description"
+            descriptionContent={job.description}
+            animated={false}
+          />
+
+          {/* 2. Quick stats */}
+          <div className="job-details__stats">
+            <QuickInfoCard
+              icon={<Users />}
+              number={job.totalApplied}
+              title="Total Applied"
+              animated={false}
+            />
+            <QuickInfoCard
+              icon={<Target />}
+              number={`${job.avgScore}%`}
+              title="Avg Score"
+              animated={false}
+            />
+            <QuickInfoCard
+              icon={<TrendingUp />}
+              number={`${job.passRate}%`}
+              title="Pass Rate"
+              animated={false}
+            />
+            <QuickInfoCard
+              icon={<CalendarDays />}
+              number={job.activeDays}
+              title="Active Days"
+              animated={false}
+            />
+          </div>
+
+          {/* 3. Charts — area left (2fr), radar right (1fr) */}
+          <section className="job-details__section">
+            <SectionTitle variant="inline">Performance Overview</SectionTitle>
+            <div className="job-details__charts-row">
+              <AreaChart
+                title="Application Trend"
+                data={job.applicationTrend}
+                dataKeys={[{ key: 'value', label: 'Applications', color: '#ff5d31' }]}
+                xKey="label"
+                className="job-details__chart"
+              />
+              {mockRadarData.length >= 3 ? (
+                <RadarChart
+                  title="Avg Score per Mock"
+                  stats={mockRadarData}
+                  className="job-details__chart"
+                />
+              ) : (
+                <div className="job-details__chart job-details__single-mock">
+                  <h3 className="job-details__single-mock-title">Avg Score per Mock</h3>
+                  {mockRadarData.map((m) => (
+                    <div key={m.label} className="job-details__single-mock-item">
+                      <span className="job-details__single-mock-label">{m.label}</span>
+                      <span className="job-details__single-mock-value">{m.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* 4. Top candidates — identical to Pipeline table */}
+          <section className="job-details__section">
+            <SectionTitle variant="inline">Top Candidates</SectionTitle>
+            <div className="job-details__cand-table">
+              <TableHeader columns={TABLE_COLUMNS} gridTemplateColumns={GRID_TEMPLATE} />
+              {job.topCandidates.map((c) => (
+                <TableRow key={c.id} gridTemplateColumns={GRID_TEMPLATE}>
+                  <TableCell
+                    color="tertiary"
+                    icon={
+                      <span className="job-details__avatar">
+                        {c.name
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')}
+                      </span>
+                    }
+                  >
+                    {c.name}
+                  </TableCell>
+                  <TableCell className="job-details__score-cell">
+                    <span className="job-details__score">
+                      <span className="job-details__score-bar">
+                        <span
+                          className="job-details__score-fill"
+                          style={{
+                            width: `${c.score}%`,
+                            backgroundColor: getScoreColor(c.score),
+                          }}
+                        />
+                      </span>
+                      <span className="job-details__score-value">{c.score}</span>
+                    </span>
+                  </TableCell>
+                  <TableCell color="tertiary">{c.date}</TableCell>
+                  <TableCell>
+                    <Badge type="cheatingFlag" variant={c.antiCheat} iconLeft outline />
+                  </TableCell>
+                  <TableCell>
+                    <Badge type="candidateState" variant={c.status} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* ── SIDEBAR ── */}
+      <aside className="job-details__sidebar">
+        {/* Quick Actions */}
+        <div className="job-details__card">
+          <div className="job-details__action-list">
+            <Button
+              variant="primary"
+              size="sm"
+              iconLeft={<Pencil size={ICON_SM} />}
+              onClick={handleEdit}
+            >
+              Edit Job
+            </Button>
+            {(job.status === 'draft' || job.status === 'scheduled') && (
+              <Button
+                variant="secondary"
+                size="sm"
+                iconLeft={<Rocket size={ICON_SM} />}
+                onClick={handlePublish}
+              >
+                Publish Job
+              </Button>
+            )}
+            {job.status === 'active' && (
+              <Button
+                variant="secondary"
+                size="sm"
+                iconLeft={<PauseCircle size={ICON_SM} />}
+                onClick={handlePause}
+              >
+                Pause Job
+              </Button>
+            )}
+            {job.status !== 'closed' && (
+              <Button
+                variant="danger"
+                size="sm"
+                iconLeft={<XCircle size={ICON_SM} />}
+                onClick={handleClose}
+              >
+                Close Job
+              </Button>
+            )}
+            {job.status === 'closed' && (
+              <Button
+                variant="secondary"
+                size="sm"
+                iconLeft={<PlayCircle size={ICON_SM} />}
+                onClick={handlePublish}
+              >
+                Re-open Job
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              iconLeft={<Copy size={ICON_SM} />}
+              onClick={handleDuplicate}
+            >
+              Duplicate
+            </Button>
+          </div>
+        </div>
+
+        {/* Candidate Breakdown */}
+        <RadialBarChart title="Candidate Breakdown" data={candidateBreakdown} />
+
+        {/* Job Info — combined evaluation + schedule */}
+        <div className="job-details__card">
+          <SectionTitle variant="inline">Job Info</SectionTitle>
+
+          <div className="job-details__info-group">
+            <span className="job-details__info-label">Evaluation Structure</span>
+            <div className="job-details__formula">
+              {job.mocks.map((m) => (
+                <div key={m.id} className="job-details__formula-row">
+                  <span className="job-details__formula-name">{m.name}</span>
+                  <span className="job-details__formula-pct">{m.weight}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="job-details__divider" />
+
+          <div className="job-details__info-group">
+            <span className="job-details__info-label">Application Window</span>
+            <div className="job-details__formula">
+              <div className="job-details__formula-row">
+                <span className="job-details__formula-name">Published</span>
+                <span className="job-details__formula-pct">{job.publishDate}</span>
+              </div>
+              <div className="job-details__formula-row">
+                <span className="job-details__formula-name">Deadline</span>
+                <span className="job-details__formula-pct">{job.endDate || 'No end date'}</span>
+              </div>
+              <div className="job-details__formula-row">
+                <span className="job-details__formula-name">Max Candidates</span>
+                <span className="job-details__formula-pct">
+                  {job.maxCandidates ? `${job.maxCandidates} applications` : 'Unlimited'}
+                </span>
+              </div>
+              <div className="job-details__formula-row">
+                <span className="job-details__formula-name">Total Duration</span>
+                <span className="job-details__formula-pct">{`${totalDuration} min`}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  );
+});

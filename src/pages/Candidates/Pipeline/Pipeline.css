@@ -230,6 +230,8 @@
   border-bottom: var(--border-sm) solid var(--border-subtle);
   background-color: var(--gray-1100);
   border-radius: 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 56px;
 }
 
 .overview__table-row:last-child {

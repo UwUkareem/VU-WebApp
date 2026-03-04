@@ -2,12 +2,14 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import './SidebarButton.css';
 
+const EMPTY_SUBITEMS = [];
+
 export const SidebarButton = memo(function SidebarButton({
   icon: Icon,
   label,
   isActive = false,
   onClick,
-  subItems = [],
+  subItems = EMPTY_SUBITEMS,
   className = '',
 }) {
   const hasSubItems = subItems.length > 0;
@@ -31,7 +33,7 @@ export const SidebarButton = memo(function SidebarButton({
         <span className="sidebar-button__label">{label}</span>
       </button>
 
-      {hasSubItems && hasActiveSubItem && (
+      {hasSubItems && isButtonActive && (
         <div className="sidebar-button__subitems">
           {subItems.map((subItem, index) => (
             <SidebarSubItem
@@ -56,7 +58,6 @@ const SidebarSubItem = memo(function SidebarSubItem({ label, isActive, onClick }
         .join(' ')}
       onClick={onClick}
     >
-      {isActive && <span className="sidebar-subitem__indicator" aria-hidden="true" />}
       <span className="sidebar-subitem__label">{label}</span>
     </button>
   );

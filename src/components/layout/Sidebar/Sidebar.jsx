@@ -4,7 +4,9 @@ import { SidebarButton } from '../../ui/SidebarButton';
 import { User } from '../../ui/User';
 import './Sidebar.css';
 
-export const Sidebar = memo(function Sidebar({ logo, navItems = [], user, className = '' }) {
+const EMPTY_NAV = [];
+
+export const Sidebar = memo(function Sidebar({ logo, navItems = EMPTY_NAV, user, className = '' }) {
   return (
     <aside className={['sidebar', className].filter(Boolean).join(' ')}>
       <div className="sidebar__content">

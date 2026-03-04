@@ -2,7 +2,9 @@ import { useRef, useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import './Tabs.css';
 
-export const Tabs = memo(function Tabs({ items = [], className = '' }) {
+const EMPTY_ITEMS = [];
+
+export const Tabs = memo(function Tabs({ items = EMPTY_ITEMS, className = '' }) {
   const tabsRef = useRef(null);
   const [indicatorStyle, setIndicatorStyle] = useState({});
 
