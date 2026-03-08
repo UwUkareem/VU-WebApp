@@ -40,17 +40,16 @@ VU is an AI-powered virtual interview platform that reimagines how people are ev
 | ---------------- | ------- | ------------------------------------------- |
 | **React**        | 19      | UI Framework                                |
 | **Vite**         | 7       | Build tool & HMR dev server                 |
-| **Tailwind CSS** | 4       | Utility-first styling with `@theme` config  |
+| **React Router** | 6       | Client-side routing (declarative URL-based) |
 | **Recharts**     | 2       | Charting library (Area, Bar, Radar, Radial) |
 | **Lucide React** | 0.562+  | Icon components                             |
 | **PropTypes**    | 15.8+   | Runtime prop validation                     |
 | **ESLint**       | 9       | Linting (flat config)                       |
-| **Prettier**     | 3.7     | Code formatting + Tailwind class sorting    |
 
 ### Design System
 
 - **490+ CSS variables** in `src/styles/tokens.css` (exported from Figma)
-- **Hybrid styling**: BEM-like component CSS + Tailwind utilities for layout
+- **BEM-like component CSS** — each component owns its `.css` file, classes follow `.block`, `.block__element`, `.block--modifier`
 - **No routing library yet** — manual state-based navigation (React Router planned)
 
 ---
@@ -94,70 +93,84 @@ The app will be available at `http://localhost:5173`
 ```
 src/
 ├── main.jsx                        # App entry point
-├── App.jsx                         # Root component + state-based router
+├── App.jsx                         # Root component + React Router v6 route definitions
 ├── styles/
-│   ├── index.css                   # Tailwind CSS 4 import + @theme config
+│   ├── index.css                   # Global CSS reset + design token import
 │   └── tokens.css                  # 490+ Figma-exported design tokens
+├── data/                           # Centralised in-memory mock data + CRUD helpers
+│   ├── index.js                    # Barrel export for all data helpers
+│   ├── candidates.js               # Candidates, pipeline stages, filters
+│   ├── jobs.js                     # Jobs list with status, dates, stats, CRUD
+│   ├── mocks.js                    # Mock interviews, CRUD, getJobsUsingMock
+│   ├── company.js                  # Company info, team members, join requests
+│   ├── application.js              # Candidate-facing application session data
+│   └── config.js                   # Shared config constants
 ├── components/
 │   ├── layout/                     # App shell components
 │   │   ├── Navbar/                 # Top bar + NotificationDropdown + avatar menu
 │   │   ├── PageLayout/             # Main layout (sidebar + navbar + content area)
-│   │   ├── Shortcuts/              # Action bar (filters, search, bulk actions)
+│   │   ├── Shortcuts/              # Action bar (filters, search, create button)
 │   │   ├── Sidebar/                # Collapsible navigation sidebar
 │   │   └── index.js                # Barrel export
 │   └── ui/                         # Reusable UI primitives
 │       ├── Badge/                  # Badge + RoleBadge + variants config
-│       ├── Breadcrumb/             # Breadcrumb navigation
+│       ├── Breadcrumb/             # Breadcrumb navigation trail
 │       ├── Button/                 # Button (primary, secondary, ghost, danger, dashed)
 │       ├── Cards/                  # ActionCard, EntityCard, InfoCard, QuestionCard, QuickInfoCard
 │       ├── Charts/                 # AreaChart, BarChart, RadarChart, RadialBarChart + chartTokens
 │       ├── EmptyState/             # Empty placeholder for sections with no data
-│       ├── Input/                  # Input, InputField, Label, Hint + variants (Email, Password, Search, Select, etc.)
+│       ├── FilterOverlay/          # Slide-in filter panel (portal-rendered, avoids overflow clipping)
+│       ├── Input/                  # Input, InputField, DropdownInput, Label, Hint + variants
 │       ├── Pagination/             # Table/list pagination
 │       ├── QuickSort/              # Sort dropdown
 │       ├── RowMenu/                # Context menu for table rows
-│       ├── SectionTitle/           # Section header with optional action
+│       ├── SectionTitle/           # Section header with optional action slot
 │       ├── SidebarButton/          # Navigation button used in Sidebar
 │       ├── Stepper/                # Multi-step progress indicator
 │       ├── Tables/                 # TableHeader, TableRow, TableCell
-│       ├── Tabs/                   # Tab navigation
-│       ├── Tags/                   # Tag input with add/remove
-│       ├── Toggle/                 # Toggle switch
+│       ├── Tabs/                   # Tab navigation (supports scrollRef for auto scroll-reset)
+│       ├── Tags/                   # Tag chips with add/remove
+│       ├── Toggle/                 # Toggle switch (boolean onChange)
 │       ├── User/                   # User avatar + name display
 │       └── index.js                # Barrel export for all UI components
 └── pages/                          # Route-level page components
     ├── _showcase/                  # Component demo/showcase page
     ├── Candidates/
-    │   ├── Pipeline/               # Main candidate pipeline (table + filters)
-    │   ├── CandidateDetails/       # Detail view (CVAnalysis, FullFeedback, MockReplay)
-    │   └── _shared/candidateData.js
+    │   ├── Pipeline/               # Candidate pipeline table + FilterOverlay + pagination
+    │   └── CandidateDetails/       # Tabbed detail view (CVAnalysis, FullFeedback, MockReplay)
     ├── Jobs/
-    │   ├── JobManagement/          # JobList + JobDetails
-    │   ├── JobConfigPage/          # CreateConfig + EditConfig + form
-    │   └── _shared/                # jobData.js, jobConfigData.js
+    │   └── JobManagement/
+    │       ├── JobList/            # Jobs table + search + Create Job button
+    │       └── JobDetails/         # Job detail sidebar layout + charts + candidate table
     ├── Mocks/
-    │   ├── MockManagement/         # MockList + MockDetails
-    │   ├── MockConfigPage/         # CreateMockConfig + EditMockConfig + form
-    │   └── _shared/                # mockData.js, mockConfigData.js
+    │   └── MockManagement/
+    │       ├── MockList/           # Mocks table + search + filters
+    │       └── MockDetails/        # Mock detail sidebar layout + charts + jobs list
     ├── CompanyTeam/
     │   ├── Overview/               # Company stats + team member table
     │   ├── AddMembers/             # Join requests management
     │   ├── MemberDetails/          # Team member / request detail view
-    │   ├── CompanySettings/        # Company info + department tags management
-    │   └── _shared/companyData.js  # Shared company/team mock data + CRUD helpers
-    └── Profile/                    # User profile (edit mode, password, activity timeline)
+    │   └── CompanySettings/        # Company info + department tags management
+    ├── Profile/                    # User profile (edit mode, password, activity timeline)
+    └── Application/                # Candidate-facing application flow (standalone, no sidebar)
+        ├── JobLanding/             # Job description + Apply button
+        ├── CandidateForm/          # Application form (personal info, CV upload)
+        ├── JobOverview/            # Mock interview checklist + start prompts
+        ├── MockSession/            # Live mock interview (intro → interview phases)
+        └── SubmissionComplete/     # Confirmation screen
 ```
 
 ### Key Files
 
-| File                             | Purpose                                             |
-| -------------------------------- | --------------------------------------------------- |
-| `src/App.jsx`                    | Root component — state-based page router (~510 LOC) |
-| `src/styles/tokens.css`          | Design tokens — single source of truth (490+ vars)  |
-| `src/styles/index.css`           | Tailwind CSS 4 config via `@theme` directive        |
-| `src/components/ui/index.js`     | Central barrel export for all UI primitives         |
-| `src/components/layout/index.js` | Barrel export for layout components                 |
-| `src/pages/_showcase/`           | Component demo page (useful for visual testing)     |
+| File                             | Purpose                                                     |
+| -------------------------------- | ----------------------------------------------------------- |
+| `src/App.jsx`                    | Root component — React Router v6 routes + page wrappers     |
+| `src/styles/tokens.css`          | Design tokens — single source of truth (490+ vars)          |
+| `src/styles/index.css`           | Global CSS reset + token import                             |
+| `src/data/index.js`              | Central barrel export for all data helpers                  |
+| `src/components/ui/index.js`     | Central barrel export for all UI primitives                 |
+| `src/components/layout/index.js` | Barrel export for layout components                         |
+| `src/pages/_showcase/`           | Component demo page (useful for visual testing)             |
 
 ---
 
@@ -186,16 +199,16 @@ src/components/ui/{ComponentName}/
 
 ### Data Layer
 
-Currently using in-memory mock data with mutable CRUD helpers in `_shared/` folders:
+All data lives in `src/data/` — a single centralised layer of in-memory mock data with mutable CRUD helpers:
 
-| File                                                   | Data                                      |
-| ------------------------------------------------------ | ----------------------------------------- |
-| `pages/Candidates/_shared/candidateData.js`            | Candidates, pipeline stages, filters      |
-| `pages/Jobs/JobManagement/_shared/jobData.js`          | Jobs list with status, dates, stats       |
-| `pages/Jobs/JobConfigPage/_shared/jobConfigData.js`    | Job creation/edit field configs           |
-| `pages/Mocks/MockManagement/_shared/mockData.js`       | Mock interviews list                      |
-| `pages/Mocks/MockConfigPage/_shared/mockConfigData.js` | Mock creation field configs               |
-| `pages/CompanyTeam/_shared/companyData.js`             | Company info, team members, join requests |
+| File                  | Data                                                             |
+| --------------------- | ---------------------------------------------------------------- |
+| `data/candidates.js`  | Candidates, pipeline stages, stage transitions, filters          |
+| `data/jobs.js`        | Jobs with status, stats, mocks list; create/update/duplicate     |
+| `data/mocks.js`       | Mock interviews; create/update/duplicate; `getJobsUsingMock`     |
+| `data/company.js`     | Company info, team members, join requests, department tags       |
+| `data/application.js` | Candidate-facing session state (form data, mock progress)        |
+| `data/config.js`      | Shared constants (seniority levels, job types, difficulty, etc.) |
 
 ---
 
@@ -220,25 +233,43 @@ Currently using in-memory mock data with mutable CRUD helpers in `_shared/` fold
 
 ### Current Status
 
-| Page       | Status         | Sub-pages                                                  |
-| ---------- | -------------- | ---------------------------------------------------------- |
-| Candidates | ✅ Implemented | Pipeline, CandidateDetails (CV Analysis, Feedback, Replay) |
-| Jobs       | ✅ Implemented | JobList, JobDetails, CreateJob, EditJob                    |
-| Mocks      | ✅ Implemented | MockList, MockDetails, CreateMock, EditMock                |
-| Company    | ✅ Implemented | Overview, AddMembers, MemberDetails, CompanySettings       |
-| Profile    | ✅ Implemented | Profile view/edit, password change, activity timeline      |
-| Settings   | 🔄 Placeholder | Currently shows ComponentShowcase                          |
+| Page            | Status         | Sub-pages / Routes                                                                  |
+| --------------- | -------------- | ----------------------------------------------------------------------------------- |
+| **Candidates**  | ✅ Implemented | Pipeline (`/candidates`), CandidateDetails (`/candidates/:id`) with CV Analysis, Full Feedback, Mock Replay tabs |
+| **Jobs**        | ✅ Implemented | JobList (`/jobs`), JobDetails (`/jobs/:id`) with Share Job, Test Application, status management |
+| **Mocks**       | ✅ Implemented | MockList (`/mocks`), MockDetails (`/mocks/:id`) with Test Mock, Edit, Duplicate     |
+| **Company**     | ✅ Implemented | Overview, AddMembers, MemberDetails, CompanySettings (`/company/*`)                 |
+| **Profile**     | ✅ Implemented | Profile view/edit, password change, activity timeline (`/profile`)                  |
+| **Application** | ✅ Implemented | Candidate-facing flow: Landing → Form → Overview → MockSession → Complete (`/apply/:jobId/*`) |
+| **Settings**    | 🔄 Placeholder | Currently shows ComponentShowcase                                                   |
+
+### Routing (React Router v6)
+
+```
+/candidates               → Pipeline (list)
+/candidates/:id           → CandidateDetails (tabbed detail)
+/jobs                     → JobList
+/jobs/:id                 → JobDetails
+/mocks                    → MockList
+/mocks/:id                → MockDetails
+/company                  → CompanyTeam Overview
+/company/add-members      → AddMembers
+/company/members/:id      → MemberDetails
+/company/settings         → CompanySettings
+/profile                  → Profile
+/apply/:jobId             → JobLanding (candidate-facing)
+/apply/:jobId/form        → CandidateForm
+/apply/:jobId/overview    → JobOverview (mock checklist)
+/apply/:jobId/mock/:mockId→ MockSession (live interview)
+/apply/:jobId/complete    → SubmissionComplete
+```
 
 ### Sidebar Navigation
 
 ```
 Candidates
 Jobs
-  ├── Job Management
-  └── Create Job
 Mocks
-  ├── Mock Management
-  └── Create Mock
 Company
   ├── Overview
   ├── Add Members
@@ -250,17 +281,18 @@ Settings
 
 ### PageLayout Pattern
 
-All pages render inside `PageLayout` (sidebar + navbar + content area):
+All dashboard pages render inside `PageLayout` (sidebar + navbar + content area). The application flow (`/apply/*`) uses a standalone `ApplicationLayout` with no sidebar.
 
 ```jsx
-<PageLayout
-  navItems={navItems}
-  user={user}
-  breadcrumbItems={breadcrumbs}
-  onNavigate={handleNavigate}
->
+// Dashboard pages
+<PageLayout breadcrumbItems={breadcrumbs}>
   <YourPageContent />
 </PageLayout>
+
+// Application flow (candidate-facing)
+<div className="application-shell">
+  <Outlet />
+</div>
 ```
 
 ---
@@ -269,20 +301,24 @@ All pages render inside `PageLayout` (sidebar + navbar + content area):
 
 ### Implemented
 
-- Full component library (20+ components: Button, Input variants, Badge, Cards, Tables, Charts, Tabs, Pagination, etc.)
-- Layout system (PageLayout, Navbar with notifications + avatar dropdown, collapsible Sidebar, Shortcuts)
-- Design token system (490+ variables from Figma)
-- All 5 main pages with sub-pages and full CRUD flows
-- Breadcrumb navigation with clickable back-links
-- In-memory mock data with create/update/delete/duplicate operations
+- ✅ **Component library** — 20+ components: Button, Input variants (text, email, password, search, dropdown), Badge, Cards (Action, Entity, Info, Question, QuickInfo), Tables, Charts (Area, Bar, Radar, Radial), Tabs, Pagination, FilterOverlay, Toggle, Tags, Stepper, EmptyState, RowMenu, QuickSort, SectionTitle, User
+- ✅ **Layout system** — PageLayout, Navbar (notifications + avatar dropdown), collapsible Sidebar, Shortcuts action bar
+- ✅ **Design token system** — 490+ variables from Figma (`tokens.css`)
+- ✅ **React Router v6** — URL-based navigation with `useNavigate`, `useParams`, nested routes
+- ✅ **Centralised data layer** — `src/data/` with full CRUD helpers for all entities
+- ✅ **All dashboard pages** — Candidates, Jobs, Mocks, Company, Profile with full detail views
+- ✅ **Candidate-facing application flow** — Job landing → form → mock overview → live mock session → completion
+- ✅ **FilterOverlay** — Portal-rendered slide-in filter panel (escapes `overflow: hidden` parent constraints)
+- ✅ **Share Job** — Copies candidate application URL to clipboard with visual feedback
+- ✅ **Breadcrumb navigation** — Contextual back-links per page
 
 ### Planned
 
-- React Router integration (replace manual state-based navigation)
 - Backend API integration (replace in-memory mock data)
-- Global state management (Context or Zustand when needed)
 - Authentication & protected routes
+- Global state management (Context or Zustand when needed)
 - Settings page
+- Real AI mock session integration
 
 ---
 
