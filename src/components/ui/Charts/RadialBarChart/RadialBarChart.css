@@ -1,0 +1,186 @@
+/* Radial Bar Chart Component */
+
+.radial-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  padding: var(--padding-xl) var(--padding-2xl);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 100%;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.radial-bar-chart:hover {
+  border-color: var(--border-default);
+  box-shadow: 0 var(--size-0-5) var(--size-3) var(--black-a20);
+}
+
+.radial-bar-chart__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  transition: color var(--transition-base);
+}
+
+.radial-bar-chart:hover .radial-bar-chart__title {
+  color: var(--text-primary);
+}
+
+.radial-bar-chart__divider {
+  height: 1px;
+  background: var(--border-subtle);
+  width: 100%;
+}
+
+/* Layout: legend left, chart right (or stacked if narrow) */
+.radial-bar-chart__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap-reverse;
+  gap: var(--gap-2xl);
+}
+
+/* Legend */
+.radial-bar-chart__legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+  flex: 1;
+  min-width: 200px;
+}
+
+.radial-bar-chart__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  cursor: pointer;
+  padding: var(--padding-xs) var(--padding-sm);
+  border-radius: var(--radius-sm);
+  transition:
+    opacity var(--transition-base),
+    background-color var(--transition-base);
+}
+
+.radial-bar-chart__legend-item:hover,
+.radial-bar-chart__legend-item--active {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.radial-bar-chart__legend-item--dimmed {
+  opacity: 0.35;
+}
+
+.radial-bar-chart__legend-dot {
+  width: var(--size-2);
+  height: var(--size-2);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.radial-bar-chart__legend-item--active .radial-bar-chart__legend-dot {
+  transform: scale(1.25);
+}
+
+.radial-bar-chart__legend-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-base);
+}
+
+.radial-bar-chart__legend-item--active .radial-bar-chart__legend-label {
+  color: var(--text-secondary);
+}
+
+.radial-bar-chart__legend-count {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  min-width: 2ch;
+  text-align: right;
+}
+
+.radial-bar-chart__legend-pct {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  min-width: 4ch;
+  text-align: right;
+}
+
+/* Chart visual */
+.radial-bar-chart__visual {
+  position: relative;
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+}
+
+/* ── Recharts overrides ── */
+.radial-bar-chart .recharts-wrapper,
+.radial-bar-chart .recharts-surface,
+.radial-bar-chart .recharts-sector,
+.radial-bar-chart .recharts-radial-bar-sector,
+.radial-bar-chart .recharts-radial-bar-background-sector {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.radial-bar-chart .recharts-radial-bar-background-sector {
+  pointer-events: none;
+}
+
+.radial-bar-chart .recharts-wrapper:focus,
+.radial-bar-chart .recharts-surface:focus,
+.radial-bar-chart .recharts-wrapper:focus-visible,
+.radial-bar-chart .recharts-surface:focus-visible {
+  outline: none !important;
+}
+
+.radial-bar-chart *:focus {
+  outline: none !important;
+}
+
+.radial-bar-chart__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.radial-bar-chart__center-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  line-height: 1;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.radial-bar-chart__center-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}

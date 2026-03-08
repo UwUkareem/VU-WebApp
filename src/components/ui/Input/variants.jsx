@@ -1,13 +1,15 @@
-import { forwardRef, useState, useId, useRef, useEffect, useCallback } from 'react';
+import { forwardRef, useState, useId, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from './Input';
 import { Label } from './Label';
 import { Hint } from './Hint';
-import { User, Mail, Lock, Search, ChevronDown, Upload, Eye, EyeOff, X } from 'lucide-react';
+import { Mail, Lock, Search, ChevronDown, Upload, Eye, EyeOff, X } from 'lucide-react';
 import './InputField.css';
 
 // Text Input
-export const TextInput = forwardRef((props, ref) => <Input ref={ref} type="text" {...props} />);
+export const TextInput = memo(
+  forwardRef((props, ref) => <Input ref={ref} type="text" {...props} />)
+);
 TextInput.displayName = 'TextInput';
 TextInput.propTypes = {
   label: PropTypes.string,
@@ -17,84 +19,86 @@ TextInput.propTypes = {
 };
 
 // Email Input with validation
-export const EmailInput = forwardRef(
-  (
-    {
-      value: controlledValue,
-      defaultValue,
-      onBlur,
-      onChange,
-      hint: hintProp,
-      error: errorProp,
-      ...props
-    },
-    ref
-  ) => {
-    const [internalValue, setInternalValue] = useState(defaultValue || '');
-    const [internalError, setInternalError] = useState(false);
-    const [internalHint, setInternalHint] = useState(hintProp);
-    const inputRef = useRef(null);
-    const isControlled = controlledValue !== undefined;
-    const displayValue = isControlled ? controlledValue : internalValue;
+export const EmailInput = memo(
+  forwardRef(
+    (
+      {
+        value: controlledValue,
+        defaultValue,
+        onBlur,
+        onChange,
+        hint: hintProp,
+        error: errorProp,
+        ...props
+      },
+      ref
+    ) => {
+      const [internalValue, setInternalValue] = useState(defaultValue || '');
+      const [internalError, setInternalError] = useState(false);
+      const [internalHint, setInternalHint] = useState(hintProp);
+      const inputRef = useRef(null);
+      const isControlled = controlledValue !== undefined;
+      const displayValue = isControlled ? controlledValue : internalValue;
 
-    // Simple email regex fallback
-    const isValidEmail = (email) => {
-      if (!email) return true; // empty is valid (use required prop for mandatory)
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
+      // Simple email regex fallback
+      const isValidEmail = (email) => {
+        if (!email) return true; // empty is valid (use required prop for mandatory)
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      };
 
-    const validateEmail = (email) => {
-      // Try native checkValidity first if available
-      if (inputRef.current && inputRef.current.checkValidity) {
-        return inputRef.current.checkValidity();
-      }
-      // Fallback to regex
-      return isValidEmail(email);
-    };
+      const validateEmail = (email) => {
+        // Try native checkValidity first if available
+        if (inputRef.current && inputRef.current.checkValidity) {
+          return inputRef.current.checkValidity();
+        }
+        // Fallback to regex
+        return isValidEmail(email);
+      };
 
-    const handleBlur = (e) => {
-      const value = e.target.value;
-      if (value && !validateEmail(value)) {
-        setInternalError(true);
-        setInternalHint('Enter a valid email');
-      } else {
-        setInternalError(false);
-        setInternalHint(hintProp);
-      }
-      onBlur?.(e);
-    };
+      const handleBlur = (e) => {
+        const value = e.target.value;
+        if (value && !validateEmail(value)) {
+          setInternalError(true);
+          setInternalHint('Enter a valid email');
+        } else {
+          setInternalError(false);
+          setInternalHint(hintProp);
+        }
+        onBlur?.(e);
+      };
 
-    const handleChange = (e) => {
-      const value = e.target.value;
-      if (!isControlled) {
-        setInternalValue(value);
-      }
-      // Clear error when user types
-      if (internalError && value && validateEmail(value)) {
-        setInternalError(false);
-        setInternalHint(hintProp);
-      }
-      onChange?.(e);
-    };
+      const handleChange = (e) => {
+        const value = e.target.value;
+        if (!isControlled) {
+          setInternalValue(value);
+        }
+        // Clear error when user types
+        if (internalError && value && validateEmail(value)) {
+          setInternalError(false);
+          setInternalHint(hintProp);
+        }
+        onChange?.(e);
+      };
 
-    return (
-      <Input
-        ref={(node) => {
-          inputRef.current = node;
-          if (typeof ref === 'function') ref(node);
-          else if (ref) ref.current = node;
-        }}
-        type="email"
-        iconLeft={<Mail size={16} />}
-        value={displayValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={internalError || errorProp}
-        hint={internalHint || hintProp}
-        {...props}
-      />
-    );
-  }
+      return (
+        <Input
+          ref={(node) => {
+            inputRef.current = node;
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
+          type="email"
+          iconLeft={<Mail size={16} />}
+          value={displayValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={internalError || errorProp}
+          hint={internalHint || hintProp}
+          {...props}
+        />
+      );
+    }
+  )
 );
 EmailInput.displayName = 'EmailInput';
 EmailInput.propTypes = {
@@ -109,7 +113,7 @@ EmailInput.propTypes = {
 };
 
 // Password Input (with toggle visibility)
-export const PasswordInput = forwardRef(({ ...props }, ref) => {
+export const PasswordInput = forwardRef((props, ref) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -219,6 +223,7 @@ export const DropdownInput = forwardRef(
       value,
       onChange,
       disabled,
+      variant,
       className = '',
       ...props
     },
@@ -260,7 +265,9 @@ export const DropdownInput = forwardRef(
     const displayText = selectedOption ? selectedOption.label : placeholder;
 
     return (
-      <div className={`input ${className}`.trim()}>
+      <div
+        className={['input', variant && `input--${variant}`, className].filter(Boolean).join(' ')}
+      >
         {showLabel && label && (
           <Label htmlFor={inputId} required={required}>
             {label}
@@ -271,7 +278,13 @@ export const DropdownInput = forwardRef(
             ref={ref}
             id={inputId}
             type="button"
-            className={`dropdown-input__trigger${error ? ' dropdown-input__trigger--error' : ''}${disabled ? ' dropdown-input__trigger--disabled' : ''}`}
+            className={[
+              'dropdown-input__trigger',
+              error && 'dropdown-input__trigger--error',
+              disabled && 'dropdown-input__trigger--disabled',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             onClick={() => !disabled && setIsOpen((o) => !o)}
             disabled={disabled}
             aria-expanded={isOpen}
@@ -281,20 +294,33 @@ export const DropdownInput = forwardRef(
             {...props}
           >
             <span
-              className={`dropdown-input__text${!selectedOption ? ' dropdown-input__text--placeholder' : ''}`}
+              className={[
+                'dropdown-input__text',
+                !selectedOption && 'dropdown-input__text--placeholder',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               {displayText}
             </span>
             <ChevronDown size={16} className="dropdown-input__icon" aria-hidden="true" />
           </button>
-          <div className={`dropdown-input__menu${isOpen ? ' open' : ''}`} role="listbox">
+          <div
+            className={['dropdown-input__menu', isOpen && 'open'].filter(Boolean).join(' ')}
+            role="listbox"
+          >
             {options.map((option) => (
               <button
                 key={option.value}
                 type="button"
                 role="option"
                 aria-selected={option.value === value}
-                className={`dropdown-input__option${option.value === value ? ' dropdown-input__option--selected' : ''}`}
+                className={[
+                  'dropdown-input__option',
+                  option.value === value && 'dropdown-input__option--selected',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
                 onClick={() => handleSelect(option.value)}
               >
                 {option.label}
@@ -330,6 +356,7 @@ DropdownInput.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
+  variant: PropTypes.oneOf(['oncard']),
   className: PropTypes.string,
 };
 
@@ -345,6 +372,7 @@ export const Textarea = forwardRef(
       showHint = true,
       showCounter = false,
       id,
+      variant,
       className = '',
       rows = 4,
       maxLength,
@@ -390,7 +418,9 @@ export const Textarea = forwardRef(
     };
 
     return (
-      <div className={`input ${className}`.trim()}>
+      <div
+        className={['input', variant && `input--${variant}`, className].filter(Boolean).join(' ')}
+      >
         {showLabel && label && (
           <Label htmlFor={textareaId} required={required}>
             {label}
@@ -400,7 +430,7 @@ export const Textarea = forwardRef(
           ref={mergedRef}
           id={textareaId}
           rows={autosize ? 1 : rows}
-          className={`textarea${error ? ' textarea--error' : ''}`}
+          className={['textarea', error && 'textarea--error'].filter(Boolean).join(' ')}
           maxLength={maxLength}
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={hintId}
@@ -431,6 +461,7 @@ Textarea.propTypes = {
   showHint: PropTypes.bool,
   showCounter: PropTypes.bool,
   id: PropTypes.string,
+  variant: PropTypes.oneOf(['oncard']),
   className: PropTypes.string,
   rows: PropTypes.number,
   maxLength: PropTypes.number,
@@ -450,6 +481,7 @@ export const FileInput = forwardRef(
       showLabel = true,
       showHint = true,
       id,
+      variant,
       className = '',
       ...props
     },
@@ -467,13 +499,15 @@ export const FileInput = forwardRef(
     };
 
     return (
-      <div className={`input ${className}`.trim()}>
+      <div
+        className={['input', variant && `input--${variant}`, className].filter(Boolean).join(' ')}
+      >
         {showLabel && label && (
           <Label htmlFor={fileId} required={required}>
             {label}
           </Label>
         )}
-        <div className={`file-input${error ? ' file-input--error' : ''}`}>
+        <div className={['file-input', error && 'file-input--error'].filter(Boolean).join(' ')}>
           <label htmlFor={fileId} className="file-input__label">
             <Upload size={16} className="file-input__icon" aria-hidden="true" />
             <span className="file-input__text">{fileName || 'Choose file...'}</span>
@@ -507,6 +541,7 @@ FileInput.propTypes = {
   showLabel: PropTypes.bool,
   showHint: PropTypes.bool,
   id: PropTypes.string,
+  variant: PropTypes.oneOf(['oncard']),
   className: PropTypes.string,
   onChange: PropTypes.func,
 };

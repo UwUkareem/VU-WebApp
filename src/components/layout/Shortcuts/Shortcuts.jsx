@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
-import { Filter, Search } from 'lucide-react';
+import { Filter } from 'lucide-react';
 import { Button } from '../../ui/Button';
 import { SearchInput } from '../../ui/Input';
 import './Shortcuts.css';
 
-export function Shortcuts({
+export const Shortcuts = memo(function Shortcuts({
   filterLabel = 'Filters',
   filterCount,
   onFilterClick,
@@ -13,10 +14,15 @@ export function Shortcuts({
   searchPlaceholder = 'Search',
   secondaryAction,
   primaryAction,
+  children,
   className = '',
 }) {
   return (
-    <div className={`shortcuts ${className}`.trim()}>
+    <div
+      className={['shortcuts', children && 'shortcuts--with-inline', className]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {/* Left Section */}
       <div className="shortcuts__left">
         <Button variant="secondary" iconRight={<Filter size={16} />} onClick={onFilterClick}>
@@ -26,6 +32,12 @@ export function Shortcuts({
           <>
             <span className="shortcuts__separator" />
             <span className="shortcuts__count">{filterCount}</span>
+          </>
+        )}
+        {children && (
+          <>
+            <span className="shortcuts__separator" />
+            {children}
           </>
         )}
       </div>
@@ -58,7 +70,7 @@ export function Shortcuts({
       </div>
     </div>
   );
-}
+});
 
 Shortcuts.propTypes = {
   filterLabel: PropTypes.string,
@@ -79,5 +91,6 @@ Shortcuts.propTypes = {
     iconPosition: PropTypes.oneOf(['left', 'right']),
     onClick: PropTypes.func,
   }),
+  children: PropTypes.node,
   className: PropTypes.string,
 };

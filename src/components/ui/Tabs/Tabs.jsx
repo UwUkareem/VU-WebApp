@@ -1,30 +1,55 @@
+import { useRef, useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import './Tabs.css';
 
-export function Tabs({ items = [], className = '' }) {
+const EMPTY_ITEMS = [];
+
+export const Tabs = memo(function Tabs({ items = EMPTY_ITEMS, className = '', scrollRef }) {
+  const tabsRef = useRef(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({});
+
+  useEffect(() => {
+    if (!tabsRef.current) return;
+    const activeTab = tabsRef.current.querySelector('.tab--active');
+    if (activeTab) {
+      setIndicatorStyle({
+        left: `${activeTab.offsetLeft}px`,
+        width: `${activeTab.offsetWidth}px`,
+      });
+    }
+  }, [items]);
+
   return (
-    <div className={`tabs ${className}`.trim()} role="tablist">
+    <div ref={tabsRef} className={['tabs', className].filter(Boolean).join(' ')} role="tablist">
+      <span className="tabs__indicator" style={indicatorStyle} aria-hidden="true" />
       {items.map((item, index) => (
-        <Tab key={index} label={item.label} isActive={item.isActive} onClick={item.onClick} />
+        <Tab
+          key={index}
+          label={item.label}
+          isActive={item.isActive}
+          onClick={() => {
+            item.onClick?.();
+            if (scrollRef?.current) scrollRef.current.scrollTop = 0;
+          }}
+        />
       ))}
     </div>
   );
-}
+});
 
-function Tab({ label, isActive, onClick }) {
+const Tab = memo(function Tab({ label, isActive, onClick }) {
   return (
     <button
       type="button"
       role="tab"
       aria-selected={isActive}
-      className={`tab${isActive ? ' tab--active' : ''}`}
+      className={['tab', isActive && 'tab--active'].filter(Boolean).join(' ')}
       onClick={onClick}
     >
       <span className="tab__label">{label}</span>
-      {isActive && <span className="tab__indicator" aria-hidden="true" />}
     </button>
   );
-}
+});
 
 Tabs.propTypes = {
   items: PropTypes.arrayOf(
@@ -35,6 +60,7 @@ Tabs.propTypes = {
     })
   ),
   className: PropTypes.string,
+  scrollRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
 };
 
 Tab.propTypes = {

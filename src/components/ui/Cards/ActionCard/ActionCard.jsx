@@ -1,18 +1,22 @@
+import { useEffect, useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useRef } from 'react';
 import { Star } from 'lucide-react';
 import { Button } from '../../Button';
 import { Badge } from '../../Badge';
 import './ActionCard.css';
 
-export function ActionCard({
+const ICON_SIZE = 16;
+const INTERSECTION_THRESHOLD = 0.2;
+
+export const ActionCard = memo(function ActionCard({
   title,
   subtitle,
   caption,
   showBadge = false,
-  badgeText = 'Accepted',
+  badgeText,
   badgeType = 'candidateState',
   badgeVariant = 'accepted',
+  badgeIcon = false,
   showButton = false,
   buttonText = 'Remove',
   onButtonClick,
@@ -36,7 +40,7 @@ export function ActionCard({
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: INTERSECTION_THRESHOLD }
     );
 
     if (cardRef.current) {
@@ -49,7 +53,9 @@ export function ActionCard({
   return (
     <div
       ref={cardRef}
-      className={`action-card ${isVisible ? 'action-card--visible' : ''} ${className}`.trim()}
+      className={['action-card', isVisible && 'action-card--visible', className]
+        .filter(Boolean)
+        .join(' ')}
     >
       {/* Header row - Title, Caption, Badge, and Button */}
       <div className="action-card__header">
@@ -57,7 +63,7 @@ export function ActionCard({
         <div className="action-card__header-right">
           {caption && <span className="action-card__caption">{caption}</span>}
           {showBadge && (
-            <Badge type={badgeType} variant={badgeVariant}>
+            <Badge type={badgeType} variant={badgeVariant} iconLeft={badgeIcon}>
               {badgeText}
             </Badge>
           )}
@@ -76,7 +82,9 @@ export function ActionCard({
           {descriptionTitle && (
             <div className="action-card__description-meta">
               <span className="action-card__description-title">{descriptionTitle}</span>
-              {showDescriptionIcon && <Star className="action-card__description-icon" size={16} />}
+              {showDescriptionIcon && (
+                <Star className="action-card__description-icon" size={ICON_SIZE} />
+              )}
               {descriptionNumber && (
                 <span className="action-card__description-number">{descriptionNumber}</span>
               )}
@@ -89,7 +97,7 @@ export function ActionCard({
       {content && <p className="action-card__content">{content}</p>}
     </div>
   );
-}
+});
 
 ActionCard.propTypes = {
   title: PropTypes.string.isRequired,
@@ -98,10 +106,10 @@ ActionCard.propTypes = {
   showBadge: PropTypes.bool,
   badgeText: PropTypes.string,
   badgeType: PropTypes.oneOf(['candidateState', 'cheatingFlag', 'jobStatus', 'role']),
+  badgeIcon: PropTypes.bool,
   badgeVariant: PropTypes.string,
   showButton: PropTypes.bool,
   buttonText: PropTypes.string,
-  buttonVariant: PropTypes.oneOf(['primary', 'secondary', 'success', 'danger', 'ghost']),
   onButtonClick: PropTypes.func,
   descriptionTitle: PropTypes.string,
   showDescriptionIcon: PropTypes.bool,
@@ -110,5 +118,3 @@ ActionCard.propTypes = {
   className: PropTypes.string,
   animated: PropTypes.bool,
 };
-
-export default ActionCard;

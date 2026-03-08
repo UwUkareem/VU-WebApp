@@ -1,57 +1,57 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Bell, X } from 'lucide-react';
 import './NotificationDropdown.css';
 
-// Dummy notification data
 const DUMMY_NOTIFICATIONS = [
   {
     id: 1,
-    userName: 'Kate Young',
-    userAvatar: 'KY',
-    message: 'Great Shot Adam! Really enjoying the composition on this piece.',
+    userName: 'Mohammed Ali',
+    userAvatar: 'MA',
+    message: 'Submitted a join request to the Acme Technologies workspace.',
     time: '5 mins ago',
     unread: true,
   },
   {
     id: 2,
-    userName: 'Brandon Newman',
-    userAvatar: 'BN',
-    message: 'Liked your photo: UI/UX Inspo',
+    userName: 'Sarah Johnson',
+    userAvatar: 'SJ',
+    message: 'Reviewed Chen Wei for the Data Analyst role and left detailed feedback.',
     time: '21 mins ago',
     unread: true,
   },
   {
     id: 3,
-    userName: 'Dave Wood',
-    userAvatar: 'DW',
-    message: 'Liked your photo: Daily UI Challenge 048',
-    time: '3hrs ago',
+    userName: 'Daniel Reed',
+    userAvatar: 'DR',
+    message: 'Created a new mock interview: "Backend Coding Challenge".',
+    time: '3 hrs ago',
     unread: false,
   },
   {
     id: 4,
-    userName: 'Kate Young',
-    userAvatar: 'KY',
-    message: 'Liked your photo: Daily UI Challenge 048',
-    time: '3hrs ago',
+    userName: 'Omar Al-Hassan',
+    userAvatar: 'OA',
+    message: 'Changed candidate status: Elena Volkov → Shortlisted for UX Designer.',
+    time: '3 hrs ago',
     unread: false,
   },
   {
     id: 5,
-    userName: 'Anna Lee',
-    userAvatar: 'AL',
-    message: 'Woah! Loving these colours! Keep it up',
+    userName: 'James Park',
+    userAvatar: 'JP',
+    message: 'Updated the Frontend Developer job posting with new evaluation criteria.',
     time: '1 day ago',
     unread: false,
   },
 ];
 
-export function NotificationDropdown({ onClose, open }) {
+export const NotificationDropdown = memo(function NotificationDropdown({ onClose, open }) {
   const notifications = DUMMY_NOTIFICATIONS;
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className={`notification-dropdown${open ? ' open' : ''}`}>
+    <div className={['notification-dropdown', open && 'open'].filter(Boolean).join(' ')}>
       <div className="notification-dropdown__header">
         <div className="notification-dropdown__title-wrapper">
           <Bell size={18} className="notification-dropdown__icon" />
@@ -74,7 +74,12 @@ export function NotificationDropdown({ onClose, open }) {
               {notifications.map((notification) => (
                 <li
                   key={notification.id}
-                  className={`notification-item${notification.unread ? ' notification-item--unread' : ''}`}
+                  className={[
+                    'notification-item',
+                    notification.unread && 'notification-item--unread',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                 >
                   <div className="notification-item__avatar">{notification.userAvatar}</div>
                   <div className="notification-item__content">
@@ -98,14 +103,14 @@ export function NotificationDropdown({ onClose, open }) {
             <Bell size={48} className="notification-dropdown__empty-icon" />
             <h4 className="notification-dropdown__empty-title">No notifications yet</h4>
             <p className="notification-dropdown__empty-text">
-              When you get notifications, they'll show up here
+              When you get notifications, they&apos;ll show up here
             </p>
           </div>
         )}
       </div>
     </div>
   );
-}
+});
 
 NotificationDropdown.propTypes = {
   onClose: PropTypes.func.isRequired,

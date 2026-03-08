@@ -65,7 +65,7 @@
   }
 
   body {
-    background-color: var(--bg-base);
+    background-color: var(--bg-outer);
     color: var(--text-primary);
   }
 }

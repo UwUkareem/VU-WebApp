@@ -1,0 +1,467 @@
+/* ── JobOverview ── */
+
+.job-overview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--gap-lg);
+  position: relative;
+}
+
+/* Content layout */
+.job-overview__content {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--gap-lg);
+  align-items: start;
+}
+
+/* ── Main column ── */
+.job-overview__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+/* Progress card */
+.job-overview__progress-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  padding: var(--gap-lg);
+  background: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-structure);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.job-overview__progress-card:hover {
+  border-color: var(--border-default);
+}
+
+.job-overview__progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.job-overview__progress-count {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-weight: var(--font-medium);
+}
+
+.job-overview__progress-bar {
+  height: 8px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.job-overview__progress-fill {
+  height: 100%;
+  background: var(--brand-default);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+  min-width: 0;
+}
+
+/* ── Mock list ── */
+.job-overview__mock-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.job-overview__mock-card {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: var(--gap-md) var(--gap-lg);
+  background: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-structure);
+  border-radius: var(--radius-md);
+  cursor: default;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-fast);
+  width: 100%;
+}
+
+.job-overview__mock-card--clickable {
+  cursor: pointer;
+}
+
+.job-overview__mock-card:hover {
+  border-color: var(--border-default);
+}
+
+.job-overview__mock-card--clickable:hover {
+  background-color: var(--bg-card);
+}
+
+.job-overview__mock-card--completed {
+  opacity: 0.7;
+}
+
+.job-overview__mock-card:disabled {
+  pointer-events: auto;
+}
+
+/* Mock icon */
+.job-overview__mock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.job-overview__mock-icon--completed {
+  background: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.job-overview__mock-icon--available {
+  background: var(--bg-elevated);
+  color: var(--brand-default);
+}
+
+.job-overview__mock-icon--in-progress {
+  background: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+.job-overview__mock-icon--locked {
+  background: var(--bg-elevated);
+  color: var(--text-tertiary);
+}
+
+/* Mock info */
+.job-overview__mock-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+}
+
+.job-overview__mock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.job-overview__mock-number {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.job-overview__mock-status {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  padding: 2px var(--gap-sm);
+  border-radius: var(--radius-full);
+}
+
+.job-overview__mock-status--completed {
+  background: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.job-overview__mock-status--available {
+  background: var(--bg-elevated);
+  color: var(--brand-default);
+}
+
+.job-overview__mock-status--in-progress {
+  background: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+.job-overview__mock-status--locked {
+  background: var(--bg-elevated);
+  color: var(--text-tertiary);
+}
+
+.job-overview__mock-name {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.job-overview__mock-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  flex-wrap: wrap;
+}
+
+.job-overview__mock-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* ── Submit section ── */
+.job-overview__submit-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: var(--gap-xl);
+  background: var(--status-success-bg);
+  border: var(--border-sm) solid var(--status-success-text);
+  border-radius: var(--radius-md);
+}
+
+.job-overview__submit-info {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--status-success-text);
+}
+
+/* ── Sidebar ── */
+.job-overview__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  position: sticky;
+  top: var(--gap-lg);
+}
+
+/* Rules card */
+.job-overview__rules-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--gap-lg);
+  background: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-structure);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.job-overview__rules-card:hover {
+  border-color: var(--border-default);
+}
+
+.job-overview__rules-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  color: var(--text-primary);
+}
+
+.job-overview__rules-title {
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
+  margin: 0;
+}
+
+.job-overview__rules-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--gap-md) 0;
+}
+
+.job-overview__rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.job-overview__rule {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.job-overview__rule svg {
+  flex-shrink: 0;
+  margin-top: 6px;
+  color: var(--text-tertiary);
+}
+
+/* Stats card */
+.job-overview__stats-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--gap-lg);
+  background: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-structure);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.job-overview__stats-card:hover {
+  border-color: var(--border-default);
+}
+
+.job-overview__stats-title {
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.job-overview__stats-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--gap-md) 0;
+}
+
+.job-overview__stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.job-overview__stats-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.job-overview__stats-label {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.job-overview__stats-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.job-overview__stats-value--success {
+  color: var(--status-success-text);
+}
+
+/* ── Confirmation overlay ── */
+.job-overview__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--overlay-default);
+  animation: jobOverview-fadeIn 0.2s ease;
+}
+
+.job-overview__confirm-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: var(--gap-2xl);
+  background: var(--bg-surface);
+  border: var(--border-sm) solid var(--border-structure);
+  border-radius: var(--radius-md);
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  animation: jobOverview-slideUp 0.25s ease;
+}
+
+.job-overview__confirm-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+.job-overview__confirm-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.job-overview__confirm-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.job-overview__confirm-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  text-align: left;
+  width: 100%;
+  padding: var(--gap-md);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+}
+
+.job-overview__confirm-rules li {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.job-overview__confirm-rules li::before {
+  content: '•';
+  color: var(--text-tertiary);
+  font-weight: var(--font-bold);
+}
+
+.job-overview__confirm-actions {
+  display: flex;
+  gap: var(--gap-md);
+  width: 100%;
+  justify-content: flex-end;
+  padding-top: var(--gap-md);
+  border-top: var(--border-sm) solid var(--border-subtle);
+}
+
+/* Animations */
+@keyframes jobOverview-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes jobOverview-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

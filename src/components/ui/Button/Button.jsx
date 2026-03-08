@@ -1,49 +1,58 @@
-import './Button.css';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
+import './Button.css';
 
-const VARIANTS = ['primary', 'secondary', 'ghost'];
+const VARIANTS = ['primary', 'secondary', 'ghost', 'danger', 'dashed'];
+const SIZES = ['sm', 'lg'];
 
-export function Button({
-  children,
+/**
+ * Button component designed for high-end SaaS dashboards.
+ * Optimized with React.memo for high-density performance.
+ */
+export const Button = memo(function Button({
+  className = '',
   variant = 'primary',
+  size = 'sm',
   disabled = false,
+  loading = false,
   iconLeft,
   iconRight,
+  children,
   type = 'button',
-  className = '',
   ...props
 }) {
-  // Fallback to primary if invalid variant passed
   const safeVariant = VARIANTS.includes(variant) ? variant : 'primary';
+  const safeSize = SIZES.includes(size) ? size : 'sm';
+  const isIconOnly = !children && (iconLeft || iconRight);
 
   return (
     <button
       type={type}
-      className={`btn btn--${safeVariant} btn-text-lg-medium ${className}`.trim()}
-      disabled={disabled}
+      disabled={disabled || loading}
+      className={`btn btn--${safeVariant} btn--${safeSize} ${isIconOnly ? 'btn--icon-only' : ''} ${className}`.trim()}
       {...props}
     >
-      {iconLeft && (
-        <span className="btn__icon" aria-hidden="true">
-          {iconLeft}
-        </span>
-      )}
-      {children && <span>{children}</span>}
-      {iconRight && (
-        <span className="btn__icon" aria-hidden="true">
-          {iconRight}
-        </span>
+      {loading ? (
+        <span className="btn__loader" aria-hidden="true" />
+      ) : (
+        <>
+          {iconLeft && <span className="btn__icon btn__icon--left">{iconLeft}</span>}
+          {children && <span className="btn__label">{children}</span>}
+          {iconRight && <span className="btn__icon btn__icon--right">{iconRight}</span>}
+        </>
       )}
     </button>
   );
-}
+});
 
 Button.propTypes = {
-  children: PropTypes.node,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'ghost']),
+  className: PropTypes.string,
+  variant: PropTypes.oneOf(VARIANTS),
+  size: PropTypes.oneOf(SIZES),
   disabled: PropTypes.bool,
+  loading: PropTypes.bool,
   iconLeft: PropTypes.node,
   iconRight: PropTypes.node,
+  children: PropTypes.node,
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  className: PropTypes.string,
 };

@@ -1,3 +1,2 @@
 export { Pipeline } from './Pipeline';
-// Legacy export for backwards compatibility
-export { CandidatesPage } from './CandidatesPage';
+export { CandidateDetails } from './CandidateDetails';

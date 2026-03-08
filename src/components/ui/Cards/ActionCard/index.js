@@ -1,1 +1,1 @@
-export { default as ActionCard } from './ActionCard';
+export { ActionCard } from './ActionCard';

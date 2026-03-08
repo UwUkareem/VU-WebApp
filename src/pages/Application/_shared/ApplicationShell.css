@@ -1,0 +1,25 @@
+/* ── Application Shell — Candidate-facing wrapper ── */
+
+.application-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+  padding: var(--padding-lg);
+  background-color: transparent; /* Shows --bg-outer underneath */
+}
+
+.application-shell__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-base);
+  border-radius: var(--radius-xl);
+  border: var(--border-sm) solid var(--border-subtle);
+  overflow: hidden;
+  transition: border-color var(--transition-base);
+}
+
+.application-shell__main:hover {
+  border-color: var(--border-default);
+}

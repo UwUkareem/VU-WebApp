@@ -4,15 +4,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  height: 2.5rem;
-  padding: 0 0.75rem;
+  gap: var(--gap-sm);
+  height: var(--size-10);
+  padding: 0 var(--padding-md);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
   transition:
-    border-color 0.15s,
-    background-color 0.15s;
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .input-field:hover:not(.input-field--disabled) {
@@ -67,12 +67,13 @@
 }
 
 .input-field__icon svg {
-  width: 1rem;
-  height: 1rem;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
-/* Password Toggle Button */
-.password-toggle {
+/* Action Buttons (password toggle, search clear) */
+.password-toggle,
+.search-clear {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,50 +86,37 @@
   transition: color var(--transition-base);
 }
 
-.password-toggle:hover {
+.password-toggle:hover,
+.search-clear:hover {
   color: var(--input-text);
 }
 
-.password-toggle:focus-visible {
+.password-toggle:active,
+.search-clear:active {
+  color: var(--input-text);
+}
+
+.password-toggle:focus-visible,
+.search-clear:focus-visible {
   outline: 2px solid var(--input-border-focus);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
-.password-toggle:active {
-  color: var(--input-text);
-}
-
-/* Search Clear Button */
+/* Search clear - additional background interaction */
 .search-clear {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  color: var(--text-tertiary);
   transition:
     color var(--transition-base),
     background-color var(--transition-base);
-  border-radius: var(--radius-sm, 4px);
+  border-radius: var(--radius-xs);
 }
 
 .search-clear:hover {
-  color: var(--input-text);
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.05));
-}
-
-.search-clear:focus-visible {
-  outline: 2px solid var(--input-border-focus);
-  outline-offset: 2px;
+  background-color: var(--bg-hover);
 }
 
 .search-clear:active {
-  color: var(--input-text);
-  background-color: var(--bg-press, rgba(0, 0, 0, 0.1));
+  background-color: var(--bg-press);
 }
 
 /* Dropdown Input (custom like RoleBadge) */
@@ -144,8 +132,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 2.5rem;
-  padding: 0 0.75rem;
+  height: var(--size-10);
+  padding: 0 var(--padding-md);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
@@ -199,11 +187,11 @@
 
 .dropdown-input__menu {
   position: absolute;
-  top: calc(100% + 0.5rem);
+  top: calc(100% + var(--gap-sm));
   left: 0;
   right: 0;
   z-index: 50;
-  padding: 0.25rem;
+  padding: var(--padding-xs);
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
@@ -212,8 +200,8 @@
   transform: translateY(-6px);
   pointer-events: none;
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
   overflow: hidden;
   max-height: 16rem;
   overflow-y: auto;
@@ -225,21 +213,10 @@
   pointer-events: auto;
 }
 
-@keyframes dropIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .dropdown-input__option {
   display: block;
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: var(--padding-sm) var(--padding-md);
   border: none;
   background: none;
   border-radius: var(--radius-sm);
@@ -280,7 +257,7 @@
 /* Textarea Component */
 .textarea {
   width: 100%;
-  padding: 0.625rem 0.75rem;
+  padding: var(--size-2-5) var(--padding-md);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
@@ -373,7 +350,7 @@
 /* Character counter */
 .textarea__counter {
   display: block;
-  margin-top: 0.25rem;
+  margin-top: var(--gap-xs);
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   color: var(--text-tertiary);
@@ -385,7 +362,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: 2.5rem;
+  height: var(--size-10);
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
@@ -404,10 +381,10 @@
 .file-input__label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--gap-sm);
   width: 100%;
   height: 100%;
-  padding: 0 0.75rem;
+  padding: 0 var(--padding-md);
   cursor: pointer;
 }
 

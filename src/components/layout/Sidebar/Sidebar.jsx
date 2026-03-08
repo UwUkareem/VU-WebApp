@@ -1,11 +1,14 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { SidebarButton } from '../../ui/SidebarButton';
 import { User } from '../../ui/User';
 import './Sidebar.css';
 
-export function Sidebar({ logo, navItems = [], user, className = '' }) {
+const EMPTY_NAV = [];
+
+export const Sidebar = memo(function Sidebar({ logo, navItems = EMPTY_NAV, user, className = '' }) {
   return (
-    <aside className={`sidebar ${className}`.trim()}>
+    <aside className={['sidebar', className].filter(Boolean).join(' ')}>
       <div className="sidebar__content">
         {/* Logo */}
         <div className="sidebar__logo">
@@ -37,7 +40,7 @@ export function Sidebar({ logo, navItems = [], user, className = '' }) {
       )}
     </aside>
   );
-}
+});
 
 Sidebar.propTypes = {
   logo: PropTypes.node,

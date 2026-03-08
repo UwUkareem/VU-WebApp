@@ -1,8 +1,16 @@
 import './Label.css';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { Info } from 'lucide-react';
 
-export function Label({ required, showInfo, infoTooltip, children, htmlFor, className = '' }) {
+export const Label = memo(function Label({
+  required,
+  showInfo,
+  infoTooltip,
+  children,
+  htmlFor,
+  className = '',
+}) {
   if (!children) return null;
 
   return (
@@ -27,7 +35,7 @@ export function Label({ required, showInfo, infoTooltip, children, htmlFor, clas
       )}
     </label>
   );
-}
+});
 
 Label.propTypes = {
   required: PropTypes.bool,

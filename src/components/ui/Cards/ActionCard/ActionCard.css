@@ -2,27 +2,25 @@
 .action-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* 16px */
-  padding: 1.5rem 2rem; /* 24px vertical, 32px horizontal */
-  background: var(--bg-card);
-  border: 0.7px solid var(--border-subtle);
-  border-radius: 12px;
+  gap: var(--gap-md);
+  padding: var(--padding-xl) var(--padding-2xl);
+  background-color: var(--bg-card);
+  border: var(--border-sm) solid var(--border-subtle);
+  border-radius: var(--radius-md);
   width: 100%;
   opacity: 0;
-  transform: translateY(2rem);
+  transform: translateY(var(--size-8));
   transition:
-    opacity 0.4s ease,
-    transform 0.4s ease,
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
     border-color var(--transition-base);
 }
 
-/* Visible state */
 .action-card--visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Hover state */
 .action-card:hover {
   border-color: var(--border-default);
 }
@@ -32,136 +30,123 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--gap-lg);
   width: 100%;
 }
 
 .action-card__header-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* 12px */
+  gap: var(--gap-md);
   flex-shrink: 0;
 }
 
 /* Title */
 .action-card__title {
   font-family: var(--font-sans);
-  font-size: var(--text-xl); /* 20px */
-  font-weight: var(--font-semibold);
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
   line-height: 1.4;
   color: var(--text-secondary);
-  margin: 0;
   flex: 1;
   min-width: 0;
-  transition: color var(--transition-base);
-}
-
-.action-card:hover .action-card__title {
-  color: var(--text-primary);
 }
 
 /* Caption */
 .action-card__caption {
   font-family: var(--font-sans);
-  font-size: var(--text-sm); /* 13px */
+  font-size: var(--text-xs);
   font-weight: var(--font-regular);
   line-height: 1.4;
   color: var(--text-subtle);
   white-space: nowrap;
 }
 
-/* Description row - Subtitle on left, meta on right */
+/* Description row */
 .action-card__description-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--gap-lg);
 }
 
 /* Subtitle */
 .action-card__subtitle {
   font-family: var(--font-sans);
-  font-size: var(--text-base); /* 15px */
+  font-size: var(--text-base);
   font-weight: var(--font-regular);
   line-height: 1.5;
   color: var(--text-tertiary);
-  margin: 0;
   flex: 1;
   min-width: 0;
 }
 
-/* Description meta - Icon, number, and title on right side */
+/* Description meta */
 .action-card__description-meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* 8px */
+  gap: var(--gap-sm);
   flex-shrink: 0;
 }
 
 .action-card__description-icon {
-  color: var(--brand-default); /* Orange/default color */
+  color: var(--brand-default);
   fill: var(--brand-default);
   flex-shrink: 0;
+  margin-right: calc(-1 * var(--size-1));
 }
 
 .action-card__description-number {
   font-family: var(--font-sans);
-  font-size: var(--text-base); /* 15px */
-  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
   color: var(--text-secondary);
-  min-width: 1.5rem; /* Ensure consistent width */
 }
 
 .action-card__description-title {
   font-family: var(--font-sans);
-  font-size: var(--text-sm); /* 13px */
+  font-size: var(--text-xs);
   font-weight: var(--font-regular);
   line-height: 1.5;
-  color: var(--text-tertiary);
-  margin-right: 0.5rem;
+  color: var(--text-subtle);
   white-space: nowrap;
 }
 
 /* Content text */
 .action-card__content {
   font-family: var(--font-sans);
-  font-size: var(--text-sm); /* 13px */
+  font-size: var(--text-sm);
   font-weight: var(--font-regular);
   line-height: 1.6;
   color: var(--text-subtle);
-  margin: 0;
 }
 
+/* Button danger variant */
 .action-card__button {
-  background: rgba(255, 59, 48, 0.15);
-  color: var(--red-400);
-  font-size: var(--text-base);
+  background: var(--status-error-bg);
+  color: var(--status-error-text);
+  border-color: var(--status-error-bg);
 }
 
-.action-card__button:hover {
-  background: rgba(255, 59, 48, 0.25);
+.action-card__button:hover:not(:disabled) {
+  background: var(--status-error-hover);
 }
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .action-card {
-    padding: 1.25rem 1.5rem;
+    padding: var(--size-5) var(--padding-xl);
   }
 
   .action-card__header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: var(--gap-sm);
   }
 
   .action-card__header-right {
     width: 100%;
     justify-content: space-between;
-  }
-
-  .badge {
-    font-size: 12px;
-    padding: 0.25rem 0.5rem;
   }
 
   .action-card__title {

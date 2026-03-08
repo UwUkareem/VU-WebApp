@@ -13,10 +13,10 @@
   --font-mono: 'Roboto Mono', ui-monospace, monospace;
 
   /* Font Weights */
-  --font-regular: 300;
-  --font-medium: 400;
-  --font-semibold: 500;
-  --font-bold: 600;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
 
   /* Font Sizes */
   --text-xs: 0.75rem; /* 12px */
@@ -115,17 +115,17 @@
      ======================================== */
 
   /* Border Radius */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
   /* Border Width */
-  --border-sm: 0.7px;
-  --border-md: 1px;
-  --border-lg: 1.5px;
-  --border-xl: 2px;
+  --border-sm: 1px;
+  --border-md: 2px;
+  --border-lg: 3px;
 
   /* ========================================
      BUTTON TOKENS
@@ -368,6 +368,7 @@
   --brand-700: var(--darkred-700);
   --brand-800: var(--darkred-800);
   --brand-900: var(--darkred-900);
+  --brand-subtle: rgba(255, 93, 49, 0.08);
 
   /* Text */
   --text-primary: var(--white-a90);
@@ -378,46 +379,51 @@
   --text-inverse: var(--black-a90);
   --text-disabled: var(--white-a20);
 
-  /* Background */
-  --bg-base: var(--gray-1300);
-  --bg-surface: var(--gray-1000);
-  --bg-card: var(--gray-1200);
-  --bg-subcard: var(--gray-1100);
-  --bg-hover: rgba(255, 255, 255, 0.03);
-  --bg-press: rgba(255, 255, 255, 0.07);
-  --bg-oncard: rgba(255, 255, 255, 0.02);
+  /* Dark mode background hierarchy */
+  --bg-outer: #121212; /* Level 0: Very dark backdrop (under transparent elements) */
+  --bg-base: #181818; /* Level 1: Main window background */
+  --bg-surface: #232323; /* Level 2: Primary content surface */
+  --bg-card: #2b2b2b; /* Level 3: Card or panel background */
+  --bg-subcard: #303030; /* Level 4: Nested panel inside card */
+  --bg-elevated: #383838; /* Level 5: Elevated overlay (modals, dropdowns) */
+  --bg-hover: #343434; /* Hover state color (slightly lighter than card) */
+  --bg-press: #454545; /* Active/pressed state (brighter to indicate click) */
+  --bg-oncard: #212121;
 
-  /* Subtle Backgrounds */
-  --subtle-green: #0d2419;
-  --subtle-yellow: #2a2308;
-  --subtle-red: #2a0f0f;
-  --subtle-blue: #0b1624;
-  --subtle-teal: #0b1f1f;
-  --subtle-purple: #1d1424;
+  /* Subtle Backgrounds - Tuned for Visibility */
+  --subtle-green: #143326;
+  --subtle-yellow: #332b0f;
+  --subtle-red: #331212;
+  --subtle-blue: #0f2233;
+  --subtle-teal: #0f3333;
+  --subtle-purple: #261a33;
 
-  /* Border */
-  --border-subtle: var(--gray-800);
-  --border-default: var(--gray-700);
-  --border-strong: var(--gray-600);
-  --border-structure: var(--white-a5);
-  --border-reverse: var(--white-a30);
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06); /* default border on cards */
+  --border-default: rgba(255, 255, 255, 0.1); /* stronger separation */
+  --border-strong: rgba(255, 255, 255, 0.16); /* for inputs, modals */
+  --border-structure: rgba(255, 255, 255, 0.08); /* dividers, table rows */
+  --border-hover: rgba(255, 255, 255, 0.14); /* hover outline */
+  --border-reverse: rgba(255, 255, 255, 0.3);
   --border-focus: rgba(230, 79, 40, 0.6);
-  --border-error: var(--red-800);
+  --border-error: rgba(255, 65, 54, 0.75);
 
   /* Button - Primary */
   --btn-primary-text: var(--text-primary);
   --btn-primary-bg: var(--brand-600);
-  --btn-primary-hover: var(--black-a10);
-  --btn-primary-active: var(--black-a20);
+  --btn-primary-hover: var(--brand-700);
+  --btn-primary-active: var(--brand-800);
 
   /* Button - Secondary */
   --btn-secondary-text: var(--text-secondary);
-  --btn-secondary-bg: var(--gray-1200);
-  --btn-secondary-hover: var(--white-a5);
-  --btn-secondary-active: var(--white-a10);
+  --btn-secondary-bg: var(--bg-card);
+  --btn-secondary-hover: var(--bg-hover);
+  --btn-secondary-active: var(--bg-press);
+  --btn-secondary-border: var(--border-default);
+  --btn-secondary-border-hover: var(--border-strong);
 
   /* Button - Ghost */
-  --btn-ghost-text: var(--text-disabled);
+  --btn-ghost-text: var(--text-secondary);
   --btn-ghost-hover: var(--white-a5);
   --btn-ghost-active: var(--white-a10);
 
@@ -429,20 +435,44 @@
   --input-text: var(--text-secondary);
   --input-placeholder: var(--text-subtle);
   --input-bg: var(--bg-card);
-  --input-bg-oncard: rgba(255, 255, 255, 0.03);
+  --input-bg-oncard: #212121;
   --input-border: var(--border-default);
   --input-border-hover: var(--border-strong);
   --input-border-focus: var(--border-focus);
 
-  /* Status */
+  /* Status & Badge Colors */
   --status-success-text: var(--green-400);
-  --status-success-bg: rgba(52, 199, 89, 0.2);
-  --status-error-text: rgba(255, 59, 48, 0.8);
-  --status-error-bg: var(--red-600);
+  --status-success-bg: rgba(52, 199, 89, 0.12);
+  --status-success-hover: rgba(52, 199, 89, 0.2);
+
+  --status-error-text: var(--red-400);
+  --status-error-bg: rgba(255, 59, 48, 0.12);
+  --status-error-hover: rgba(255, 59, 48, 0.2);
+
   --status-warning-text: var(--yellow-400);
-  --status-warning-bg: rgba(255, 204, 0, 0.2);
+  --status-warning-bg: rgba(255, 204, 0, 0.12);
+  --status-warning-hover: rgba(255, 204, 0, 0.2);
+  --status-warning-border: rgba(255, 204, 0, 0.3);
+
+  --status-danger-text: var(--red-400);
+  --status-danger-bg: rgba(255, 59, 48, 0.12);
+  --status-danger-hover: rgba(255, 59, 48, 0.2);
+
   --status-info-text: var(--blue-400);
-  --status-info-bg: rgba(0, 122, 255, 0.2);
+  --status-info-bg: rgba(0, 122, 255, 0.12);
+  --status-info-hover: rgba(0, 122, 255, 0.2);
+
+  --status-purple-text: var(--purple-400);
+  --status-purple-bg: rgba(175, 82, 222, 0.12);
+  --status-purple-hover: rgba(175, 82, 222, 0.2);
+
+  --status-teal-text: var(--teal-400);
+  --status-teal-bg: rgba(48, 176, 199, 0.12);
+  --status-teal-hover: rgba(48, 176, 199, 0.2);
+
+  --status-gray-text: var(--text-secondary);
+  --status-gray-bg: var(--white-a10);
+  --status-gray-hover: var(--white-a20);
 
   /* Overlay */
   --overlay-default: var(--black-a60);
@@ -451,6 +481,12 @@
   /* Divider */
   --divider-primary: var(--black-a10);
   --divider-secondary: var(--black-a20);
+
+  /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.05);
+  --shadow-md: rgba(0, 0, 0, 0.15);
+  --shadow-window: 0 0 0 1px var(--border-subtle), 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
   /* ========================================
      TRANSITIONS

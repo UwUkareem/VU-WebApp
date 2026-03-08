@@ -9,6 +9,7 @@ import {
   Sparkles,
   CalendarClock,
   CircleMinus,
+  CirclePause,
   Crown,
   Pencil,
   Eye,
@@ -31,6 +32,8 @@ export const BADGE_VARIANTS = {
     active: { label: 'Active', color: 'green', Icon: Sparkles },
     scheduled: { label: 'Scheduled', color: 'yellow', Icon: CalendarClock },
     closed: { label: 'Closed', color: 'gray', Icon: CircleMinus },
+    draft: { label: 'Draft', color: 'purple', Icon: CirclePause },
+    inactive: { label: 'Inactive', color: 'gray', Icon: CirclePause },
   },
   role: {
     owner: { label: 'Owner', color: 'purple', Icon: Crown },

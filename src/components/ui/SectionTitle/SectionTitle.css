@@ -1,0 +1,54 @@
+/* Section Title Component */
+
+.section-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  padding-bottom: var(--padding-md);
+  margin-bottom: var(--padding-sm);
+  border-bottom: var(--border-sm) solid var(--border-subtle);
+}
+
+.section-title__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+}
+
+.section-title__heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.section-title__heading::after {
+  content: '.';
+  color: var(--brand-default);
+}
+
+.section-title__description {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.section-title__action {
+  flex-shrink: 0;
+}
+
+/* Inline variant — no border, tighter spacing */
+.section-title--inline {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.section-title--inline .section-title__heading {
+  font-size: var(--text-md);
+}

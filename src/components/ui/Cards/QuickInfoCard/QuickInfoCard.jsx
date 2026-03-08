@@ -1,8 +1,16 @@
+import { useEffect, useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect, useState, useRef } from 'react';
 import './QuickInfoCard.css';
 
-export function QuickInfoCard({ icon, number, title, className = '', animated = true, onClick }) {
+const INTERSECTION_THRESHOLD = 0.2;
+
+export const QuickInfoCard = memo(function QuickInfoCard({
+  icon,
+  number,
+  title,
+  className = '',
+  animated = true,
+}) {
   const [isVisible, setIsVisible] = useState(!animated);
   const cardRef = useRef(null);
 
@@ -16,7 +24,7 @@ export function QuickInfoCard({ icon, number, title, className = '', animated = 
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: INTERSECTION_THRESHOLD }
     );
 
     if (cardRef.current) {
@@ -26,33 +34,28 @@ export function QuickInfoCard({ icon, number, title, className = '', animated = 
     return () => observer.disconnect();
   }, [animated]);
 
-  const isClickable = !!onClick;
-
   return (
     <div
       ref={cardRef}
-      className={`quick-info-card ${
-        isVisible ? 'quick-info-card--visible' : ''
-      } ${isClickable ? 'quick-info-card--clickable' : ''} ${className}`.trim()}
-      onClick={onClick}
-      role={isClickable ? 'button' : undefined}
-      tabIndex={isClickable ? 0 : undefined}
+      className={['quick-info-card', isVisible && 'quick-info-card--visible', className].filter(Boolean).join(' ')}
     >
       {icon && <div className="quick-info-card__icon">{icon}</div>}
-      <div className="quick-info-card__number">
-        {typeof number === 'number' ? number.toLocaleString() : number}
-      </div>
 
-      <div className="quick-info-card__title">{title}</div>
+      <div className="quick-info-card__content">
+        <div className="quick-info-card__number">
+          {typeof number === 'number' ? number.toLocaleString() : number}
+        </div>
+
+        <div className="quick-info-card__title">{title}</div>
+      </div>
     </div>
   );
-}
+});
 
 QuickInfoCard.propTypes = {
   icon: PropTypes.node,
-  number: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
   animated: PropTypes.bool,
-  onClick: PropTypes.func,
 };

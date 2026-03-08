@@ -2,13 +2,11 @@
 
 .page-layout {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  padding-right: 0;
-  padding-bottom: 0;
+  gap: var(--gap-lg);
+  padding-top: var(--padding-lg);
   min-height: 100vh;
   height: 100vh;
-  background-color: var(--bg-surface);
+  background-color: transparent; /* Transparent to show bg-outer */
   overflow: hidden;
 }
 
@@ -16,7 +14,8 @@
 .page-layout__sidebar {
   width: 12.875rem;
   flex-shrink: 0;
-  height: calc(100vh - 1rem);
+  height: calc(100vh - var(--padding-lg));
+  contain: layout style;
 }
 
 /* Main content area - Right side */
@@ -26,8 +25,8 @@
   flex-direction: column;
   background-color: var(--bg-base);
   border-radius: var(--radius-xl) 0 0 0;
-  border-top: 1px solid var(--border-default);
-  border-left: 1px solid var(--border-default);
+  border-top: var(--border-sm) solid var(--border-subtle);
+  border-left: var(--border-sm) solid var(--border-subtle);
   overflow: hidden;
 }
 

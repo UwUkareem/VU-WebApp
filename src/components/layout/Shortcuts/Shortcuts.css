@@ -3,19 +3,20 @@
 .shortcuts {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: var(--gap-lg);
+  padding: var(--padding-lg);
+  padding-bottom: var(--padding-md);
 }
 
 .shortcuts__left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--gap-lg);
 }
 
 .shortcuts__separator {
-  width: 1px;
-  height: 1.5rem;
+  width: var(--border-sm);
+  height: var(--size-6);
   background: var(--border-default);
 }
 
@@ -31,15 +32,31 @@
 .shortcuts__right {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--gap-lg);
   margin-left: auto;
-}
-
-.shortcuts .btn--secondary {
-  background-color: var(--bg-base);
 }
 
 .shortcuts .input-field {
   height: var(--btn-height);
   min-width: 18rem;
+  background-color: var(--bg-surface);
+}
+
+.shortcuts .btn--secondary {
+  background-color: var(--bg-surface);
+}
+
+/* Inline QuickSort variation */
+.shortcuts--with-inline .shortcuts__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.shortcuts--with-inline .quick-sort {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: auto;
+  flex: 1;
+  min-width: 0;
 }
