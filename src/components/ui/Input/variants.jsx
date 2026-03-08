@@ -19,84 +19,86 @@ TextInput.propTypes = {
 };
 
 // Email Input with validation
-export const EmailInput = forwardRef(
-  (
-    {
-      value: controlledValue,
-      defaultValue,
-      onBlur,
-      onChange,
-      hint: hintProp,
-      error: errorProp,
-      ...props
-    },
-    ref
-  ) => {
-    const [internalValue, setInternalValue] = useState(defaultValue || '');
-    const [internalError, setInternalError] = useState(false);
-    const [internalHint, setInternalHint] = useState(hintProp);
-    const inputRef = useRef(null);
-    const isControlled = controlledValue !== undefined;
-    const displayValue = isControlled ? controlledValue : internalValue;
+export const EmailInput = memo(
+  forwardRef(
+    (
+      {
+        value: controlledValue,
+        defaultValue,
+        onBlur,
+        onChange,
+        hint: hintProp,
+        error: errorProp,
+        ...props
+      },
+      ref
+    ) => {
+      const [internalValue, setInternalValue] = useState(defaultValue || '');
+      const [internalError, setInternalError] = useState(false);
+      const [internalHint, setInternalHint] = useState(hintProp);
+      const inputRef = useRef(null);
+      const isControlled = controlledValue !== undefined;
+      const displayValue = isControlled ? controlledValue : internalValue;
 
-    // Simple email regex fallback
-    const isValidEmail = (email) => {
-      if (!email) return true; // empty is valid (use required prop for mandatory)
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
+      // Simple email regex fallback
+      const isValidEmail = (email) => {
+        if (!email) return true; // empty is valid (use required prop for mandatory)
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      };
 
-    const validateEmail = (email) => {
-      // Try native checkValidity first if available
-      if (inputRef.current && inputRef.current.checkValidity) {
-        return inputRef.current.checkValidity();
-      }
-      // Fallback to regex
-      return isValidEmail(email);
-    };
+      const validateEmail = (email) => {
+        // Try native checkValidity first if available
+        if (inputRef.current && inputRef.current.checkValidity) {
+          return inputRef.current.checkValidity();
+        }
+        // Fallback to regex
+        return isValidEmail(email);
+      };
 
-    const handleBlur = (e) => {
-      const value = e.target.value;
-      if (value && !validateEmail(value)) {
-        setInternalError(true);
-        setInternalHint('Enter a valid email');
-      } else {
-        setInternalError(false);
-        setInternalHint(hintProp);
-      }
-      onBlur?.(e);
-    };
+      const handleBlur = (e) => {
+        const value = e.target.value;
+        if (value && !validateEmail(value)) {
+          setInternalError(true);
+          setInternalHint('Enter a valid email');
+        } else {
+          setInternalError(false);
+          setInternalHint(hintProp);
+        }
+        onBlur?.(e);
+      };
 
-    const handleChange = (e) => {
-      const value = e.target.value;
-      if (!isControlled) {
-        setInternalValue(value);
-      }
-      // Clear error when user types
-      if (internalError && value && validateEmail(value)) {
-        setInternalError(false);
-        setInternalHint(hintProp);
-      }
-      onChange?.(e);
-    };
+      const handleChange = (e) => {
+        const value = e.target.value;
+        if (!isControlled) {
+          setInternalValue(value);
+        }
+        // Clear error when user types
+        if (internalError && value && validateEmail(value)) {
+          setInternalError(false);
+          setInternalHint(hintProp);
+        }
+        onChange?.(e);
+      };
 
-    return (
-      <Input
-        ref={(node) => {
-          inputRef.current = node;
-          if (typeof ref === 'function') ref(node);
-          else if (ref) ref.current = node;
-        }}
-        type="email"
-        iconLeft={<Mail size={16} />}
-        value={displayValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={internalError || errorProp}
-        hint={internalHint || hintProp}
-        {...props}
-      />
-    );
-  }
+      return (
+        <Input
+          ref={(node) => {
+            inputRef.current = node;
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
+          type="email"
+          iconLeft={<Mail size={16} />}
+          value={displayValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={internalError || errorProp}
+          hint={internalHint || hintProp}
+          {...props}
+        />
+      );
+    }
+  )
 );
 EmailInput.displayName = 'EmailInput';
 EmailInput.propTypes = {

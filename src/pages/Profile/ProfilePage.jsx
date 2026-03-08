@@ -14,7 +14,7 @@ import {
 import { EntityCard } from '../../components/ui/Cards';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { SectionTitle } from '../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../components/ui/SectionTitle';
 import {
   getMemberActivities,
   TEAM_MEMBERS,
@@ -345,5 +345,3 @@ export const ProfilePage = memo(function ProfilePage() {
     </div>
   );
 });
-
-export default ProfilePage;

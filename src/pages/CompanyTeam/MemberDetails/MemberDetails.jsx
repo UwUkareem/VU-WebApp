@@ -15,7 +15,7 @@ import { EntityCard } from '../../../components/ui/Cards';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { RoleBadge } from '../../../components/ui/Badge';
-import { SectionTitle } from '../../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../../components/ui/SectionTitle';
 import {
   getMemberById,
   getMemberActivities,

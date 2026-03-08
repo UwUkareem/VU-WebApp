@@ -17,7 +17,7 @@ import {
 import { EntityCard, QuickInfoCard } from '../../../../components/ui/Cards';
 import { Button } from '../../../../components/ui/Button';
 import { Badge } from '../../../../components/ui/Badge';
-import { SectionTitle } from '../../../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../../components/ui/Tables';
 import { RadarChart, AreaChart, RadialBarChart } from '../../../../components/ui/Charts';
 import { getJobById, updateJob, duplicateJob } from '../_shared/jobData';

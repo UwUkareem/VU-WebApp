@@ -8,8 +8,24 @@ import { MockList, MockDetails } from './pages/Mocks/MockManagement';
 import { CreateMockConfig, EditMockConfig } from './pages/Mocks/MockConfigPage';
 import { Overview, MemberDetails, AddMembers, CompanySettings } from './pages/CompanyTeam';
 import { ProfilePage } from './pages/Profile';
+import {
+  JobLanding,
+  CandidateForm,
+  JobOverview,
+  MockSession,
+  SubmissionComplete,
+} from './pages/Application';
 import { getJoinRequestById } from './pages/CompanyTeam/_shared/companyData';
-import { Users, Briefcase, FileText, Building2, UserCircle2, Settings, Hash } from 'lucide-react';
+import {
+  Users,
+  Briefcase,
+  FileText,
+  Building2,
+  UserCircle2,
+  Settings,
+  Hash,
+  ClipboardCheck,
+} from 'lucide-react';
 import { ComponentShowcase } from './pages/_showcase';
 
 // Static user config — hoisted outside component to avoid re-creation on every render
@@ -29,6 +45,10 @@ export default function App() {
   const [breadcrumbItems, setBreadcrumbItems] = useState([{ label: 'Candidates' }]);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [selectedMockId, setSelectedMockId] = useState(null);
+
+  // Application flow (candidate-facing)
+  const [applicationStep, setApplicationStep] = useState('landing');
+  const [applicationMockId, setApplicationMockId] = useState(null);
 
   // Navigation items for sidebar
   const navItems = [
@@ -107,7 +127,7 @@ export default function App() {
     },
     {
       icon: Building2,
-      label: 'Company & Team',
+      label: 'Company',
       isActive: activePage === 'company',
       subItems: [
         {
@@ -169,6 +189,17 @@ export default function App() {
       onClick: () => {
         setActivePage('settings');
         setBreadcrumbItems([{ label: 'Settings' }]);
+      },
+      separator: true,
+    },
+    {
+      icon: ClipboardCheck,
+      label: 'Application',
+      isActive: activePage === 'application',
+      onClick: () => {
+        setActivePage('application');
+        setApplicationStep('landing');
+        setApplicationMockId(null);
       },
     },
   ];
@@ -500,6 +531,71 @@ export default function App() {
     }
   };
 
+  // ── Application flow (candidate-facing, no dashboard chrome) ──
+  const renderApplicationFlow = () => {
+    let content;
+    switch (applicationStep) {
+      case 'landing':
+        content = <JobLanding onApply={() => setApplicationStep('form')} />;
+        break;
+      case 'form':
+        content = (
+          <CandidateForm
+            onSubmit={() => setApplicationStep('overview')}
+            onBack={() => setApplicationStep('landing')}
+          />
+        );
+        break;
+      case 'overview':
+        content = (
+          <JobOverview
+            onStartMock={(mockId) => {
+              setApplicationMockId(mockId);
+              setApplicationStep('mock-session');
+            }}
+            onSubmitApplication={() => setApplicationStep('complete')}
+          />
+        );
+        break;
+      case 'mock-session':
+        content = (
+          <MockSession
+            mockId={applicationMockId}
+            onComplete={() => {
+              setApplicationMockId(null);
+              setApplicationStep('overview');
+            }}
+          />
+        );
+        break;
+      case 'complete':
+        content = (
+          <SubmissionComplete
+            onBackToJobs={() => {
+              setActivePage('candidates');
+              setApplicationStep('landing');
+              setApplicationMockId(null);
+              setBreadcrumbItems([{ label: 'Candidates' }]);
+            }}
+          />
+        );
+        break;
+      default:
+        content = <JobLanding onApply={() => setApplicationStep('form')} />;
+    }
+
+    return (
+      <div className="application-shell">
+        <div className="application-shell__main">{content}</div>
+      </div>
+    );
+  };
+
+  // Application is a standalone candidate experience — skip dashboard layout
+  if (activePage === 'application') {
+    return renderApplicationFlow();
+  }
+
   return (
     <PageLayout
       navItems={navItems}
@@ -509,23 +605,5 @@ export default function App() {
     >
       {renderPage()}
     </PageLayout>
-  );
-}
-
-// Temporary placeholder for pages not yet implemented
-function PlaceholderPage({ title }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        color: 'var(--text-secondary)',
-        fontSize: '18px',
-      }}
-    >
-      {title} page coming soon...
-    </div>
   );
 }

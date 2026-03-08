@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import './EmptyState.css';
 
@@ -11,7 +12,13 @@ import './EmptyState.css';
  *   description="Create your first job posting to get started."
  * />
  */
-export function EmptyState({ icon, title, description, action, className = '' }) {
+export const EmptyState = memo(function EmptyState({
+  icon,
+  title,
+  description,
+  action,
+  className = '',
+}) {
   return (
     <div className={`empty-state ${className}`.trim()}>
       {icon && <div className="empty-state__icon">{icon}</div>}
@@ -20,7 +27,7 @@ export function EmptyState({ icon, title, description, action, className = '' })
       {action && <div className="empty-state__action">{action}</div>}
     </div>
   );
-}
+});
 
 EmptyState.propTypes = {
   /** Lucide icon or custom element displayed in the icon container */

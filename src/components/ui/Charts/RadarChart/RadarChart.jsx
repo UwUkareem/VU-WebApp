@@ -132,7 +132,6 @@ RadarChart.propTypes = {
       value: PropTypes.number.isRequired,
     })
   ),
-  colors: PropTypes.arrayOf(PropTypes.string),
   className: PropTypes.string,
   animated: PropTypes.bool,
 };

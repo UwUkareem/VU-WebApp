@@ -368,6 +368,7 @@
   --brand-700: var(--darkred-700);
   --brand-800: var(--darkred-800);
   --brand-900: var(--darkred-900);
+  --brand-subtle: rgba(255, 93, 49, 0.08);
 
   /* Text */
   --text-primary: var(--white-a90);
@@ -451,6 +452,11 @@
   --status-warning-text: var(--yellow-400);
   --status-warning-bg: rgba(255, 204, 0, 0.12);
   --status-warning-hover: rgba(255, 204, 0, 0.2);
+  --status-warning-border: rgba(255, 204, 0, 0.3);
+
+  --status-danger-text: var(--red-400);
+  --status-danger-bg: rgba(255, 59, 48, 0.12);
+  --status-danger-hover: rgba(255, 59, 48, 0.2);
 
   --status-info-text: var(--blue-400);
   --status-info-bg: rgba(0, 122, 255, 0.12);
@@ -477,6 +483,8 @@
   --divider-secondary: var(--black-a20);
 
   /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.05);
+  --shadow-md: rgba(0, 0, 0, 0.15);
   --shadow-window: 0 0 0 1px var(--border-subtle), 0 24px 48px -12px rgba(0, 0, 0, 0.6);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Users, Globe, Building2, Search } from 'lucide-react';
 import { EntityCard } from '../../../components/ui/Cards';
 import { Badge } from '../../../components/ui/Badge';
-import { SectionTitle } from '../../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
 import { Pagination } from '../../../components/ui/Pagination';
 import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../_shared/companyData';
@@ -23,14 +23,6 @@ const GRID_TEMPLATE = TABLE_COLUMNS.map((c) => `${c.fr}fr`).join(' ');
 const ROW_HEIGHT = 53;
 const HEADER_HEIGHT = 45;
 const PAGINATION_HEIGHT = 85;
-
-/* ── Chart data ── */
-const TEAM_CHART_DATA = [
-  { label: 'Engineering', value: 40 },
-  { label: 'Design', value: 20 },
-  { label: 'Product', value: 20 },
-  { label: 'Data', value: 20 },
-];
 
 /* ── Component ── */
 export const Overview = memo(function Overview({ onEditCompany, onViewMember }) {

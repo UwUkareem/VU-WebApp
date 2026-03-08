@@ -1,0 +1,1 @@
+export { SubmissionComplete } from './SubmissionComplete';

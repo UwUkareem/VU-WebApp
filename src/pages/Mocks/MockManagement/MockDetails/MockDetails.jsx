@@ -15,7 +15,7 @@ import { EntityCard, QuickInfoCard } from '../../../../components/ui/Cards';
 import { Button } from '../../../../components/ui/Button';
 import { Badge } from '../../../../components/ui/Badge';
 import { BarChart } from '../../../../components/ui/Charts';
-import { SectionTitle } from '../../../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import {
   getMockById,
   getMockStatus,

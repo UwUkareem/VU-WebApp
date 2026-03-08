@@ -1,7 +1,7 @@
 import { memo, useState, useCallback } from 'react';
 import { Save, Upload, Building2, Globe, RotateCcw } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
-import { SectionTitle } from '../../../components/ui/SectionTitle/SectionTitle';
+import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { Tags } from '../../../components/ui/Tags';
 import { COMPANY, updateCompany } from '../_shared/companyData';
 import './CompanySettings.css';
@@ -240,5 +240,3 @@ export const CompanySettings = memo(function CompanySettings() {
     </div>
   );
 });
-
-CompanySettings.propTypes = {};

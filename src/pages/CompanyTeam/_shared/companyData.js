@@ -1,5 +1,5 @@
 /**
- * Shared company & team data — consumed by Overview, MemberDetails, AddMembers, CompanySettings.
+ * Shared company data — consumed by Overview, MemberDetails, AddMembers, CompanySettings.
  * Replace with API calls in production.
  */
 

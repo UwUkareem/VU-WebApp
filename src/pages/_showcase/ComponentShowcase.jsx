@@ -435,7 +435,7 @@ export default function ComponentShowcase() {
               },
               {
                 icon: Building2,
-                label: 'Company & Team',
+                label: 'Company',
                 separator: true,
               },
               {

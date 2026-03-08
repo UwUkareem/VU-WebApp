@@ -1,0 +1,1 @@
+export { JobLanding } from './JobLanding';
