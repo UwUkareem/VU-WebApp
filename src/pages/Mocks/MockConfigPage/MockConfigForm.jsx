@@ -17,13 +17,13 @@ import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TextInput, DropdownInput, Textarea } from '../../../components/ui/Input';
 import { QuestionCard } from '../../../components/ui/Cards';
 import {
-  STEPS_CREATE,
-  STEPS_EDIT,
+  MOCK_STEPS_CREATE as STEPS_CREATE,
+  MOCK_STEPS_EDIT as STEPS_EDIT,
   MOCK_TYPE_OPTIONS,
   DIFFICULTY_OPTIONS,
   DURATION_OPTIONS,
   INITIAL_MOCK_FORM,
-} from './_shared/mockConfigData';
+} from '../../../data/config';
 import './MockConfigForm.css';
 
 /* -------------------------------------------------

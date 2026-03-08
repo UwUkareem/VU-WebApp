@@ -241,6 +241,12 @@
   justify-content: flex-start;
 }
 
+.job-details__action-divider {
+  height: 1px;
+  background-color: var(--border-subtle);
+  margin: var(--gap-xs) 0;
+}
+
 /* ── Combined Job Info card ── */
 
 .job-details__info-group {

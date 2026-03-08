@@ -6,7 +6,7 @@ import { Badge } from '../../../components/ui/Badge';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
 import { Pagination } from '../../../components/ui/Pagination';
-import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../_shared/companyData';
+import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../../../data/company';
 import './Overview.css';
 
 /* ── Table config — all columns sortable ── */

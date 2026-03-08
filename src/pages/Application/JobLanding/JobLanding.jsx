@@ -16,7 +16,7 @@ import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { EntityCard } from '../../../components/ui/Cards/EntityCard';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
-import { APPLICATION } from '../_shared/applicationData';
+import { APPLICATION } from '../../../data/application';
 import './JobLanding.css';
 
 /* ── Component ── */

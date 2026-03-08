@@ -1,26 +1,21 @@
 /**
- * Shared application data — consumed by JobLanding, CandidateForm, JobOverview, MockSession, SubmissionComplete.
- *
- * Simulates the candidate-side experience after opening a job application link.
- * In production, this data would come from the backend via the job link token.
+ * Unified application data — candidate-side experience.
+ * Builds the application context dynamically from a given jobId.
  */
 
-import { getJobById } from '../../Jobs/JobManagement/_shared/jobData';
-import { getMockById } from '../../Mocks/MockManagement/_shared/mockData';
-
-/* ── Simulated job link → resolves to job id:1 ── */
-const LINKED_JOB_ID = 1;
+import { getJobById } from './jobs';
+import { getMockById } from './mocks';
 
 /**
- * Build the application context from the linked job.
- * Merges job-level data with full mock details for the candidate view.
+ * Build the application context from a job ID.
+ * @param {number} jobId - The job to build context for (defaults to 1)
  */
-function buildApplicationContext() {
-  const job = getJobById(LINKED_JOB_ID);
+export function buildApplicationContext(jobId = 1) {
+  const job = getJobById(jobId);
   if (!job) return null;
 
   const mocks = (job.mocks || []).map((jm, idx) => {
-    const fullMock = getMockById(Number(String(jm.id).replace('m', '')));
+    const fullMock = getMockById(jm.id);
     return {
       id: jm.id,
       index: idx,
@@ -32,11 +27,10 @@ function buildApplicationContext() {
       difficulty: fullMock?.difficulty ?? 'Medium',
       description: fullMock?.description ?? '',
       questionsCount: fullMock?.questions?.length ?? 0,
-      status: 'locked', // 'locked' | 'available' | 'in-progress' | 'completed'
+      status: 'locked',
     };
   });
 
-  // First mock is available by default
   if (mocks.length > 0) mocks[0].status = 'available';
 
   return {
@@ -64,8 +58,25 @@ function buildApplicationContext() {
   };
 }
 
-/* ── Application state (mutable — same pattern as other data stores) ── */
-export const APPLICATION = buildApplicationContext();
+/* ── Application state (mutable) ── */
+export let APPLICATION = buildApplicationContext(1);
+
+/**
+ * Reset application for a different job.
+ */
+export function resetApplication(jobId) {
+  APPLICATION = buildApplicationContext(jobId);
+  CANDIDATE_INFO = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    resumeFile: null,
+    resumeName: '',
+    submittedAt: null,
+  };
+  return APPLICATION;
+}
 
 /* ── Candidate data filled during CandidateForm ── */
 export let CANDIDATE_INFO = {
@@ -78,61 +89,37 @@ export let CANDIDATE_INFO = {
   submittedAt: null,
 };
 
-/**
- * Save candidate form data.
- */
 export function saveCandidateInfo(data) {
   CANDIDATE_INFO = { ...CANDIDATE_INFO, ...data, submittedAt: new Date().toISOString() };
 }
 
-/**
- * Mark a mock as completed and unlock the next one.
- * Returns the updated mocks array.
- */
 export function completeMock(mockId) {
   if (!APPLICATION) return [];
-
   const idx = APPLICATION.mocks.findIndex((m) => m.id === mockId);
   if (idx === -1) return APPLICATION.mocks;
-
   APPLICATION.mocks[idx].status = 'completed';
-
-  // Unlock next mock if exists
   if (idx + 1 < APPLICATION.mocks.length && APPLICATION.mocks[idx + 1].status === 'locked') {
     APPLICATION.mocks[idx + 1].status = 'available';
   }
-
   return [...APPLICATION.mocks];
 }
 
-/**
- * Mark a mock as in-progress.
- */
 export function startMock(mockId) {
   if (!APPLICATION) return;
   const mock = APPLICATION.mocks.find((m) => m.id === mockId);
   if (mock) mock.status = 'in-progress';
 }
 
-/**
- * Check if all mocks are completed.
- */
 export function allMocksCompleted() {
   if (!APPLICATION) return false;
   return APPLICATION.mocks.every((m) => m.status === 'completed');
 }
 
-/**
- * Get mock by id from the application context.
- */
 export function getApplicationMock(mockId) {
   if (!APPLICATION) return null;
   return APPLICATION.mocks.find((m) => m.id === mockId) ?? null;
 }
 
-/**
- * Get completed mocks count.
- */
 export function getCompletedCount() {
   if (!APPLICATION) return 0;
   return APPLICATION.mocks.filter((m) => m.status === 'completed').length;
@@ -148,7 +135,7 @@ export const ASSESSMENT_RULES = [
   'Complete all assessments to submit your application',
 ];
 
-/* ── AI Interview sample conversation (for MockInterview demo) ── */
+/* ── AI Interview sample conversation ── */
 export const SAMPLE_CONVERSATION = [
   {
     id: 1,

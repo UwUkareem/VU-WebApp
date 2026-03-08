@@ -1,17 +1,14 @@
 /**
- * Shared mock (evaluation module) data � consumed by MockList, MockDetails, and MockConfig.
- * Replace with API calls in production.
+ * Unified mock (evaluation module) data.
+ * Single source of truth for all mock assessments across the app.
  *
  * IMPORTANT: A mock does NOT have its own "status" field.
- *   - "active"   = the mock is referenced by at least one ACTIVE job
- *   - "inactive"  = the mock is NOT used in any active job
+ *   - "active"  = the mock is referenced by at least one ACTIVE job
+ *   - "inactive" = the mock is NOT used in any active job
  * Status is derived at runtime via getMockStatus().
- *
- * Evaluation: mocks can have BOTH criteria AND questions simultaneously.
- * All weights (criteria + questions) share a single 100% pool.
  */
 
-import { JOBS } from '../../../Jobs/JobManagement/_shared/jobData';
+import { JOBS } from './jobs';
 
 export const MOCKS = [
   {
@@ -467,7 +464,7 @@ export const MOCKS = [
       {
         id: 'q1',
         title: 'Design a serverless event-driven architecture',
-        description: 'Lambda, SQS, EventBridge, DynamoDB � end-to-end design.',
+        description: 'Lambda, SQS, EventBridge, DynamoDB — end-to-end design.',
         difficulty: 'hard',
         estimatedTime: '20 minutes',
         weight: 25,
@@ -486,45 +483,318 @@ export const MOCKS = [
     passRate: 50,
     createdDate: 'Feb 1, 2026',
   },
+  // ── Additional mocks referenced by jobs but missing from original data ──
+  {
+    id: 13,
+    title: 'Design Challenge',
+    type: 'Design',
+    difficulty: 'Medium',
+    duration: '45 min',
+    durationMin: 45,
+    description:
+      'Hands-on design exercise evaluating visual thinking, UX decision-making, and rapid prototyping skills.',
+    skills: ['Figma', 'UX', 'Prototyping', 'Visual Design'],
+    criteria: [
+      { id: 'c1', name: 'Visual Thinking', weight: 20 },
+      { id: 'c2', name: 'UX Decision-Making', weight: 20 },
+      { id: 'c3', name: 'Prototyping Speed', weight: 15 },
+      { id: 'c4', name: 'Design Rationale', weight: 15 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Redesign a checkout flow for mobile',
+        description: 'Focus on reducing friction and improving conversion.',
+        difficulty: 'medium',
+        estimatedTime: '25 minutes',
+        weight: 30,
+      },
+      {
+        id: 'q2',
+        title: 'Design a notification center for a SaaS dashboard',
+        description: 'Consider hierarchy, grouping, and actionable notifications.',
+        difficulty: 'medium',
+        estimatedTime: '15 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 69,
+    totalSessions: 42,
+    passRate: 44,
+    createdDate: 'Jan 5, 2026',
+  },
+  {
+    id: 14,
+    title: 'Data Modeling',
+    type: 'Technical',
+    difficulty: 'Medium',
+    duration: '40 min',
+    durationMin: 40,
+    description:
+      'Evaluate data modeling skills including entity-relationship design, dimensional modeling, and data warehouse patterns.',
+    skills: ['ERD', 'Dimensional Modeling', 'Data Warehousing', 'ETL'],
+    criteria: [
+      { id: 'c1', name: 'Entity Design', weight: 20 },
+      { id: 'c2', name: 'Relationship Mapping', weight: 20 },
+      { id: 'c3', name: 'Dimensional Modeling', weight: 15 },
+      { id: 'c4', name: 'Data Quality', weight: 10 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Design a star schema for a retail analytics platform',
+        description: 'Fact tables, dimension tables, slowly changing dimensions.',
+        difficulty: 'medium',
+        estimatedTime: '20 minutes',
+        weight: 25,
+      },
+      {
+        id: 'q2',
+        title: 'Model a multi-tenant SaaS data architecture',
+        description: 'Isolation strategies, shared schemas, and performance.',
+        difficulty: 'hard',
+        estimatedTime: '15 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 70,
+    totalSessions: 58,
+    passRate: 45,
+    createdDate: 'Dec 10, 2025',
+  },
+  {
+    id: 15,
+    title: 'Strategy Assessment',
+    type: 'Analytical',
+    difficulty: 'Hard',
+    duration: '45 min',
+    durationMin: 45,
+    description:
+      'Evaluate product and business strategy skills including market analysis, prioritization, and roadmap planning.',
+    skills: ['Product Strategy', 'Market Analysis', 'Prioritization', 'Roadmapping'],
+    criteria: [
+      { id: 'c1', name: 'Strategic Thinking', weight: 25 },
+      { id: 'c2', name: 'Market Awareness', weight: 20 },
+      { id: 'c3', name: 'Prioritization Framework', weight: 20 },
+      { id: 'c4', name: 'Communication', weight: 10 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Define a go-to-market strategy for a new feature',
+        description: 'Target audience, positioning, pricing, and launch plan.',
+        difficulty: 'hard',
+        estimatedTime: '20 minutes',
+        weight: 25,
+      },
+      {
+        id: 'q2',
+        title: 'Prioritize a backlog of 10 features using a framework',
+        description: 'RICE, ICE, or custom framework with justification.',
+        difficulty: 'medium',
+        estimatedTime: '15 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 72,
+    totalSessions: 44,
+    passRate: 44,
+    createdDate: 'Jan 25, 2026',
+  },
+  {
+    id: 16,
+    title: 'Monitoring Setup',
+    type: 'Technical',
+    difficulty: 'Medium',
+    duration: '35 min',
+    durationMin: 35,
+    description:
+      'Assess ability to design monitoring, alerting, and observability systems for production infrastructure.',
+    skills: ['Prometheus', 'Grafana', 'Alerting', 'Observability'],
+    criteria: [
+      { id: 'c1', name: 'Metric Design', weight: 25 },
+      { id: 'c2', name: 'Alerting Strategy', weight: 25 },
+      { id: 'c3', name: 'Dashboard Design', weight: 15 },
+      { id: 'c4', name: 'Incident Response', weight: 15 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Design a monitoring stack for a microservices platform',
+        description: 'Metrics, logs, traces — full observability pipeline.',
+        difficulty: 'medium',
+        estimatedTime: '20 minutes',
+        weight: 30,
+      },
+      {
+        id: 'q2',
+        title: 'Create an alerting strategy that minimizes alert fatigue',
+        description: 'Severity levels, routing, escalation, and on-call workflows.',
+        difficulty: 'medium',
+        estimatedTime: '10 minutes',
+        weight: 15,
+      },
+    ],
+    avgScore: 82,
+    totalSessions: 30,
+    passRate: 58,
+    createdDate: 'Feb 5, 2026',
+  },
+  {
+    id: 17,
+    title: 'Model Design',
+    type: 'Technical',
+    difficulty: 'Hard',
+    duration: '50 min',
+    durationMin: 50,
+    description:
+      'Evaluate ML model architecture skills including model selection, feature engineering, and evaluation pipeline design.',
+    skills: ['PyTorch', 'Model Architecture', 'Feature Engineering', 'Evaluation'],
+    criteria: [
+      { id: 'c1', name: 'Model Selection', weight: 20 },
+      { id: 'c2', name: 'Architecture Design', weight: 20 },
+      { id: 'c3', name: 'Feature Engineering', weight: 15 },
+      { id: 'c4', name: 'Evaluation Strategy', weight: 15 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Design a recommendation system for an e-commerce platform',
+        description: 'Collaborative filtering, content-based, and hybrid approaches.',
+        difficulty: 'hard',
+        estimatedTime: '25 minutes',
+        weight: 25,
+      },
+      {
+        id: 'q2',
+        title: 'Explain your approach to handling class imbalance',
+        description: 'Sampling, loss functions, evaluation metrics, and practical trade-offs.',
+        difficulty: 'medium',
+        estimatedTime: '15 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 88,
+    totalSessions: 34,
+    passRate: 65,
+    createdDate: 'Jan 15, 2026',
+  },
+  {
+    id: 18,
+    title: 'Python Challenge',
+    type: 'Technical',
+    difficulty: 'Medium',
+    duration: '45 min',
+    durationMin: 45,
+    description:
+      'Test Python proficiency through data manipulation, scripting, and library-based coding challenges.',
+    skills: ['Python', 'Pandas', 'NumPy', 'Scripting'],
+    criteria: [
+      { id: 'c1', name: 'Code Quality', weight: 20 },
+      { id: 'c2', name: 'Library Usage', weight: 20 },
+      { id: 'c3', name: 'Problem Solving', weight: 15 },
+      { id: 'c4', name: 'Testing', weight: 10 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Process and analyze a CSV dataset using Pandas',
+        description: 'Cleaning, transformation, aggregation, and visualization.',
+        difficulty: 'medium',
+        estimatedTime: '20 minutes',
+        weight: 25,
+      },
+      {
+        id: 'q2',
+        title: 'Build a CLI tool for file batch processing',
+        description: 'argparse, file I/O, error handling, and logging.',
+        difficulty: 'medium',
+        estimatedTime: '15 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 92,
+    totalSessions: 41,
+    passRate: 72,
+    createdDate: 'Jan 20, 2026',
+  },
+  {
+    id: 19,
+    title: 'Paper Review',
+    type: 'Analytical',
+    difficulty: 'Medium',
+    duration: '30 min',
+    durationMin: 30,
+    description:
+      'Assess ability to read, comprehend, and critically evaluate ML research papers and translate findings into practice.',
+    skills: ['Research', 'Critical Analysis', 'ML Theory', 'Communication'],
+    criteria: [
+      { id: 'c1', name: 'Comprehension', weight: 25 },
+      { id: 'c2', name: 'Critical Analysis', weight: 25 },
+      { id: 'c3', name: 'Practical Application', weight: 15 },
+      { id: 'c4', name: 'Communication', weight: 10 },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        title: 'Summarize and critique the Attention Is All You Need paper',
+        description: 'Key contributions, limitations, and real-world impact.',
+        difficulty: 'medium',
+        estimatedTime: '15 minutes',
+        weight: 25,
+      },
+      {
+        id: 'q2',
+        title: 'How would you apply this paper to a production search system?',
+        description: 'Practical implementation, trade-offs, and scaling considerations.',
+        difficulty: 'hard',
+        estimatedTime: '10 minutes',
+        weight: 20,
+      },
+    ],
+    avgScore: 90,
+    totalSessions: 28,
+    passRate: 70,
+    createdDate: 'Feb 8, 2026',
+  },
 ];
 
 /* -------------------------------------------------
-   Status helpers � status is DERIVED from active jobs
+   Status helpers — status is DERIVED from active jobs
    ------------------------------------------------- */
 
-/** Check if a mock is "active" (used in at least one active job) */
 export function getMockStatus(mockId) {
   const mock = MOCKS.find((m) => m.id === mockId);
   if (!mock) return 'inactive';
-  return JOBS.some((j) => j.status === 'active' && j.mocks.some((m) => m.name === mock.title))
+  return JOBS.some((j) => j.status === 'active' && j.mocks.some((m) => m.id === mockId))
     ? 'active'
     : 'inactive';
 }
 
-/** Get computed status for a mock by title */
 export function getMockStatusByTitle(mockTitle) {
-  return JOBS.some((j) => j.status === 'active' && j.mocks.some((m) => m.name === mockTitle))
-    ? 'active'
-    : 'inactive';
+  const mock = MOCKS.find((m) => m.title === mockTitle);
+  if (!mock) return 'inactive';
+  return getMockStatus(mock.id);
 }
 
 /* -------------------------------------------------
    Query helpers
    ------------------------------------------------- */
 
-/** Look up a single mock by id */
 export function getMockById(id) {
   return MOCKS.find((m) => m.id === id) ?? null;
 }
 
-/** Count how many jobs use a given mock title */
 export function getUsedInJobsCount(mockTitle) {
-  return JOBS.filter((j) => j.mocks.some((m) => m.name === mockTitle)).length;
+  const mock = MOCKS.find((m) => m.title === mockTitle);
+  if (!mock) return 0;
+  return JOBS.filter((j) => j.mocks.some((m) => m.id === mock.id)).length;
 }
 
-/** Get jobs that use a given mock title � returns detailed objects */
 export function getJobsUsingMock(mockTitle) {
-  return JOBS.filter((j) => j.mocks.some((m) => m.name === mockTitle)).map((j) => ({
+  const mock = MOCKS.find((m) => m.title === mockTitle);
+  if (!mock) return [];
+  return JOBS.filter((j) => j.mocks.some((m) => m.id === mock.id)).map((j) => ({
     id: j.id,
     title: j.title,
     status: j.status,
@@ -533,9 +803,10 @@ export function getJobsUsingMock(mockTitle) {
   }));
 }
 
-/** Get bar-chart-ready data: candidates per job for a given mock */
 export function getCandidatesPerJob(mockTitle) {
-  return JOBS.filter((j) => j.mocks.some((m) => m.name === mockTitle)).map((j) => ({
+  const mock = MOCKS.find((m) => m.title === mockTitle);
+  if (!mock) return [];
+  return JOBS.filter((j) => j.mocks.some((m) => m.id === mock.id)).map((j) => ({
     label: j.title,
     candidates: j.totalApplied,
   }));
@@ -545,7 +816,6 @@ export function getCandidatesPerJob(mockTitle) {
    CRUD helpers (simulated)
    ------------------------------------------------- */
 
-/** Update a mock in-place (simulates API PATCH). Returns the updated mock or null. */
 export function updateMock(id, patch) {
   const idx = MOCKS.findIndex((m) => m.id === id);
   if (idx === -1) return null;
@@ -553,7 +823,6 @@ export function updateMock(id, patch) {
   return MOCKS[idx];
 }
 
-/** Add a new mock (simulates API POST). Auto-assigns an id. Returns the new mock. */
 export function addMock(data) {
   const maxId = MOCKS.reduce((m, mock) => Math.max(m, mock.id), 0);
   const newMock = {
@@ -572,7 +841,6 @@ export function addMock(data) {
   return newMock;
 }
 
-/** Remove a mock by id. Returns true if removed. */
 export function removeMock(id) {
   const idx = MOCKS.findIndex((m) => m.id === id);
   if (idx === -1) return false;
@@ -580,7 +848,6 @@ export function removeMock(id) {
   return true;
 }
 
-/** Duplicate a mock � copies everything except id, resets stats. Returns the new mock. */
 export function duplicateMock(id) {
   const source = getMockById(id);
   if (!source) return null;

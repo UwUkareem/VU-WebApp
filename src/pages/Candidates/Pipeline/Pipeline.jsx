@@ -1,15 +1,15 @@
 import { useState, useRef, useLayoutEffect, useEffect, useMemo, useCallback, memo } from 'react';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Shortcuts } from '../../../components/layout/Shortcuts';
 import { Tabs } from '../../../components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
 import { Badge } from '../../../components/ui/Badge';
 import { Pagination } from '../../../components/ui/Pagination';
+import { FilterOverlay } from '../../../components/ui/FilterOverlay';
 import { QuickInfoCard, InfoCard } from '../../../components/ui/Cards';
 import { RadarChart, RadialBarChart, AreaChart, BarChart } from '../../../components/ui/Charts';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
-import { CandidateDetails } from '../CandidateDetails';
-import { CANDIDATES } from '../_shared/candidateData';
+import { CANDIDATES } from '../../../data/candidates';
 import { ArrowRight, Plus, Users, CheckCircle, Award, Clock } from 'lucide-react';
 import './Pipeline.css';
 
@@ -44,12 +44,18 @@ const SHORTCUTS_CONFIG = {
     label: '5 Active jobs',
     icon: ArrowRight,
   },
-  primaryAction: {
-    label: 'Create job',
-    icon: Plus,
-    onClick: () => console.log('Create job'),
-  },
 };
+
+// Overlay filter definitions
+const UNIQUE_JOBS = [...new Set(CANDIDATES.map((c) => c.job))].sort();
+const STATUS_OPTIONS = ['Shortlist', 'Pending', 'Accepted', 'Rejected'];
+const OVERLAY_FILTERS = [
+  { key: 'status', label: 'Status', type: 'multiselect', options: STATUS_OPTIONS },
+  { key: 'job', label: 'Job', type: 'multiselect', options: UNIQUE_JOBS },
+  { key: 'score', label: 'Score', type: 'range', minLabel: 'Min', maxLabel: 'Max' },
+  { key: 'flaggedOnly', label: 'Anti-cheat', type: 'toggle', toggleLabel: 'Show flagged only' },
+];
+const INITIAL_OVERLAY = { status: [], job: [], score: { min: '', max: '' }, flaggedOnly: false };
 
 // Overview data
 const OVERVIEW_STATS = {
@@ -129,7 +135,8 @@ const JOB_PERFORMANCE_COLUMNS = [
 
 const GRID_TEMPLATE = `${TABLE_COLUMNS.map((col) => `${col.fr || 1}fr`).join(' ')} 2rem`;
 
-export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
+export const Pipeline = memo(function Pipeline() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('pipeline');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
@@ -138,8 +145,24 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
   const [overviewKey, setOverviewKey] = useState(0); // Force animation reset on tab change
   const [overviewSortColumn, setOverviewSortColumn] = useState(null);
   const [overviewSortDirection, setOverviewSortDirection] = useState(null);
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [lastSelectedId, setLastSelectedId] = useState(null);
+  const [searchValue, setSearchValue] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [overlayFilters, setOverlayFilters] = useState(INITIAL_OVERLAY);
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (overlayFilters.status.length) count++;
+    if (overlayFilters.job.length) count++;
+    if (overlayFilters.score.min || overlayFilters.score.max) count++;
+    if (overlayFilters.flaggedOnly) count++;
+    return count;
+  }, [overlayFilters]);
+
+  const handleSearchChange = useCallback((e) => {
+    setSearchValue(e.target.value);
+    setCurrentPage(1);
+  }, []);
 
   // Clear row selection when clicking anywhere outside a table row
   const handleDocumentClick = useCallback(
@@ -154,33 +177,16 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
   );
 
   useEffect(() => {
-    // Only listen when the table is visible (not in details view)
-    if (selectedCandidate) return;
     document.addEventListener('mousedown', handleDocumentClick);
     return () => document.removeEventListener('mousedown', handleDocumentClick);
-  }, [handleDocumentClick, selectedCandidate]);
-
-  const handleBackToPipeline = useCallback(() => {
-    setSelectedCandidate(null);
-    onBreadcrumbUpdate?.([{ label: 'Candidates' }]);
-  }, [onBreadcrumbUpdate]);
+  }, [handleDocumentClick]);
 
   const handleCandidateSelect = useCallback(
     (candidate) => {
-      setSelectedCandidate(candidate);
       setLastSelectedId(candidate.id);
-      onBreadcrumbUpdate?.([
-        {
-          label: 'Candidates',
-          onClick: (e) => {
-            e.preventDefault();
-            handleBackToPipeline();
-          },
-        },
-        { label: 'Candidate Details' },
-      ]);
+      navigate(`/candidates/${candidate.id}`);
     },
-    [onBreadcrumbUpdate, handleBackToPipeline]
+    [navigate]
   );
 
   const handleTabChange = useCallback((tab) => {
@@ -189,7 +195,22 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
   }, []);
 
   const sortedCandidates = useMemo(() => {
-    return [...MOCK_CANDIDATES].sort((a, b) => {
+    const q = searchValue.trim() ? searchValue.toLowerCase() : null;
+    const { status, job, score, flaggedOnly } = overlayFilters;
+    const scoreMin = score.min !== '' ? Number(score.min) : null;
+    const scoreMax = score.max !== '' ? Number(score.max) : null;
+
+    let list = MOCK_CANDIDATES.filter((c) => {
+      if (q && !c.name.toLowerCase().includes(q) && !c.job.toLowerCase().includes(q)) return false;
+      if (status.length && !status.map((s) => s.toLowerCase()).includes(c.status)) return false;
+      if (job.length && !job.includes(c.job)) return false;
+      if (scoreMin !== null && c.score < scoreMin) return false;
+      if (scoreMax !== null && c.score > scoreMax) return false;
+      if (flaggedOnly && c.antiCheat !== 'flagged') return false;
+      return true;
+    });
+
+    return list.sort((a, b) => {
       if (!sortColumn || !sortDirection) return 0;
       const aVal = a[sortColumn];
       const bVal = b[sortColumn];
@@ -197,7 +218,7 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
       if (typeof aVal === 'number') return (aVal - bVal) * modifier;
       return String(aVal).localeCompare(String(bVal)) * modifier;
     });
-  }, [sortColumn, sortDirection]);
+  }, [sortColumn, sortDirection, searchValue, overlayFilters]);
 
   // Responsive items per page calculation
   const tableRef = useRef(null);
@@ -290,16 +311,20 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
     [activeTab, handleTabChange]
   );
 
-  return selectedCandidate ? (
-    <CandidateDetails candidate={selectedCandidate} />
-  ) : (
+  return (
     <div className="pipeline-page">
       <Shortcuts
         filterLabel={SHORTCUTS_CONFIG.filterLabel}
-        filterCount={`${sortedCandidates.length} Candidate${sortedCandidates.length !== 1 ? 's' : ''} Selected`}
-        onFilterClick={() => console.log('Open filters')}
+        filterCount={
+          activeFilterCount
+            ? `${activeFilterCount} active`
+            : `${sortedCandidates.length} Candidates`
+        }
+        onFilterClick={() => setIsFilterOpen(true)}
+        searchValue={searchValue}
+        onSearchChange={handleSearchChange}
+        searchPlaceholder="Search candidates..."
         secondaryAction={SHORTCUTS_CONFIG.secondaryAction}
-        primaryAction={SHORTCUTS_CONFIG.primaryAction}
       />
 
       <div className="pipeline-page__dashboard">
@@ -510,10 +535,17 @@ export const Pipeline = memo(function Pipeline({ onBreadcrumbUpdate }) {
           )}
         </div>
       </div>
+
+      <FilterOverlay
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filters={OVERLAY_FILTERS}
+        values={overlayFilters}
+        onApply={(v) => {
+          setOverlayFilters(v);
+          setCurrentPage(1);
+        }}
+      />
     </div>
   );
 });
-
-Pipeline.propTypes = {
-  onBreadcrumbUpdate: PropTypes.func,
-};

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import { Toggle } from '../../../../components/ui/Toggle';
-import { getApplicationMock, SAMPLE_CONVERSATION } from '../../_shared/applicationData';
+import { getApplicationMock, SAMPLE_CONVERSATION } from '../../../../data/application';
 import './MockInterview.css';
 
 /* â”€â”€ Timer helper â”€â”€ */
@@ -607,6 +607,6 @@ export const MockInterview = memo(function MockInterview({ mockId, onComplete })
 });
 
 MockInterview.propTypes = {
-  mockId: PropTypes.string.isRequired,
+  mockId: PropTypes.number.isRequired,
   onComplete: PropTypes.func.isRequired,
 };

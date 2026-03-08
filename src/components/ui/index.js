@@ -13,3 +13,4 @@ export { QuickSort } from './QuickSort';
 export { Stepper } from './Stepper';
 export { TableHeader, TableRow, TableCell } from './Tables';
 export { SectionTitle } from './SectionTitle';
+export { FilterOverlay } from './FilterOverlay';

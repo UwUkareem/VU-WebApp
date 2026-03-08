@@ -15,7 +15,7 @@ import {
   Loader,
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
-import { getApplicationMock } from '../../_shared/applicationData';
+import { getApplicationMock } from '../../../../data/application';
 import './MockIntro.css';
 
 /* ── Device-check states ── */
@@ -193,6 +193,6 @@ export const MockIntro = memo(function MockIntro({ mockId, onStart }) {
 });
 
 MockIntro.propTypes = {
-  mockId: PropTypes.string.isRequired,
+  mockId: PropTypes.number.isRequired,
   onStart: PropTypes.func.isRequired,
 };

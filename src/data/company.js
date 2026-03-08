@@ -1,6 +1,5 @@
 /**
- * Shared company data — consumed by Overview, MemberDetails, AddMembers, CompanySettings.
- * Replace with API calls in production.
+ * Unified company data — single source of truth for company, team, roles, and requests.
  */
 
 /* ── Roles & Permissions ── */
@@ -581,19 +580,18 @@ export const JOIN_REQUESTS = [
   },
 ];
 
-/* ── Helpers ── */
+/* -------------------------------------------------
+   Helpers
+   ------------------------------------------------- */
 
-/** Get a team member by ID */
 export function getMemberById(id) {
   return TEAM_MEMBERS.find((m) => m.id === id) ?? null;
 }
 
-/** Get a join request by ID */
 export function getJoinRequestById(id) {
   return JOIN_REQUESTS.find((r) => r.id === id) ?? null;
 }
 
-/** Update a member in-place */
 export function updateMember(id, patch) {
   const idx = TEAM_MEMBERS.findIndex((m) => m.id === id);
   if (idx === -1) return null;
@@ -601,7 +599,6 @@ export function updateMember(id, patch) {
   return TEAM_MEMBERS[idx];
 }
 
-/** Remove a member (cannot remove last owner) */
 export function removeMember(id) {
   const member = getMemberById(id);
   if (!member) return false;
@@ -614,12 +611,10 @@ export function removeMember(id) {
   return true;
 }
 
-/** Get activities for a specific member, sorted by most recent */
 export function getMemberActivities(memberId) {
   return ACTIVITY_LOG.filter((a) => a.memberId === memberId).sort((a, b) => b.id - a.id);
 }
 
-/** Accept a join request — adds user to team, removes from requests */
 export function acceptJoinRequest(requestId, role = 'viewer') {
   const idx = JOIN_REQUESTS.findIndex((r) => r.id === requestId);
   if (idx === -1) return null;
@@ -644,7 +639,6 @@ export function acceptJoinRequest(requestId, role = 'viewer') {
   return newMember;
 }
 
-/** Decline a join request */
 export function declineJoinRequest(requestId) {
   const idx = JOIN_REQUESTS.findIndex((r) => r.id === requestId);
   if (idx === -1) return false;
@@ -652,7 +646,6 @@ export function declineJoinRequest(requestId) {
   return true;
 }
 
-/** Update a join request (Owner can edit before accepting) */
 export function updateJoinRequest(requestId, patch) {
   const idx = JOIN_REQUESTS.findIndex((r) => r.id === requestId);
   if (idx === -1) return null;
@@ -660,18 +653,15 @@ export function updateJoinRequest(requestId, patch) {
   return JOIN_REQUESTS[idx];
 }
 
-/** Update company info */
 export function updateCompany(patch) {
   Object.assign(COMPANY, patch);
   return COMPANY;
 }
 
-/** Get pending join requests count */
 export function getPendingRequestsCount() {
   return JOIN_REQUESTS.filter((r) => r.status === 'pending').length;
 }
 
-/** Generate a placeholder invitation link */
 export function generateInviteLink() {
   const code = Math.random().toString(36).substring(2, 10).toUpperCase();
   return `https://app.acmetech.io/join/${code}`;

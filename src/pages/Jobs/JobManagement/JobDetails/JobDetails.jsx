@@ -13,6 +13,9 @@ import {
   CalendarDays,
   PlayCircle,
   Rocket,
+  Eye,
+  Share2,
+  Check,
 } from 'lucide-react';
 import { EntityCard, QuickInfoCard } from '../../../../components/ui/Cards';
 import { Button } from '../../../../components/ui/Button';
@@ -20,7 +23,8 @@ import { Badge } from '../../../../components/ui/Badge';
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../../components/ui/Tables';
 import { RadarChart, AreaChart, RadialBarChart } from '../../../../components/ui/Charts';
-import { getJobById, updateJob, duplicateJob } from '../_shared/jobData';
+import { getJobById, updateJob, duplicateJob } from '../../../../data/jobs';
+import { getCandidatesByJobId } from '../../../../data/candidates';
 import './JobDetails.css';
 
 /* -------------------------------------------------
@@ -48,9 +52,16 @@ const ICON_SM = 14;
 /* -------------------------------------------------
    JobDetails
    ------------------------------------------------- */
-export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplicate, onViewJob }) {
+export const JobDetails = memo(function JobDetails({
+  jobId = 1,
+  onEdit,
+  onDuplicate,
+  onViewJob,
+  onTest,
+}) {
   const [refreshKey, setRefreshKey] = useState(0);
   const _ = refreshKey; // consume to trigger re-render on mutation
+  const [copied, setCopied] = useState(false);
   const job = getJobById(jobId);
 
   const totalDuration = useMemo(
@@ -77,6 +88,12 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
   );
 
   const handleEdit = useCallback(() => onEdit?.(jobId), [onEdit, jobId]);
+
+  const handleShare = useCallback(() => {
+    navigator.clipboard.writeText(`${window.location.origin}/apply/${jobId}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [jobId]);
 
   const handleClose = useCallback(() => {
     updateJob(jobId, { status: 'closed' });
@@ -199,7 +216,7 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
             <SectionTitle variant="inline">Top Candidates</SectionTitle>
             <div className="job-details__cand-table">
               <TableHeader columns={TABLE_COLUMNS} gridTemplateColumns={GRID_TEMPLATE} />
-              {job.topCandidates.map((c) => (
+              {getCandidatesByJobId(job.id).map((c) => (
                 <TableRow key={c.id} gridTemplateColumns={GRID_TEMPLATE}>
                   <TableCell
                     color="tertiary"
@@ -247,8 +264,29 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
         {/* Quick Actions */}
         <div className="job-details__card">
           <div className="job-details__action-list">
+            {/* — Candidate-facing actions — */}
             <Button
               variant="primary"
+              size="sm"
+              iconLeft={copied ? <Check size={ICON_SM} /> : <Share2 size={ICON_SM} />}
+              onClick={handleShare}
+            >
+              {copied ? 'Copied!' : 'Share Job'}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconLeft={<Eye size={ICON_SM} />}
+              onClick={() => onTest?.()}
+            >
+              Test Application
+            </Button>
+
+            <div className="job-details__action-divider" />
+
+            {/* — Management actions — */}
+            <Button
+              variant="secondary"
               size="sm"
               iconLeft={<Pencil size={ICON_SM} />}
               onClick={handleEdit}
@@ -257,7 +295,7 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
             </Button>
             {(job.status === 'draft' || job.status === 'scheduled') && (
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="sm"
                 iconLeft={<Rocket size={ICON_SM} />}
                 onClick={handlePublish}
@@ -267,22 +305,12 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
             )}
             {job.status === 'active' && (
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="sm"
                 iconLeft={<PauseCircle size={ICON_SM} />}
                 onClick={handlePause}
               >
                 Pause Job
-              </Button>
-            )}
-            {job.status !== 'closed' && (
-              <Button
-                variant="danger"
-                size="sm"
-                iconLeft={<XCircle size={ICON_SM} />}
-                onClick={handleClose}
-              >
-                Close Job
               </Button>
             )}
             {job.status === 'closed' && (
@@ -295,6 +323,20 @@ export const JobDetails = memo(function JobDetails({ jobId = 1, onEdit, onDuplic
                 Re-open Job
               </Button>
             )}
+            {job.status !== 'closed' && (
+              <Button
+                variant="danger"
+                size="sm"
+                iconLeft={<XCircle size={ICON_SM} />}
+                onClick={handleClose}
+              >
+                Close Job
+              </Button>
+            )}
+
+            <div className="job-details__action-divider" />
+
+            {/* — Utility — */}
             <Button
               variant="ghost"
               size="sm"

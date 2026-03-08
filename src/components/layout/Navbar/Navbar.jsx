@@ -7,6 +7,12 @@ import './Navbar.css';
 
 const EMPTY_BREADCRUMBS = [];
 
+/* ── Avatar menu items — stable module-level constant ── */
+const AVATAR_MENU = [
+  { icon: User, label: 'My Profile', page: 'profile' },
+  { icon: Building2, label: 'Company Settings', page: 'company-settings' },
+];
+
 /* ── Helper: initials from name ── */
 function getInitials(name = '') {
   return name
@@ -71,12 +77,6 @@ const Navbar = memo(function Navbar({
     },
     [onNavigate]
   );
-
-  /* ── Avatar menu items ── */
-  const AVATAR_MENU = [
-    { icon: User, label: 'My Profile', page: 'profile' },
-    { icon: Building2, label: 'Company Settings', page: 'company-settings' },
-  ];
 
   return (
     <nav className={['navbar', className].filter(Boolean).join(' ')}>

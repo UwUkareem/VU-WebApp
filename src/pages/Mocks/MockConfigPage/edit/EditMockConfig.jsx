@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { MockConfigForm } from '../MockConfigForm';
-import { getMockById, getMockStatus, updateMock } from '../../MockManagement/_shared/mockData';
-import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../_shared/mockConfigData';
+import { getMockById, getMockStatus, updateMock } from '../../../../data/mocks';
+import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../../../../data/config';
 
 /**
  * Convert a shared-data mock object into the form shape expected by MockConfigForm.

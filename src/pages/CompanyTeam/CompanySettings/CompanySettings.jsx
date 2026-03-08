@@ -3,7 +3,7 @@ import { Save, Upload, Building2, Globe, RotateCcw } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { Tags } from '../../../components/ui/Tags';
-import { COMPANY, updateCompany } from '../_shared/companyData';
+import { COMPANY, updateCompany } from '../../../data/company';
 import './CompanySettings.css';
 
 const ICON_SM = 14;

@@ -19,7 +19,7 @@ import {
   ASSESSMENT_RULES,
   getCompletedCount,
   allMocksCompleted,
-} from '../_shared/applicationData';
+} from '../../../data/application';
 import './JobOverview.css';
 
 /* ── Status icon mapping ── */

@@ -4,7 +4,7 @@ import './Tabs.css';
 
 const EMPTY_ITEMS = [];
 
-export const Tabs = memo(function Tabs({ items = EMPTY_ITEMS, className = '' }) {
+export const Tabs = memo(function Tabs({ items = EMPTY_ITEMS, className = '', scrollRef }) {
   const tabsRef = useRef(null);
   const [indicatorStyle, setIndicatorStyle] = useState({});
 
@@ -23,7 +23,15 @@ export const Tabs = memo(function Tabs({ items = EMPTY_ITEMS, className = '' }) 
     <div ref={tabsRef} className={['tabs', className].filter(Boolean).join(' ')} role="tablist">
       <span className="tabs__indicator" style={indicatorStyle} aria-hidden="true" />
       {items.map((item, index) => (
-        <Tab key={index} label={item.label} isActive={item.isActive} onClick={item.onClick} />
+        <Tab
+          key={index}
+          label={item.label}
+          isActive={item.isActive}
+          onClick={() => {
+            item.onClick?.();
+            if (scrollRef?.current) scrollRef.current.scrollTop = 0;
+          }}
+        />
       ))}
     </div>
   );
@@ -52,6 +60,7 @@ Tabs.propTypes = {
     })
   ),
   className: PropTypes.string,
+  scrollRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
 };
 
 Tab.propTypes = {

@@ -1,6 +1,7 @@
 /**
- * Shared mock job data — consumed by JobList, JobDetails, and EditConfig.
- * Replace with API calls in production.
+ * Unified job data — single source of truth for all job listings.
+ * Mocks use real mockId references (integers matching MOCKS[].id).
+ * Candidates are derived from candidates.js — no topCandidates duplication.
  */
 
 export const JOBS = [
@@ -30,7 +31,7 @@ export const JOBS = [
     skills: ['Java', 'Spring Boot', 'PostgreSQL', 'Microservices', 'Docker'],
     mocks: [
       {
-        id: 'm1',
+        id: 4,
         name: 'Database Design',
         weight: 25,
         duration: '40 min',
@@ -39,7 +40,7 @@ export const JOBS = [
         passRate: 58,
       },
       {
-        id: 'm2',
+        id: 1,
         name: 'System Design',
         weight: 30,
         duration: '45 min',
@@ -48,7 +49,7 @@ export const JOBS = [
         passRate: 49,
       },
       {
-        id: 'm3',
+        id: 3,
         name: 'Behavioral',
         weight: 15,
         duration: '30 min',
@@ -57,7 +58,7 @@ export const JOBS = [
         passRate: 76,
       },
       {
-        id: 'm4',
+        id: 2,
         name: 'Coding Challenge',
         weight: 30,
         duration: '60 min',
@@ -81,58 +82,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 14 },
       { label: 'Feb 27', value: 8 },
       { label: 'Feb 28', value: 11 },
-    ],
-    topCandidates: [
-      {
-        id: 1,
-        name: 'Sarah Johnson',
-        email: 'sarah.j@mail.com',
-        score: 94,
-        date: 'Feb 12, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Java', 'Spring Boot', 'Docker'],
-      },
-      {
-        id: 2,
-        name: 'Omar Al-Hassan',
-        email: 'omar.h@mail.com',
-        score: 91,
-        date: 'Feb 10, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['PostgreSQL', 'Microservices'],
-      },
-      {
-        id: 3,
-        name: 'Leila Ahmadi',
-        email: 'leila.a@mail.com',
-        score: 88,
-        date: 'Feb 9, 2026',
-        antiCheat: 'flagged',
-        status: 'pending',
-        skills: ['Java', 'PostgreSQL'],
-      },
-      {
-        id: 4,
-        name: 'James Park',
-        email: 'james.p@mail.com',
-        score: 86,
-        date: 'Feb 8, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['Spring Boot', 'Docker'],
-      },
-      {
-        id: 5,
-        name: 'Priya Sharma',
-        email: 'priya.s@mail.com',
-        score: 83,
-        date: 'Feb 7, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Java', 'Microservices'],
-      },
     ],
   },
   {
@@ -161,7 +110,7 @@ export const JOBS = [
     skills: ['React', 'TypeScript', 'CSS', 'Vite'],
     mocks: [
       {
-        id: 'm1',
+        id: 6,
         name: 'React Challenge',
         weight: 40,
         duration: '50 min',
@@ -170,7 +119,7 @@ export const JOBS = [
         passRate: 65,
       },
       {
-        id: 'm2',
+        id: 7,
         name: 'CSS Architecture',
         weight: 30,
         duration: '30 min',
@@ -179,7 +128,7 @@ export const JOBS = [
         passRate: 58,
       },
       {
-        id: 'm3',
+        id: 1,
         name: 'System Design',
         weight: 30,
         duration: '45 min',
@@ -203,58 +152,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 6 },
       { label: 'Feb 27', value: 12 },
       { label: 'Feb 28', value: 9 },
-    ],
-    topCandidates: [
-      {
-        id: 6,
-        name: 'Lina Markovic',
-        email: 'lina.m@mail.com',
-        score: 92,
-        date: 'Feb 11, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['React', 'TypeScript'],
-      },
-      {
-        id: 7,
-        name: 'David Kim',
-        email: 'david.k@mail.com',
-        score: 89,
-        date: 'Feb 10, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['CSS', 'Vite'],
-      },
-      {
-        id: 8,
-        name: 'Aya Mahmoud',
-        email: 'aya.m@mail.com',
-        score: 85,
-        date: 'Feb 9, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['React', 'CSS'],
-      },
-      {
-        id: 9,
-        name: 'Rania Ibrahim',
-        email: 'rania.i@mail.com',
-        score: 83,
-        date: 'Feb 8, 2026',
-        antiCheat: 'flagged',
-        status: 'shortlist',
-        skills: ['TypeScript'],
-      },
-      {
-        id: 10,
-        name: 'Samuel Carter',
-        email: 'sam.c@mail.com',
-        score: 80,
-        date: 'Feb 7, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['React', 'Vite'],
-      },
     ],
   },
   {
@@ -283,7 +180,7 @@ export const JOBS = [
     skills: ['Figma', 'User Research', 'Prototyping', 'Design Systems'],
     mocks: [
       {
-        id: 'm1',
+        id: 8,
         name: 'Portfolio Review',
         weight: 40,
         duration: '25 min',
@@ -292,7 +189,7 @@ export const JOBS = [
         passRate: 52,
       },
       {
-        id: 'm2',
+        id: 13,
         name: 'Design Challenge',
         weight: 40,
         duration: '45 min',
@@ -301,7 +198,7 @@ export const JOBS = [
         passRate: 44,
       },
       {
-        id: 'm3',
+        id: 3,
         name: 'Behavioral',
         weight: 20,
         duration: '30 min',
@@ -325,38 +222,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 4 },
       { label: 'Feb 27', value: 7 },
       { label: 'Feb 28', value: 5 },
-    ],
-    topCandidates: [
-      {
-        id: 11,
-        name: 'Elena Volkov',
-        email: 'elena.v@mail.com',
-        score: 88,
-        date: 'Feb 10, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Figma', 'Prototyping'],
-      },
-      {
-        id: 12,
-        name: 'Isabella Rossi',
-        email: 'isa.r@mail.com',
-        score: 84,
-        date: 'Feb 9, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['User Research'],
-      },
-      {
-        id: 13,
-        name: 'Sofia Martinez',
-        email: 'sofia.m@mail.com',
-        score: 79,
-        date: 'Feb 8, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Design Systems'],
-      },
     ],
   },
   {
@@ -385,7 +250,7 @@ export const JOBS = [
     skills: ['SQL', 'Python', 'Tableau', 'Excel', 'Data Modeling'],
     mocks: [
       {
-        id: 'm1',
+        id: 10,
         name: 'SQL Assessment',
         weight: 35,
         duration: '40 min',
@@ -394,7 +259,7 @@ export const JOBS = [
         passRate: 40,
       },
       {
-        id: 'm2',
+        id: 14,
         name: 'Data Modeling',
         weight: 35,
         duration: '40 min',
@@ -403,7 +268,7 @@ export const JOBS = [
         passRate: 45,
       },
       {
-        id: 'm3',
+        id: 9,
         name: 'Case Study',
         weight: 30,
         duration: '60 min',
@@ -427,38 +292,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 11 },
       { label: 'Feb 27', value: 3 },
       { label: 'Feb 28', value: 7 },
-    ],
-    topCandidates: [
-      {
-        id: 14,
-        name: 'Chen Wei',
-        email: 'chen.w@mail.com',
-        score: 86,
-        date: 'Feb 11, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['SQL', 'Python'],
-      },
-      {
-        id: 15,
-        name: 'Hannah Miller',
-        email: 'hannah.m@mail.com',
-        score: 82,
-        date: 'Feb 10, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Tableau', 'Excel'],
-      },
-      {
-        id: 16,
-        name: 'Raj Patel',
-        email: 'raj.p@mail.com',
-        score: 78,
-        date: 'Feb 9, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Data Modeling'],
-      },
     ],
   },
   {
@@ -487,7 +320,7 @@ export const JOBS = [
     skills: ['Node.js', 'Go', 'REST APIs', 'MongoDB', 'Redis', 'Kubernetes'],
     mocks: [
       {
-        id: 'm1',
+        id: 1,
         name: 'System Design',
         weight: 30,
         duration: '45 min',
@@ -496,7 +329,7 @@ export const JOBS = [
         passRate: 60,
       },
       {
-        id: 'm2',
+        id: 2,
         name: 'Coding Challenge',
         weight: 30,
         duration: '60 min',
@@ -505,7 +338,7 @@ export const JOBS = [
         passRate: 68,
       },
       {
-        id: 'm3',
+        id: 5,
         name: 'API Design',
         weight: 25,
         duration: '35 min',
@@ -514,7 +347,7 @@ export const JOBS = [
         passRate: 58,
       },
       {
-        id: 'm4',
+        id: 3,
         name: 'Behavioral',
         weight: 15,
         duration: '30 min',
@@ -533,58 +366,6 @@ export const JOBS = [
       { label: 'Jan 12', value: 22 },
       { label: 'Jan 19', value: 16 },
       { label: 'Jan 26', value: 10 },
-    ],
-    topCandidates: [
-      {
-        id: 17,
-        name: 'Layla Farouk',
-        email: 'layla.f@mail.com',
-        score: 96,
-        date: 'Jan 15, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['Node.js', 'Go', 'Kubernetes'],
-      },
-      {
-        id: 18,
-        name: 'Nathan Brooks',
-        email: 'nathan.b@mail.com',
-        score: 93,
-        date: 'Jan 14, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['REST APIs', 'MongoDB'],
-      },
-      {
-        id: 19,
-        name: 'Mohammed Ali',
-        email: 'mo.a@mail.com',
-        score: 91,
-        date: 'Jan 12, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Redis', 'Go'],
-      },
-      {
-        id: 20,
-        name: 'Tom Anderson',
-        email: 'tom.a@mail.com',
-        score: 87,
-        date: 'Jan 10, 2026',
-        antiCheat: 'flagged',
-        status: 'shortlist',
-        skills: ['Node.js', 'MongoDB'],
-      },
-      {
-        id: 21,
-        name: 'Olivia Zhang',
-        email: 'olivia.z@mail.com',
-        score: 85,
-        date: 'Jan 8, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Kubernetes', 'REST APIs'],
-      },
     ],
   },
   {
@@ -613,7 +394,7 @@ export const JOBS = [
     skills: ['Roadmapping', 'Agile', 'Analytics', 'Stakeholder Mgmt'],
     mocks: [
       {
-        id: 'm1',
+        id: 9,
         name: 'Case Study',
         weight: 40,
         duration: '60 min',
@@ -622,7 +403,7 @@ export const JOBS = [
         passRate: 48,
       },
       {
-        id: 'm2',
+        id: 3,
         name: 'Behavioral',
         weight: 30,
         duration: '30 min',
@@ -631,7 +412,7 @@ export const JOBS = [
         passRate: 56,
       },
       {
-        id: 'm3',
+        id: 15,
         name: 'Strategy Assessment',
         weight: 30,
         duration: '45 min',
@@ -655,38 +436,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 3 },
       { label: 'Feb 27', value: 9 },
       { label: 'Feb 28', value: 6 },
-    ],
-    topCandidates: [
-      {
-        id: 22,
-        name: 'Daniel Park',
-        email: 'daniel.p@mail.com',
-        score: 90,
-        date: 'Feb 14, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Agile', 'Analytics'],
-      },
-      {
-        id: 23,
-        name: 'Amira Hassan',
-        email: 'amira.h@mail.com',
-        score: 86,
-        date: 'Feb 13, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['Roadmapping'],
-      },
-      {
-        id: 24,
-        name: "Kevin O'Brien",
-        email: 'kevin.o@mail.com',
-        score: 82,
-        date: 'Feb 12, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Stakeholder Mgmt'],
-      },
     ],
   },
   {
@@ -715,7 +464,7 @@ export const JOBS = [
     skills: ['AWS', 'Terraform', 'Docker', 'CI/CD', 'Linux'],
     mocks: [
       {
-        id: 'm1',
+        id: 11,
         name: 'CI/CD Pipeline',
         weight: 35,
         duration: '40 min',
@@ -724,7 +473,7 @@ export const JOBS = [
         passRate: 55,
       },
       {
-        id: 'm2',
+        id: 12,
         name: 'Cloud Architecture',
         weight: 35,
         duration: '50 min',
@@ -733,7 +482,7 @@ export const JOBS = [
         passRate: 50,
       },
       {
-        id: 'm3',
+        id: 16,
         name: 'Monitoring Setup',
         weight: 30,
         duration: '35 min',
@@ -757,38 +506,6 @@ export const JOBS = [
       { label: 'Feb 26', value: 3 },
       { label: 'Feb 27', value: 4 },
       { label: 'Feb 28', value: 6 },
-    ],
-    topCandidates: [
-      {
-        id: 25,
-        name: 'Nora Petersen',
-        email: 'nora.p@mail.com',
-        score: 91,
-        date: 'Feb 13, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['AWS', 'Docker'],
-      },
-      {
-        id: 26,
-        name: 'Tariq Nasser',
-        email: 'tariq.n@mail.com',
-        score: 87,
-        date: 'Feb 12, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['Terraform', 'Linux'],
-      },
-      {
-        id: 27,
-        name: 'Lucas Weber',
-        email: 'lucas.w@mail.com',
-        score: 82,
-        date: 'Feb 11, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['CI/CD'],
-      },
     ],
   },
   {
@@ -817,7 +534,7 @@ export const JOBS = [
     skills: ['Python', 'PyTorch', 'TensorFlow', 'MLOps', 'Statistics'],
     mocks: [
       {
-        id: 'm1',
+        id: 17,
         name: 'Model Design',
         weight: 35,
         duration: '50 min',
@@ -826,7 +543,7 @@ export const JOBS = [
         passRate: 65,
       },
       {
-        id: 'm2',
+        id: 18,
         name: 'Python Challenge',
         weight: 25,
         duration: '45 min',
@@ -835,7 +552,7 @@ export const JOBS = [
         passRate: 72,
       },
       {
-        id: 'm3',
+        id: 1,
         name: 'System Design',
         weight: 25,
         duration: '45 min',
@@ -844,7 +561,7 @@ export const JOBS = [
         passRate: 60,
       },
       {
-        id: 'm4',
+        id: 19,
         name: 'Paper Review',
         weight: 15,
         duration: '30 min',
@@ -869,47 +586,21 @@ export const JOBS = [
       { label: 'Feb 27', value: 3 },
       { label: 'Feb 28', value: 5 },
     ],
-    topCandidates: [
-      {
-        id: 28,
-        name: 'Fatima Al-Rashid',
-        email: 'fatima.r@mail.com',
-        score: 96,
-        date: 'Feb 12, 2026',
-        antiCheat: 'clean',
-        status: 'accepted',
-        skills: ['PyTorch', 'MLOps'],
-      },
-      {
-        id: 29,
-        name: 'Hadi Mansour',
-        email: 'hadi.m@mail.com',
-        score: 93,
-        date: 'Feb 11, 2026',
-        antiCheat: 'clean',
-        status: 'shortlist',
-        skills: ['TensorFlow', 'Statistics'],
-      },
-      {
-        id: 30,
-        name: 'Mark Reed',
-        email: 'mark.r@mail.com',
-        score: 89,
-        date: 'Feb 10, 2026',
-        antiCheat: 'clean',
-        status: 'pending',
-        skills: ['Python', 'PyTorch'],
-      },
-    ],
   },
 ];
 
-/** Look up a single job by id */
+/* -------------------------------------------------
+   Query helpers
+   ------------------------------------------------- */
+
 export function getJobById(id) {
   return JOBS.find((j) => j.id === id) ?? null;
 }
 
-/** Update a job in-place (simulates API PATCH). Returns the updated job or null. */
+/* -------------------------------------------------
+   CRUD helpers (simulated)
+   ------------------------------------------------- */
+
 export function updateJob(id, patch) {
   const idx = JOBS.findIndex((j) => j.id === id);
   if (idx === -1) return null;
@@ -917,7 +608,6 @@ export function updateJob(id, patch) {
   return JOBS[idx];
 }
 
-/** Add a new job (simulates API POST). Auto-assigns an id. Returns the new job. */
 export function addJob(data) {
   const maxId = JOBS.reduce((m, j) => Math.max(m, j.id), 0);
   const newJob = {
@@ -931,14 +621,12 @@ export function addJob(data) {
     passRate: 0,
     activeDays: 0,
     applicationTrend: [],
-    topCandidates: [],
     ...data,
   };
   JOBS.push(newJob);
   return newJob;
 }
 
-/** Remove a job by id. Returns true if removed. */
 export function removeJob(id) {
   const idx = JOBS.findIndex((j) => j.id === id);
   if (idx === -1) return false;
@@ -946,7 +634,6 @@ export function removeJob(id) {
   return true;
 }
 
-/** Duplicate a job — copies everything except id, resets stats. Returns the new job. */
 export function duplicateJob(id) {
   const source = getJobById(id);
   if (!source) return null;
@@ -964,6 +651,5 @@ export function duplicateJob(id) {
     passRate: 0,
     activeDays: 0,
     applicationTrend: [],
-    topCandidates: [],
   });
 }

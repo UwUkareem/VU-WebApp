@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Users,
   Lock,
+  Eye,
 } from 'lucide-react';
 import { EntityCard, QuickInfoCard } from '../../../../components/ui/Cards';
 import { Button } from '../../../../components/ui/Button';
@@ -22,7 +23,7 @@ import {
   duplicateMock,
   getJobsUsingMock,
   getCandidatesPerJob,
-} from '../_shared/mockData';
+} from '../../../../data/mocks';
 import './MockDetails.css';
 
 const ICON_SM = 14;
@@ -35,6 +36,7 @@ export const MockDetails = memo(function MockDetails({
   onEdit,
   onDuplicate,
   onViewMock,
+  onTestMock,
 }) {
   const mock = getMockById(mockId);
 
@@ -170,11 +172,20 @@ export const MockDetails = memo(function MockDetails({
               <div className="mock-details__active-notice">
                 <Lock size={12} />
                 <span>
-                  Active in {jobsUsing.filter((j) => j.status === 'active').length} job(s) � some
+                  Active in {jobsUsing.filter((j) => j.status === 'active').length} job(s) — some
                   fields locked
                 </span>
               </div>
             )}
+            <Button
+              variant="secondary"
+              size="sm"
+              iconLeft={<Eye size={ICON_SM} />}
+              onClick={() => onTestMock?.(jobsUsing[0]?.id ?? 1)}
+            >
+              Test Mock
+            </Button>
+            <div className="mock-details__action-divider" />
             <Button
               variant="ghost"
               size="sm"

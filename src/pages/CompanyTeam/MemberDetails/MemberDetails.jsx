@@ -25,7 +25,7 @@ import {
   declineJoinRequest,
   CURRENT_USER_ID,
   ROLES,
-} from '../_shared/companyData';
+} from '../../../data/company';
 import './MemberDetails.css';
 
 /* ── Consistent activity icon for every action ── */

@@ -11,7 +11,7 @@ import {
   acceptJoinRequest,
   declineJoinRequest,
   generateInviteLink,
-} from '../_shared/companyData';
+} from '../../../data/company';
 import './AddMembers.css';
 
 const ICON_SM = 14;

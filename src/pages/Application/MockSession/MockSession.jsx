@@ -2,7 +2,7 @@ import { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { MockIntro } from './MockIntro';
 import { MockInterview } from './MockInterview';
-import { startMock, completeMock } from '../_shared/applicationData';
+import { startMock, completeMock } from '../../../data/application';
 
 /* ── Phases: intro → interview → done ── */
 
@@ -27,6 +27,6 @@ export const MockSession = memo(function MockSession({ mockId, onComplete }) {
 });
 
 MockSession.propTypes = {
-  mockId: PropTypes.string.isRequired,
+  mockId: PropTypes.number.isRequired,
   onComplete: PropTypes.func.isRequired,
 };

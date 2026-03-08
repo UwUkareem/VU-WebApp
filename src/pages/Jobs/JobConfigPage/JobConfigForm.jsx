@@ -24,17 +24,17 @@ import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TextInput, DropdownInput, Textarea } from '../../../components/ui/Input';
 import { EditBanner } from './edit/EditBanner';
 import {
-  STEPS_CREATE,
-  STEPS_EDIT,
+  JOB_STEPS_CREATE as STEPS_CREATE,
+  JOB_STEPS_EDIT as STEPS_EDIT,
   JOB_TYPE_OPTIONS,
   SENIORITY_OPTIONS,
   LOCATION_TYPE_OPTIONS,
   DEPARTMENT_OPTIONS,
   MOCK_LIBRARY,
   EMAIL_TRIGGERS,
-  INITIAL_FORM,
+  INITIAL_JOB_FORM as INITIAL_FORM,
   parseDurationMin,
-} from './_shared/jobConfigData';
+} from '../../../data/config';
 import './JobConfigForm.css';
 
 /* -------------------------------------------------

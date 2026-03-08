@@ -1,15 +1,15 @@
 /**
- * Shared candidate data — consumed by Pipeline and referenced in jobData.
- * Some candidates here are the same ones listed in job topCandidates.
- * Replace with API calls in production.
+ * Unified candidate data — single source of truth for all candidates.
+ * Each candidate references a jobId (integer) matching JOBS[].id.
  */
 
 export const CANDIDATES = [
-  // ── From Job 1: Senior Software Engineer ──
+  // ── Job 1: Senior Software Engineer ──
   {
     id: 1,
     name: 'Sarah Johnson',
     email: 'sarah.j@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 94,
     date: 'Feb 12, 2026',
@@ -21,6 +21,7 @@ export const CANDIDATES = [
     id: 2,
     name: 'Omar Al-Hassan',
     email: 'omar.h@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 91,
     date: 'Feb 10, 2026',
@@ -32,6 +33,7 @@ export const CANDIDATES = [
     id: 3,
     name: 'Leila Ahmadi',
     email: 'leila.a@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 88,
     date: 'Feb 9, 2026',
@@ -43,6 +45,7 @@ export const CANDIDATES = [
     id: 4,
     name: 'James Park',
     email: 'james.p@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 86,
     date: 'Feb 8, 2026',
@@ -54,6 +57,7 @@ export const CANDIDATES = [
     id: 5,
     name: 'Priya Sharma',
     email: 'priya.s@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 83,
     date: 'Feb 7, 2026',
@@ -62,11 +66,12 @@ export const CANDIDATES = [
     skills: ['Java', 'Microservices'],
   },
 
-  // ── From Job 2: Frontend Developer ──
+  // ── Job 2: Frontend Developer ──
   {
     id: 6,
     name: 'Lina Markovic',
     email: 'lina.m@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 92,
     date: 'Feb 11, 2026',
@@ -78,6 +83,7 @@ export const CANDIDATES = [
     id: 7,
     name: 'David Kim',
     email: 'david.k@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 89,
     date: 'Feb 10, 2026',
@@ -89,6 +95,7 @@ export const CANDIDATES = [
     id: 8,
     name: 'Aya Mahmoud',
     email: 'aya.m@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 85,
     date: 'Feb 9, 2026',
@@ -100,6 +107,7 @@ export const CANDIDATES = [
     id: 9,
     name: 'Rania Ibrahim',
     email: 'rania.i@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 83,
     date: 'Feb 8, 2026',
@@ -111,6 +119,7 @@ export const CANDIDATES = [
     id: 10,
     name: 'Samuel Carter',
     email: 'sam.c@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 80,
     date: 'Feb 7, 2026',
@@ -119,11 +128,12 @@ export const CANDIDATES = [
     skills: ['React', 'Vite'],
   },
 
-  // ── From Job 3: UX Designer ──
+  // ── Job 3: UX Designer ──
   {
     id: 11,
     name: 'Elena Volkov',
     email: 'elena.v@mail.com',
+    jobId: 3,
     job: 'UX Designer',
     score: 88,
     date: 'Feb 10, 2026',
@@ -135,6 +145,7 @@ export const CANDIDATES = [
     id: 12,
     name: 'Isabella Rossi',
     email: 'isa.r@mail.com',
+    jobId: 3,
     job: 'UX Designer',
     score: 84,
     date: 'Feb 9, 2026',
@@ -146,6 +157,7 @@ export const CANDIDATES = [
     id: 13,
     name: 'Sofia Martinez',
     email: 'sofia.m@mail.com',
+    jobId: 3,
     job: 'UX Designer',
     score: 79,
     date: 'Feb 8, 2026',
@@ -154,11 +166,12 @@ export const CANDIDATES = [
     skills: ['Design Systems'],
   },
 
-  // ── From Job 4: Data Analyst ──
+  // ── Job 4: Data Analyst ──
   {
     id: 14,
     name: 'Chen Wei',
     email: 'chen.w@mail.com',
+    jobId: 4,
     job: 'Data Analyst',
     score: 86,
     date: 'Feb 11, 2026',
@@ -170,6 +183,7 @@ export const CANDIDATES = [
     id: 15,
     name: 'Hannah Miller',
     email: 'hannah.m@mail.com',
+    jobId: 4,
     job: 'Data Analyst',
     score: 82,
     date: 'Feb 10, 2026',
@@ -181,6 +195,7 @@ export const CANDIDATES = [
     id: 16,
     name: 'Raj Patel',
     email: 'raj.p@mail.com',
+    jobId: 4,
     job: 'Data Analyst',
     score: 78,
     date: 'Feb 9, 2026',
@@ -189,11 +204,12 @@ export const CANDIDATES = [
     skills: ['Data Modeling'],
   },
 
-  // ── From Job 5: Backend Engineer ──
+  // ── Job 5: Backend Engineer ──
   {
     id: 17,
     name: 'Layla Farouk',
     email: 'layla.f@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 96,
     date: 'Jan 15, 2026',
@@ -205,6 +221,7 @@ export const CANDIDATES = [
     id: 18,
     name: 'Nathan Brooks',
     email: 'nathan.b@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 93,
     date: 'Jan 14, 2026',
@@ -216,6 +233,7 @@ export const CANDIDATES = [
     id: 19,
     name: 'Mohammed Ali',
     email: 'mo.a@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 91,
     date: 'Jan 12, 2026',
@@ -227,6 +245,7 @@ export const CANDIDATES = [
     id: 20,
     name: 'Tom Anderson',
     email: 'tom.a@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 87,
     date: 'Jan 10, 2026',
@@ -238,6 +257,7 @@ export const CANDIDATES = [
     id: 21,
     name: 'Olivia Zhang',
     email: 'olivia.z@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 85,
     date: 'Jan 8, 2026',
@@ -246,11 +266,12 @@ export const CANDIDATES = [
     skills: ['Kubernetes', 'REST APIs'],
   },
 
-  // ── From Job 6: Product Manager ──
+  // ── Job 6: Product Manager ──
   {
     id: 22,
     name: 'Daniel Park',
     email: 'daniel.p@mail.com',
+    jobId: 6,
     job: 'Product Manager',
     score: 90,
     date: 'Feb 14, 2026',
@@ -262,6 +283,7 @@ export const CANDIDATES = [
     id: 23,
     name: 'Amira Hassan',
     email: 'amira.h@mail.com',
+    jobId: 6,
     job: 'Product Manager',
     score: 86,
     date: 'Feb 13, 2026',
@@ -273,6 +295,7 @@ export const CANDIDATES = [
     id: 24,
     name: "Kevin O'Brien",
     email: 'kevin.o@mail.com',
+    jobId: 6,
     job: 'Product Manager',
     score: 82,
     date: 'Feb 12, 2026',
@@ -281,11 +304,12 @@ export const CANDIDATES = [
     skills: ['Stakeholder Mgmt'],
   },
 
-  // ── From Job 7: DevOps Engineer ──
+  // ── Job 7: DevOps Engineer ──
   {
     id: 25,
     name: 'Nora Petersen',
     email: 'nora.p@mail.com',
+    jobId: 7,
     job: 'DevOps Engineer',
     score: 91,
     date: 'Feb 13, 2026',
@@ -297,6 +321,7 @@ export const CANDIDATES = [
     id: 26,
     name: 'Tariq Nasser',
     email: 'tariq.n@mail.com',
+    jobId: 7,
     job: 'DevOps Engineer',
     score: 87,
     date: 'Feb 12, 2026',
@@ -308,6 +333,7 @@ export const CANDIDATES = [
     id: 27,
     name: 'Lucas Weber',
     email: 'lucas.w@mail.com',
+    jobId: 7,
     job: 'DevOps Engineer',
     score: 82,
     date: 'Feb 11, 2026',
@@ -316,11 +342,12 @@ export const CANDIDATES = [
     skills: ['CI/CD'],
   },
 
-  // ── From Job 8: ML Engineer ──
+  // ── Job 8: ML Engineer ──
   {
     id: 28,
     name: 'Fatima Al-Rashid',
     email: 'fatima.r@mail.com',
+    jobId: 8,
     job: 'ML Engineer',
     score: 96,
     date: 'Feb 12, 2026',
@@ -332,6 +359,7 @@ export const CANDIDATES = [
     id: 29,
     name: 'Hadi Mansour',
     email: 'hadi.m@mail.com',
+    jobId: 8,
     job: 'ML Engineer',
     score: 93,
     date: 'Feb 11, 2026',
@@ -343,6 +371,7 @@ export const CANDIDATES = [
     id: 30,
     name: 'Mark Reed',
     email: 'mark.r@mail.com',
+    jobId: 8,
     job: 'ML Engineer',
     score: 89,
     date: 'Feb 10, 2026',
@@ -351,11 +380,12 @@ export const CANDIDATES = [
     skills: ['Python', 'PyTorch'],
   },
 
-  // ── Additional candidates (not in any job's topCandidates) ──
+  // ── Additional candidates ──
   {
     id: 31,
     name: 'Youssef Hamed',
     email: 'youssef.h@mail.com',
+    jobId: 1,
     job: 'Senior Software Engineer',
     score: 77,
     date: 'Feb 6, 2026',
@@ -367,6 +397,7 @@ export const CANDIDATES = [
     id: 32,
     name: 'Ahmed ElSayed',
     email: 'ahmed.e@mail.com',
+    jobId: 5,
     job: 'Backend Engineer',
     score: 72,
     date: 'Feb 5, 2026',
@@ -378,6 +409,7 @@ export const CANDIDATES = [
     id: 33,
     name: 'Maria Lopez',
     email: 'maria.l@mail.com',
+    jobId: 6,
     job: 'Product Manager',
     score: 68,
     date: 'Feb 4, 2026',
@@ -389,6 +421,7 @@ export const CANDIDATES = [
     id: 34,
     name: 'James Chen',
     email: 'james.c@mail.com',
+    jobId: 2,
     job: 'Frontend Developer',
     score: 75,
     date: 'Feb 3, 2026',
@@ -400,6 +433,7 @@ export const CANDIDATES = [
     id: 35,
     name: 'Aisha Yusuf',
     email: 'aisha.y@mail.com',
+    jobId: 3,
     job: 'UX Designer',
     score: 71,
     date: 'Feb 2, 2026',
@@ -411,6 +445,7 @@ export const CANDIDATES = [
     id: 36,
     name: 'Tobias Muller',
     email: 'tobias.m@mail.com',
+    jobId: 4,
     job: 'Data Analyst',
     score: 65,
     date: 'Feb 1, 2026',
@@ -422,6 +457,7 @@ export const CANDIDATES = [
     id: 37,
     name: 'Mei Lin',
     email: 'mei.l@mail.com',
+    jobId: 8,
     job: 'ML Engineer',
     score: 81,
     date: 'Jan 30, 2026',
@@ -433,6 +469,7 @@ export const CANDIDATES = [
     id: 38,
     name: 'Carlos Rivera',
     email: 'carlos.r@mail.com',
+    jobId: 7,
     job: 'DevOps Engineer',
     score: 73,
     date: 'Jan 29, 2026',
@@ -442,12 +479,18 @@ export const CANDIDATES = [
   },
 ];
 
-/** Look up a single candidate by id */
+/* -------------------------------------------------
+   Query helpers
+   ------------------------------------------------- */
+
 export function getCandidateById(id) {
   return CANDIDATES.find((c) => c.id === id) ?? null;
 }
 
-/** Get all candidates for a given job title */
 export function getCandidatesByJob(jobTitle) {
   return CANDIDATES.filter((c) => c.job === jobTitle);
+}
+
+export function getCandidatesByJobId(jobId) {
+  return CANDIDATES.filter((c) => c.jobId === jobId);
 }

@@ -15,12 +15,7 @@ import { EntityCard } from '../../components/ui/Cards';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { SectionTitle } from '../../components/ui/SectionTitle';
-import {
-  getMemberActivities,
-  TEAM_MEMBERS,
-  CURRENT_USER_ID,
-  ROLES,
-} from '../CompanyTeam/_shared/companyData';
+import { getMemberActivities, TEAM_MEMBERS, CURRENT_USER_ID, ROLES } from '../../data/company';
 import './ProfilePage.css';
 
 const ICON_SM = 14;

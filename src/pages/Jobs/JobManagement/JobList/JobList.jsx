@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, memo } from 'react';
+import PropTypes from 'prop-types';
 import {
   Users,
   Pencil,
@@ -15,7 +16,8 @@ import { Shortcuts } from '../../../../components/layout/Shortcuts';
 import { EntityCard } from '../../../../components/ui/Cards';
 import { QuickSort } from '../../../../components/ui/QuickSort';
 import { Pagination } from '../../../../components/ui/Pagination';
-import { JOBS } from '../_shared/jobData';
+import { FilterOverlay } from '../../../../components/ui/FilterOverlay';
+import { JOBS } from '../../../../data/jobs';
 import './JobList.css';
 
 /* ── Menu options ── */
@@ -65,20 +67,45 @@ const ITEMS_PER_PAGE = 6;
 
 const SHORTCUTS_CONFIG = {
   filterLabel: 'Filters',
-  primaryAction: {
-    label: 'Create job',
-    icon: Plus,
-    onClick: () => console.log('Create job'),
+};
+
+/* ── Overlay filter definitions ── */
+
+const DEPARTMENTS = [...new Set(MOCK_JOBS.map((j) => j.department))].sort();
+const OVERLAY_FILTERS = [
+  { key: 'department', label: 'Department', type: 'multiselect', options: DEPARTMENTS },
+  { key: 'score', label: 'Avg Score', type: 'range', minLabel: 'Min', maxLabel: 'Max' },
+  {
+    key: 'candidates',
+    label: 'Total Candidates',
+    type: 'range',
+    minLabel: 'Min',
+    maxLabel: 'Max',
   },
+];
+const INITIAL_OVERLAY = {
+  department: [],
+  score: { min: '', max: '' },
+  candidates: { min: '', max: '' },
 };
 
 /* ── Component ── */
 
-export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
+export const JobList = memo(function JobList({ onViewJob, onEditJob, onCreateJob }) {
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState('Recently Modified');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [overlayFilters, setOverlayFilters] = useState(INITIAL_OVERLAY);
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (overlayFilters.department.length) count++;
+    if (overlayFilters.score.min || overlayFilters.score.max) count++;
+    if (overlayFilters.candidates.min || overlayFilters.candidates.max) count++;
+    return count;
+  }, [overlayFilters]);
 
   const handleSearchChange = useCallback((e) => {
     setSearchValue(e.target.value);
@@ -88,11 +115,21 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
   const filteredJobs = useMemo(() => {
     const statusLower = statusFilter !== 'All' ? statusFilter.toLowerCase() : null;
     const q = searchValue.trim() ? searchValue.toLowerCase() : null;
+    const { department, score, candidates } = overlayFilters;
+    const scoreMin = score.min !== '' ? Number(score.min) : null;
+    const scoreMax = score.max !== '' ? Number(score.max) : null;
+    const candMin = candidates.min !== '' ? Number(candidates.min) : null;
+    const candMax = candidates.max !== '' ? Number(candidates.max) : null;
 
     let jobs = MOCK_JOBS.filter((j) => {
       if (statusLower && j.status !== statusLower) return false;
       if (q && !j.title.toLowerCase().includes(q) && !j.department.toLowerCase().includes(q))
         return false;
+      if (department.length && !department.includes(j.department)) return false;
+      if (scoreMin !== null && j.avgScore < scoreMin) return false;
+      if (scoreMax !== null && j.avgScore > scoreMax) return false;
+      if (candMin !== null && j.totalCandidates < candMin) return false;
+      if (candMax !== null && j.totalCandidates > candMax) return false;
       return true;
     });
 
@@ -112,7 +149,7 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
     }
 
     return jobs;
-  }, [statusFilter, sortBy, searchValue]);
+  }, [statusFilter, sortBy, searchValue, overlayFilters]);
 
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / ITEMS_PER_PAGE));
   const safePage = Math.min(currentPage, totalPages);
@@ -124,15 +161,8 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
 
   const handleMenuSelect = useCallback(
     (jobId, action) => {
-      if (action === 'view') {
-        onViewJob?.(jobId);
-        return;
-      }
-      if (action === 'edit') {
-        onEditJob?.(jobId);
-        return;
-      }
-      console.log(`Action: ${action} on job #${jobId}`);
+      if (action === 'view') onViewJob?.(jobId);
+      else if (action === 'edit') onEditJob?.(jobId);
     },
     [onViewJob, onEditJob]
   );
@@ -141,11 +171,16 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
     <div className="job-list">
       <Shortcuts
         filterLabel={SHORTCUTS_CONFIG.filterLabel}
-        onFilterClick={() => console.log('Open filters')}
+        filterCount={activeFilterCount ? `${activeFilterCount} active` : undefined}
+        onFilterClick={() => setIsFilterOpen(true)}
         searchValue={searchValue}
         onSearchChange={handleSearchChange}
-        searchPlaceholder="Search"
-        primaryAction={SHORTCUTS_CONFIG.primaryAction}
+        searchPlaceholder="Search jobs..."
+        primaryAction={{
+          label: 'Create Job',
+          icon: Plus,
+          onClick: () => onCreateJob?.(),
+        }}
       >
         <QuickSort
           groups={[
@@ -223,6 +258,23 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob }) {
           />
         </div>
       </div>
+
+      <FilterOverlay
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filters={OVERLAY_FILTERS}
+        values={overlayFilters}
+        onApply={(v) => {
+          setOverlayFilters(v);
+          setCurrentPage(1);
+        }}
+      />
     </div>
   );
 });
+
+JobList.propTypes = {
+  onViewJob: PropTypes.func,
+  onEditJob: PropTypes.func,
+  onCreateJob: PropTypes.func,
+};

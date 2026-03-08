@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, memo } from 'react';
+import { useState, useMemo, useCallback, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Briefcase, MapPin, Calendar, Check, List, X } from 'lucide-react';
 import { EntityCard } from '../../../components/ui/Cards';
@@ -44,6 +44,7 @@ const DECISION_ACTIONS = [
 
 export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
   const [activeTab, setActiveTab] = useState('feedback');
+  const tabContentRef = useRef(null);
 
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab);
@@ -70,12 +71,10 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
     [activeTab, handleTabChange]
   );
 
-  const handleDecision = useCallback(
-    (action) => {
-      console.log(`Decision: ${action} for`, candidate.name);
-    },
-    [candidate.name]
-  );
+  const handleDecision = useCallback((action) => {
+    // TODO: wire to candidate state update
+    void action;
+  }, []);
 
   return (
     <div className="candidate-details">
@@ -95,9 +94,9 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
         />
 
         <div className="candidate-details__tabs-container">
-          <Tabs items={tabs} />
+          <Tabs items={tabs} scrollRef={tabContentRef} />
 
-          <div className="candidate-details__tab-content">
+          <div ref={tabContentRef} className="candidate-details__tab-content">
             {activeTab === 'feedback' && <FullFeedback candidate={candidate} />}
             {activeTab === 'replay' && <MockReplay candidate={candidate} />}
             {activeTab === 'analysis' && <CVAnalysis candidate={candidate} />}
