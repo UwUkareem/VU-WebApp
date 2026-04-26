@@ -74,7 +74,7 @@
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   .shortcuts {
     padding: var(--padding-sm) var(--padding-md);
     gap: var(--gap-md);

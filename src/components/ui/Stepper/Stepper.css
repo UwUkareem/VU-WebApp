@@ -43,7 +43,7 @@
 .stepper__button {
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
+  gap: var(--gap-sm);
   padding: var(--padding-xs) var(--padding-sm);
   border-radius: var(--radius-sm);
   border: none;
@@ -140,4 +140,52 @@
 
 .stepper__step--reachable .stepper__label {
   color: var(--text-tertiary);
+}
+
+@media (max-width: 1023px) {
+  .stepper {
+    padding-block: var(--padding-sm);
+  }
+
+  .stepper__list {
+    justify-content: center;
+  }
+
+  .stepper__button {
+    gap: var(--gap-xs);
+    padding-inline: var(--padding-xs);
+  }
+
+  .stepper__label {
+    font-size: var(--text-xs);
+  }
+}
+
+@media (max-width: 767px) {
+  .stepper {
+    padding-block: var(--padding-xs);
+  }
+
+  .stepper__step {
+    flex: 0 0 auto;
+  }
+
+  .stepper__connector {
+    width: 1.5rem;
+    flex: 0 0 1.5rem;
+    margin-inline: var(--gap-xs);
+  }
+
+  .stepper__button {
+    padding: 0;
+  }
+
+  .stepper__indicator {
+    width: var(--size-5);
+    height: var(--size-5);
+  }
+
+  .stepper__label {
+    display: none;
+  }
 }

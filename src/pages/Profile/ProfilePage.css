@@ -8,6 +8,36 @@
   min-height: 0;
 }
 
+.profile-page__desktop-layout {
+  display: flex;
+  gap: var(--gap-lg);
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.profile-page__mobile-shell {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.profile-page__mobile-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.profile-page__mobile-content::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
 .profile-page--empty {
   align-items: center;
   justify-content: center;
@@ -236,7 +266,7 @@
 /* ── Sidebar ── */
 
 .profile-page__sidebar {
-  width: 320px;
+  width: 360px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -363,4 +393,90 @@
   white-space: nowrap;
   line-height: 1.5;
   text-transform: capitalize;
+}
+
+@media (max-width: 1024px) {
+  .profile-page {
+    padding: var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .profile-page__desktop-layout {
+    display: none;
+  }
+
+  .profile-page__mobile-shell {
+    display: block;
+  }
+
+  .profile-page__mobile-content {
+    gap: var(--gap-md);
+  }
+
+  .profile-page__scroll > .entity-card,
+  .profile-page__mobile-content > .entity-card,
+  .profile-page__section,
+  .profile-page__card {
+    padding: var(--padding-lg);
+  }
+
+  .profile-page__mobile-content .entity-card__cols-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-page__mobile-content .entity-card__cols-content > :nth-child(2) {
+    display: none;
+  }
+
+  .profile-page__activity-item {
+    flex-wrap: wrap;
+  }
+
+  .profile-page__activity-time {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .profile-page__info-row {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .profile-page {
+    padding: var(--padding-md);
+  }
+
+  .profile-page__mobile-content > .entity-card,
+  .profile-page__section,
+  .profile-page__card {
+    padding: var(--padding-md);
+  }
+
+  .profile-page__mobile-content .entity-card__cols {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .profile-page__mobile-content .entity-card__cols-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-page__mobile-content .entity-card__cols-content > :nth-child(2),
+  .profile-page__mobile-content .entity-card__cols-content > :nth-child(3) {
+    display: none;
+  }
+
+  .profile-page__activity-target,
+  .profile-page__activity-date {
+    white-space: normal;
+  }
+
+  .profile-page__permissions {
+    gap: var(--gap-xs);
+  }
+
+  .profile-page__perm-tag {
+    padding: var(--padding-xs) var(--padding-sm);
+  }
 }

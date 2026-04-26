@@ -465,3 +465,59 @@
     transform: translateY(0);
   }
 }
+
+@media (max-width: 1024px) {
+  .job-overview {
+    padding: var(--padding-md);
+  }
+
+  .job-overview__content {
+    grid-template-columns: 1fr;
+  }
+
+  .job-overview__sidebar {
+    position: static;
+    top: auto;
+  }
+
+  .job-overview__progress-card,
+  .job-overview__mock-card,
+  .job-overview__rules-card,
+  .job-overview__stats-card,
+  .job-overview__submit-section {
+    padding: var(--padding-md);
+  }
+
+  .job-overview__confirm-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .job-overview {
+    padding: var(--padding-sm);
+  }
+
+  .job-overview__progress-header,
+  .job-overview__mock-header {
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
+  }
+
+  .job-overview__mock-card {
+    align-items: flex-start;
+  }
+
+  .job-overview__confirm-card {
+    padding: var(--padding-md);
+  }
+
+  .job-overview__confirm-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .job-overview__confirm-actions .btn {
+    flex: 1 1 0;
+  }
+}

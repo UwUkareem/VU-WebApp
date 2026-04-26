@@ -353,7 +353,7 @@
 
   .pipeline-page__header,
   .pipeline-page__row {
-    grid-template-columns: 1.2fr 1.5fr 1fr !important;
+    grid-template-columns: 1.5fr 1fr 1fr 0.5fr !important;
   }
 
   .pipeline-page__header > :nth-child(2),
@@ -362,8 +362,7 @@
   .pipeline-page__header > :nth-child(7),
   .pipeline-page__row > :nth-child(2),
   .pipeline-page__row > :nth-child(4),
-  .pipeline-page__row > :nth-child(5),
-  .pipeline-page__row > :nth-child(7) {
+  .pipeline-page__row > :nth-child(5) {
     display: none;
   }
 

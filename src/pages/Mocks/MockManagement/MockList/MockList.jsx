@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Pencil, Eye, Plus, Copy, Clock, Trash2, Briefcase, Zap } from 'lucide-react';
 import { Shortcuts } from '../../../../components/layout/Shortcuts';
 import { EntityCard } from '../../../../components/ui/Cards';
-import { QuickSort } from '../../../../components/ui/QuickSort';
 import { Pagination } from '../../../../components/ui/Pagination';
 import { FilterOverlay } from '../../../../components/ui/FilterOverlay';
 import { MOCKS, getUsedInJobsCount, getMockStatus } from '../../../../data/mocks';
@@ -36,15 +35,36 @@ const SHORTCUTS_CONFIG = {
   filterLabel: 'Filters',
 };
 
-/* Overlay filter definitions (don't duplicate QuickSort status/type) */
+/* Overlay filter definitions */
 
 const DIFFICULTY_FILTERS = ['Easy', 'Medium', 'Hard'];
 const OVERLAY_FILTERS = [
+  {
+    key: 'statusQuick',
+    label: 'Status',
+    type: 'select',
+    options: STATUS_FILTERS.filter((v) => v !== 'All').map((v) => ({ value: v, label: v })),
+  },
+  {
+    key: 'typeQuick',
+    label: 'Type',
+    type: 'select',
+    options: TYPE_FILTERS.filter((v) => v !== 'All').map((v) => ({ value: v, label: v })),
+  },
+  {
+    key: 'sortQuick',
+    label: 'Sort by',
+    type: 'select',
+    options: SORT_OPTIONS.map((v) => ({ value: v, label: v })),
+  },
   { key: 'difficulty', label: 'Difficulty', type: 'multiselect', options: DIFFICULTY_FILTERS },
   { key: 'score', label: 'Avg Score', type: 'range', minLabel: 'Min', maxLabel: 'Max' },
   { key: 'sessions', label: 'Total Sessions', type: 'range', minLabel: 'Min', maxLabel: 'Max' },
 ];
 const INITIAL_OVERLAY = {
+  statusQuick: '',
+  typeQuick: '',
+  sortQuick: 'Recently Created',
   difficulty: [],
   score: { min: '', max: '' },
   sessions: { min: '', max: '' },
@@ -63,6 +83,9 @@ export const MockList = memo(function MockList({ onViewMock, onEditMock, onCreat
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
+    if (overlayFilters.statusQuick) count++;
+    if (overlayFilters.typeQuick) count++;
+    if (overlayFilters.sortQuick && overlayFilters.sortQuick !== 'Recently Created') count++;
     if (overlayFilters.difficulty.length) count++;
     if (overlayFilters.score.min || overlayFilters.score.max) count++;
     if (overlayFilters.sessions.min || overlayFilters.sessions.max) count++;
@@ -171,36 +194,7 @@ export const MockList = memo(function MockList({ onViewMock, onEditMock, onCreat
         onSearchChange={handleSearchChange}
         searchPlaceholder="Search mocks..."
         primaryAction={shortcutsConfig.primaryAction}
-      >
-        <QuickSort
-          groups={[
-            {
-              label: 'Status',
-              options: STATUS_FILTERS,
-              value: statusFilter,
-              onChange: (f) => {
-                setStatusFilter(f);
-                setCurrentPage(1);
-              },
-            },
-            {
-              label: 'Type',
-              options: TYPE_FILTERS,
-              value: typeFilter,
-              onChange: (f) => {
-                setTypeFilter(f);
-                setCurrentPage(1);
-              },
-            },
-            {
-              label: 'Sort by',
-              options: SORT_OPTIONS,
-              value: sortBy,
-              onChange: setSortBy,
-            },
-          ]}
-        />
-      </Shortcuts>
+      />
 
       <div className="mock-list__content">
         <div className="mock-list__cards">
@@ -260,6 +254,9 @@ export const MockList = memo(function MockList({ onViewMock, onEditMock, onCreat
         values={overlayFilters}
         onApply={(v) => {
           setOverlayFilters(v);
+          setStatusFilter(v.statusQuick || 'All');
+          setTypeFilter(v.typeQuick || 'All');
+          setSortBy(v.sortQuick || 'Recently Created');
           setCurrentPage(1);
         }}
       />

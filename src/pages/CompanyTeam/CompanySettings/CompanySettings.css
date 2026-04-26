@@ -4,8 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-left: var(--padding-lg);
-  padding-top: var(--padding-lg);
+  padding: var(--padding-lg);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -21,6 +20,7 @@
   gap: var(--gap-md);
   max-width: 52rem;
   width: 100%;
+  margin-inline: auto;
 }
 
 /* ── Section card ── */
@@ -167,7 +167,25 @@
 /* ── Responsive ── */
 
 @media (max-width: 768px) {
+  .company-settings {
+    padding: var(--padding-md);
+  }
+
   .company-settings__row--2 {
     grid-template-columns: 1fr;
+  }
+
+  .company-settings__section {
+    padding: var(--padding-lg);
+  }
+
+  .company-settings__footer {
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  .company-settings__footer .btn {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }

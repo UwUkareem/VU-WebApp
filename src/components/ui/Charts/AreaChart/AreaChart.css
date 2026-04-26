@@ -99,6 +99,16 @@
   box-shadow: none !important;
   border: none !important;
   transition: none !important;
+  z-index: 50;
+  position: relative;
+}
+
+.area-chart .recharts-wrapper {
+  overflow: visible !important;
+}
+
+.area-chart .recharts-wrapper > svg {
+  overflow: visible !important;
 }
 
 .area-chart *:focus {

@@ -1,4 +1,4 @@
-﻿import { useState, useCallback, useMemo, useRef, memo } from 'react';
+﻿import { useState, useCallback, useMemo, useRef, useEffect, memo } from 'react';
 import { ArrowLeft, ArrowRight, Rocket, Save } from 'lucide-react';
 import { Stepper } from '../../../components/ui/Stepper';
 import { Button } from '../../../components/ui/Button';
@@ -50,6 +50,7 @@ export const JobConfigForm = memo(function JobConfigForm({
   const dragIndexRef = useRef(null);
   const manualWeightIds = useRef(new Set());
   const [dragIndex, setDragIndex] = useState(null);
+  const pageScrollRef = useRef(null);
 
   /* -- Field updaters -- */
   const updateField = useCallback((field, value) => setForm((p) => ({ ...p, [field]: value })), []);
@@ -164,6 +165,10 @@ export const JobConfigForm = memo(function JobConfigForm({
   );
   const goBack = useCallback(() => setActiveStep((s) => Math.max(s - 1, 0)), []);
 
+  useEffect(() => {
+    pageScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeStep]);
+
   const statusPreview = useMemo(() => {
     const lines = [];
     const now = new Date();
@@ -264,7 +269,7 @@ export const JobConfigForm = memo(function JobConfigForm({
   };
 
   return (
-    <div className="create-job-page">
+    <div className="create-job-page" ref={pageScrollRef}>
       <div className="create-job">
         {/* Stepper */}
         <div className="create-job__stepper">
@@ -279,6 +284,14 @@ export const JobConfigForm = memo(function JobConfigForm({
         {/* Edit context banner */}
         {isEdit && status && status !== 'draft' && (
           <EditBanner status={status} candidateCount={candidateCount} />
+        )}
+
+        {activeStep > 0 && (
+          <div className="create-job__mobile-back">
+            <Button variant="ghost" iconLeft={<ArrowLeft size={16} />} onClick={goBack}>
+              Back
+            </Button>
+          </div>
         )}
 
         {/* Step body */}

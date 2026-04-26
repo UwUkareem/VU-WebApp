@@ -3,8 +3,8 @@
 .application-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   padding: var(--padding-lg);
   background-color: transparent; /* Shows --bg-outer underneath */
 }
@@ -22,4 +22,20 @@
 
 .application-shell__main:hover {
   border-color: var(--border-default);
+}
+
+@media (max-width: 1024px) {
+  .application-shell {
+    padding: var(--padding-md);
+  }
+}
+
+@media (max-width: 767px) {
+  .application-shell {
+    padding: var(--padding-sm);
+  }
+
+  .application-shell__main {
+    border-radius: var(--radius-md);
+  }
 }

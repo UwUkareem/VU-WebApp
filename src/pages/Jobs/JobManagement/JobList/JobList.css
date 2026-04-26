@@ -42,11 +42,61 @@
   padding: 0;
 }
 
+@media (max-width: 767px) {
+  /* Hide Linked Mocks column on mobile */
+  .job-list__card .entity-card__cols-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .job-list__card .entity-card__cols-content > :nth-child(2) {
+    display: none;
+  }
+
+  /* Give job title more room on mobile */
+  .job-list__card .entity-card__title {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
+  }
+
+  .job-list__card .entity-card__top-right {
+    gap: var(--gap-sm);
+  }
+}
+
+@media (max-width: 467px) {
+  /* Very small screens: simplify card content to keep layout stable */
+  .job-list__card .entity-card__tags {
+    display: none;
+  }
+
+  .job-list__card .entity-card__cols-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Keep Total Candidates (left) + Score (right) in one row */
+  .job-list__card .entity-card__cols {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+  }
+
+  .job-list__card .entity-card__score-block {
+    margin-left: auto;
+  }
+}
+
 /* ──────────────────────────────────────────
    Responsive
    ────────────────────────────────────────── */
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .job-list__content {
     padding: 0 var(--padding-md) var(--padding-md);
   }

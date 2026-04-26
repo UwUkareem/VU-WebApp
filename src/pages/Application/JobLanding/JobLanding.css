@@ -239,4 +239,49 @@
 /* CTA */
 .job-landing__cta {
   align-self: flex-end;
+  min-height: var(--size-10);
+}
+
+@media (max-width: 1024px) {
+  .job-landing {
+    padding: var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .job-landing__top {
+    grid-template-columns: 1fr;
+  }
+
+  .job-landing__quick-info,
+  .job-landing__section {
+    padding: var(--padding-md);
+  }
+
+  .job-landing__assessment-card {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .job-landing__assessment-weight {
+    width: 100%;
+    align-items: flex-start;
+    padding-left: calc(32px + var(--gap-md));
+  }
+}
+
+@media (max-width: 767px) {
+  .job-landing {
+    padding: var(--padding-sm);
+  }
+
+  .job-landing__assessment-name-row,
+  .job-landing__assessment-meta {
+    flex-wrap: wrap;
+  }
+
+  .job-landing__cta {
+    align-self: stretch;
+    width: 100%;
+    min-height: var(--size-10);
+  }
 }

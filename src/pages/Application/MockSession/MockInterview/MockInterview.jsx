@@ -11,7 +11,6 @@ import {
   Monitor,
   Code2,
   Pin,
-  Lock,
   AlertTriangle,
   Eye,
 } from 'lucide-react';
@@ -440,57 +439,36 @@ export const MockInterview = memo(function MockInterview({ mockId, onComplete })
           {/* Panel toggles */}
           <div className="mock-interview__toggles">
             {/* Camera */}
-            <label
-              className={`mock-interview__toggle-item${required.camera ? ' mock-interview__toggle-item--locked' : ''}`}
-              title={required.camera ? 'Camera is required for this assessment' : 'Toggle camera'}
-            >
-              {required.camera ? <Lock size={11} /> : <Video size={12} />}
-              <Toggle
-                checked={showCamera}
-                onChange={() => {
-                  if (!required.camera) setShowCamera((v) => !v);
-                }}
-              />
+            <label className="mock-interview__toggle-item" title="Toggle camera">
+              <span className="mock-interview__toggle-icon">
+                <Video size={12} />
+              </span>
+              <span className="mock-interview__toggle-label">Cam</span>
+              <Toggle checked={showCamera} onChange={() => setShowCamera((v) => !v)} />
             </label>
             {/* Microphone */}
-            <label
-              className={`mock-interview__toggle-item${required.mic ? ' mock-interview__toggle-item--locked' : ''}`}
-              title={required.mic ? 'Microphone is required' : 'Toggle microphone'}
-            >
-              {required.mic ? <Lock size={11} /> : <Mic size={12} />}
-              <Toggle
-                checked={showMic}
-                onChange={() => {
-                  if (!required.mic) setShowMic((v) => !v);
-                }}
-              />
+            <label className="mock-interview__toggle-item" title="Toggle microphone">
+              <span className="mock-interview__toggle-icon">
+                <Mic size={12} />
+              </span>
+              <span className="mock-interview__toggle-label">Mic</span>
+              <Toggle checked={showMic} onChange={() => setShowMic((v) => !v)} />
             </label>
             {/* Code editor */}
-            <label
-              className={`mock-interview__toggle-item${required.code ? ' mock-interview__toggle-item--locked' : ''}`}
-              title={required.code ? 'Code editor is required' : 'Toggle code editor'}
-            >
-              {required.code ? <Lock size={11} /> : <Code2 size={12} />}
-              <Toggle
-                checked={showCode}
-                onChange={() => {
-                  if (!required.code) setShowCode((v) => !v);
-                }}
-              />
+            <label className="mock-interview__toggle-item" title="Toggle code editor">
+              <span className="mock-interview__toggle-icon">
+                <Code2 size={12} />
+              </span>
+              <span className="mock-interview__toggle-label">Code</span>
+              <Toggle checked={showCode} onChange={() => setShowCode((v) => !v)} />
             </label>
             {/* Screen share */}
-            <label
-              className={`mock-interview__toggle-item${required.screen && showScreen ? ' mock-interview__toggle-item--locked' : ''}`}
-              title={required.screen ? 'Screen share is required' : 'Toggle screen share'}
-            >
-              {required.screen && showScreen ? <Lock size={11} /> : <Monitor size={12} />}
-              <Toggle
-                checked={showScreen}
-                onChange={() => {
-                  if (required.screen && showScreen) return;
-                  setShowScreen((v) => !v);
-                }}
-              />
+            <label className="mock-interview__toggle-item" title="Toggle screen share">
+              <span className="mock-interview__toggle-icon">
+                <Monitor size={12} />
+              </span>
+              <span className="mock-interview__toggle-label">Screen</span>
+              <Toggle checked={showScreen} onChange={() => setShowScreen((v) => !v)} />
             </label>
           </div>
 

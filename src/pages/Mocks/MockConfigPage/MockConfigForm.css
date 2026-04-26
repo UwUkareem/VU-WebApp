@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-left: var(--padding-lg);
+  padding-inline: var(--padding-lg);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -23,6 +23,7 @@
   gap: var(--gap-md);
   max-width: 52rem;
   width: 100%;
+  margin-inline: auto;
 }
 
 /* -- Active mock banner -- */
@@ -59,6 +60,10 @@
   flex-direction: column;
   gap: var(--gap-md);
   animation: createmock-fadein 0.25s ease;
+}
+
+.create-mock__mobile-back {
+  display: none;
 }
 
 @keyframes createmock-fadein {
@@ -400,4 +405,135 @@
   font-size: var(--text-xs);
   color: var(--text-subtle);
   text-align: center;
+}
+
+@media (max-width: 1023px) {
+  .create-mock-page {
+    padding-inline: var(--padding-md);
+  }
+
+  .create-mock__stepper {
+    padding-inline: 0;
+  }
+
+  .create-mock__stepper .stepper__list {
+    justify-content: center;
+  }
+
+  .create-mock__section {
+    padding: var(--padding-lg);
+  }
+
+  .create-mock__mobile-back {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .create-mock__row--3,
+  .create-mock__mode-toggle {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .create-mock__footer {
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+  }
+
+  .create-mock__footer-left {
+    display: none;
+  }
+
+  .create-mock__footer-right {
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+
+  .create-mock__criteria-item {
+    flex-wrap: wrap;
+    row-gap: var(--gap-sm);
+  }
+
+  .create-mock__criteria-name,
+  .create-mock__criteria-weight {
+    width: 100%;
+  }
+
+  .create-mock__criteria-weight {
+    max-width: 8rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .create-mock-page {
+    padding-inline: var(--padding-sm);
+  }
+
+  .create-mock {
+    gap: var(--gap-sm);
+  }
+
+  .create-mock__stepper {
+    padding-block: var(--padding-xs);
+  }
+
+  .create-mock__section {
+    padding: var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .create-mock__row--2,
+  .create-mock__row--3,
+  .create-mock__review-row,
+  .create-mock__mode-toggle {
+    grid-template-columns: 1fr;
+  }
+
+  .create-mock__pipeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .create-mock__weight-bar,
+  .create-mock__active-banner {
+    padding-inline: var(--padding-md);
+  }
+
+  .create-mock__question-weight {
+    padding-inline: 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--gap-xs);
+  }
+
+  .create-mock__question-weight-input {
+    width: 100%;
+    max-width: 8rem;
+  }
+
+  .create-mock__footer {
+    justify-content: flex-end;
+  }
+
+  .create-mock__footer-left,
+  .create-mock__footer-right {
+    width: 100%;
+  }
+
+  .create-mock__mobile-back {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .create-mock__footer-right {
+    justify-content: stretch;
+    margin-left: 0;
+  }
+
+  .create-mock__footer-left {
+    display: none;
+  }
+
+  .create-mock__footer-right .btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }

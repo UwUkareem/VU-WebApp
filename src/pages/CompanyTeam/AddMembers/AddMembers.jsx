@@ -105,6 +105,12 @@ export const AddMembers = memo(function AddMembers({ onViewMember, onViewRequest
           <div className="join-requests__list">
             {pendingRequests.map((request) => (
               <div key={request.id} className="join-requests__card-wrapper">
+                <div className="join-requests__assign-role-inline">
+                  <RoleBadge
+                    value={assignRoles[request.id] || 'viewer'}
+                    onChange={(role) => setAssignRoles((prev) => ({ ...prev, [request.id]: role }))}
+                  />
+                </div>
                 <EntityCard
                   showAvatar={true}
                   userName={request.name}
@@ -124,20 +130,20 @@ export const AddMembers = memo(function AddMembers({ onViewMember, onViewRequest
                   </div>
                   <div className="join-requests__card-buttons">
                     <Button
-                      variant="primary"
-                      size="sm"
-                      iconLeft={<CheckCircle2 size={ICON_SM} />}
-                      onClick={() => handleAccept(request.id)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
                       variant="danger"
                       size="sm"
                       iconLeft={<XCircle size={ICON_SM} />}
                       onClick={() => handleDecline(request.id)}
                     >
                       Decline
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      iconLeft={<CheckCircle2 size={ICON_SM} />}
+                      onClick={() => handleAccept(request.id)}
+                    >
+                      Accept
                     </Button>
                   </div>
                 </div>

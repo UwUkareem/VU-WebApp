@@ -177,4 +177,57 @@
   .company-overview__chart-wrapper {
     width: 100%;
   }
+
+  .company-overview__org-card .entity-card__cols-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .company-overview__table .table-header,
+  .company-overview__table .table-row {
+    grid-template-columns: 1.6fr 1fr 0.9fr 0.8fr !important;
+  }
+
+  .company-overview__table .table-header > :nth-child(2),
+  .company-overview__table .table-row > :nth-child(2) {
+    display: none;
+  }
+
+  .company-overview__org-card .entity-card__cols-content > :nth-child(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .company-overview {
+    padding: var(--padding-md);
+  }
+
+  .company-overview__section-header {
+    margin: 0 var(--padding-md);
+    padding-top: var(--padding-lg);
+  }
+
+  .company-overview__table {
+    padding: var(--padding-md);
+  }
+
+  .company-overview__org-card.entity-card {
+    padding: var(--padding-lg);
+  }
+
+  .company-overview__org-card .entity-card__cols-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .company-overview__table .table-header,
+  .company-overview__table .table-row {
+    grid-template-columns: 1.8fr 1fr 0.9fr !important;
+  }
+
+  .company-overview__table .table-header > :nth-child(2),
+  .company-overview__table .table-row > :nth-child(2),
+  .company-overview__table .table-header > :nth-child(5),
+  .company-overview__table .table-row > :nth-child(5) {
+    display: none;
+  }
 }

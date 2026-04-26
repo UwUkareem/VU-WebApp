@@ -122,10 +122,15 @@
 .join-requests__card-wrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
   background-color: var(--bg-surface);
   border: var(--border-sm) solid var(--border-structure);
   border-radius: var(--radius-md);
   transition: border-color var(--transition-base);
+}
+
+.join-requests__assign-role-inline {
+  display: none;
 }
 
 .join-requests__card-wrapper:hover {
@@ -172,4 +177,75 @@
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
+}
+
+@media (max-width: 1024px) {
+  .join-requests {
+    padding-inline: var(--padding-md);
+  }
+
+  .join-requests__invite-section,
+  .join-requests__empty,
+  .join-requests__card-wrapper > .entity-card {
+    padding-inline: var(--padding-lg);
+  }
+}
+
+@media (max-width: 767px) {
+  .join-requests {
+    padding: var(--padding-md);
+  }
+
+  .join-requests__scroll {
+    gap: var(--gap-lg);
+  }
+
+  .join-requests__invite-section,
+  .join-requests__empty {
+    padding: var(--padding-md);
+  }
+
+  .join-requests__invite-row {
+    width: 100%;
+  }
+
+  .join-requests__invite-link {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .join-requests__card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .join-requests__assign-role-inline {
+    position: absolute;
+    top: var(--padding-md);
+    right: var(--padding-md);
+    display: flex;
+    z-index: 2;
+  }
+
+  .join-requests__assign-role {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .join-requests__assign-label {
+    display: none;
+  }
+
+  .join-requests__assign-role .role-badge {
+    display: none;
+  }
+
+  .join-requests__card-buttons {
+    width: 100%;
+  }
+
+  .join-requests__card-buttons .btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
 }

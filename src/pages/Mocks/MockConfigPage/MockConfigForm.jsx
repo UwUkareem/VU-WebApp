@@ -1,4 +1,4 @@
-﻿import { useState, useCallback, useMemo, useRef, memo } from 'react';
+﻿import { useState, useCallback, useMemo, useRef, useEffect, memo } from 'react';
 import { ArrowLeft, ArrowRight, Rocket, CheckCircle, Info } from 'lucide-react';
 import { Stepper } from '../../../components/ui/Stepper';
 import { Button } from '../../../components/ui/Button';
@@ -38,6 +38,7 @@ export const MockConfigForm = memo(function MockConfigForm({
 
   const [activeStep, setActiveStep] = useState(0);
   const [form, setForm] = useState(initialData ?? INITIAL_MOCK_FORM);
+  const pageScrollRef = useRef(null);
 
   /** Track manually-edited weight ids (criteria + questions share one set) */
   const manualWeightIds = useRef(new Set());
@@ -218,6 +219,10 @@ export const MockConfigForm = memo(function MockConfigForm({
   );
   const goBack = useCallback(() => setActiveStep((s) => Math.max(s - 1, 0)), []);
 
+  useEffect(() => {
+    pageScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeStep]);
+
   /* -- Render steps -- */
   const renderStep = () => {
     switch (activeStep) {
@@ -254,7 +259,7 @@ export const MockConfigForm = memo(function MockConfigForm({
   };
 
   return (
-    <div className="create-mock-page">
+    <div className="create-mock-page" ref={pageScrollRef}>
       <div className="create-mock">
         {/* Stepper */}
         <div className="create-mock__stepper">
@@ -274,6 +279,14 @@ export const MockConfigForm = memo(function MockConfigForm({
               This mock is used in active jobs. Some fields are locked to protect ongoing
               evaluations.
             </span>
+          </div>
+        )}
+
+        {activeStep > 0 && (
+          <div className="create-mock__mobile-back">
+            <Button variant="ghost" iconLeft={<ArrowLeft size={16} />} onClick={goBack}>
+              Back
+            </Button>
           </div>
         )}
         {/* Step body */}

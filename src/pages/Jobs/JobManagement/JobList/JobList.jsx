@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { Shortcuts } from '../../../../components/layout/Shortcuts';
 import { EntityCard } from '../../../../components/ui/Cards';
-import { QuickSort } from '../../../../components/ui/QuickSort';
 import { Pagination } from '../../../../components/ui/Pagination';
 import { FilterOverlay } from '../../../../components/ui/FilterOverlay';
 import { JOBS } from '../../../../data/jobs';
@@ -73,6 +72,18 @@ const SHORTCUTS_CONFIG = {
 
 const DEPARTMENTS = [...new Set(MOCK_JOBS.map((j) => j.department))].sort();
 const OVERLAY_FILTERS = [
+  {
+    key: 'statusQuick',
+    label: 'Status',
+    type: 'select',
+    options: STATUS_FILTERS.filter((v) => v !== 'All').map((v) => ({ value: v, label: v })),
+  },
+  {
+    key: 'sortQuick',
+    label: 'Sort by',
+    type: 'select',
+    options: SORT_OPTIONS.map((v) => ({ value: v, label: v })),
+  },
   { key: 'department', label: 'Department', type: 'multiselect', options: DEPARTMENTS },
   { key: 'score', label: 'Avg Score', type: 'range', minLabel: 'Min', maxLabel: 'Max' },
   {
@@ -86,6 +97,8 @@ const OVERLAY_FILTERS = [
 const INITIAL_OVERLAY = {
   department: [],
   score: { min: '', max: '' },
+  statusQuick: '',
+  sortQuick: 'Recently Modified',
   candidates: { min: '', max: '' },
 };
 
@@ -104,6 +117,8 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob, onCreateJob
     if (overlayFilters.department.length) count++;
     if (overlayFilters.score.min || overlayFilters.score.max) count++;
     if (overlayFilters.candidates.min || overlayFilters.candidates.max) count++;
+    if (overlayFilters.statusQuick) count++;
+    if (overlayFilters.sortQuick && overlayFilters.sortQuick !== 'Recently Modified') count++;
     return count;
   }, [overlayFilters]);
 
@@ -181,27 +196,7 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob, onCreateJob
           icon: Plus,
           onClick: () => onCreateJob?.(),
         }}
-      >
-        <QuickSort
-          groups={[
-            {
-              label: 'Status',
-              options: STATUS_FILTERS,
-              value: statusFilter,
-              onChange: (f) => {
-                setStatusFilter(f);
-                setCurrentPage(1);
-              },
-            },
-            {
-              label: 'Sort by',
-              options: SORT_OPTIONS,
-              value: sortBy,
-              onChange: setSortBy,
-            },
-          ]}
-        />
-      </Shortcuts>
+      />
 
       <div className="job-list__content">
         {/* Job cards */}
@@ -266,6 +261,8 @@ export const JobList = memo(function JobList({ onViewJob, onEditJob, onCreateJob
         values={overlayFilters}
         onApply={(v) => {
           setOverlayFilters(v);
+          setStatusFilter(v.statusQuick || 'All');
+          setSortBy(v.sortQuick || 'Recently Modified');
           setCurrentPage(1);
         }}
       />
