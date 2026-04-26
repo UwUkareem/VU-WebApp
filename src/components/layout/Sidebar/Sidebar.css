@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: width var(--transition-base);
 }
 
 .sidebar__content {
@@ -19,6 +20,7 @@
   height: 3.625rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 var(--padding-lg);
   background: transparent;
 }
@@ -30,6 +32,30 @@
   font-weight: var(--font-bold);
   color: var(--text-primary);
   letter-spacing: -0.03em;
+}
+
+.sidebar__close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-9);
+  height: var(--size-9);
+  background: var(--white-a5);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.sidebar__close:hover {
+  background: var(--white-a15);
+  color: var(--text-primary);
+  transform: scale(1.04);
 }
 
 .sidebar__nav {
@@ -49,4 +75,161 @@
   padding: var(--padding-lg);
   padding-right: 0;
   margin-top: auto;
+}
+
+/* ── Collapsed state (tablet) ── */
+
+.sidebar--collapsed .sidebar__content {
+  padding-left: 0;
+  align-items: center;
+}
+
+.sidebar--collapsed .sidebar__logo {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar--collapsed .sidebar__nav {
+  align-items: center;
+  width: 100%;
+}
+
+.sidebar--collapsed .sidebar__user {
+  padding: var(--padding-md) 0 var(--padding-lg);
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar__user .user {
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar__user .user__info {
+  display: none;
+}
+
+/* ── Tablet only (768–1023px): enforce icon-only navigation ── */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar__content {
+    padding-left: 0;
+    align-items: center;
+  }
+
+  .sidebar__logo {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar__nav {
+    align-items: center;
+    width: 100%;
+  }
+
+  .sidebar .sidebar-button {
+    justify-content: center;
+    padding: var(--padding-xs);
+    border-left: none;
+  }
+
+  .sidebar .sidebar-button__label,
+  .sidebar .sidebar-button__subitems {
+    display: none;
+  }
+
+  .sidebar__user {
+    padding: var(--padding-md) 0 var(--padding-lg);
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar__user .user__info {
+    display: none;
+  }
+}
+
+/* ── Mobile backdrop ── */
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* ── Mobile (< 768px) — fixed off-canvas drawer ── */
+
+@media (max-width: 767px) {
+  /* Backdrop: only rendered by JS when drawer is open */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 5998;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .sidebar-backdrop--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Sidebar: position fixed, hidden off-screen by default */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(var(--sidebar-width-mobile, 16rem), 86vw);
+    min-width: 0;
+    background-color: var(--bg-base);
+    border-right: none;
+    flex-shrink: 0;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease-out;
+    z-index: 5999;
+    will-change: transform;
+    backface-visibility: hidden;
+    box-shadow: 12px 0 32px rgba(0, 0, 0, 0.34);
+  }
+
+  .sidebar__logo {
+    height: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar__logo-placeholder {
+    display: none;
+  }
+
+  /* Override layout wrapper mobile zero-sizing so drawer can be visible */
+  .page-layout__sidebar.sidebar {
+    width: min(var(--sidebar-width-mobile, 16rem), 86vw);
+    height: 100vh;
+  }
+
+  .sidebar__content {
+    padding-top: calc(var(--size-9) + var(--padding-lg));
+    padding-right: var(--padding-md);
+  }
+
+  /* Slide in when drawer is open */
+  .sidebar--drawer-open {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .sidebar--drawer-open .sidebar__close {
+    display: flex;
+    position: fixed;
+    top: var(--padding-md);
+    left: calc(min(var(--sidebar-width-mobile, 16rem), 86vw) - var(--size-9) - var(--padding-md));
+    z-index: 6000;
+  }
+
+  .sidebar__user {
+    display: none;
+  }
 }

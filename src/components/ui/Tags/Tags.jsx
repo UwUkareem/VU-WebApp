@@ -141,5 +141,3 @@ Tags.propTypes = {
   showTitle: PropTypes.bool,
   className: PropTypes.string,
 };
-
-export default Tags;

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
-import { Bell, UserCircle2, Building2, LogOut, User } from 'lucide-react';
+import { Bell, UserCircle2, Building2, LogOut, User, Menu } from 'lucide-react';
 import { Breadcrumb } from '../../ui/Breadcrumb';
 import { NotificationDropdown } from './NotificationDropdown';
 import './Navbar.css';
@@ -27,6 +27,9 @@ const Navbar = memo(function Navbar({
   className = '',
   user,
   onNavigate,
+  showLogo = false,
+  logo,
+  onMenuToggle,
 }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
@@ -80,9 +83,27 @@ const Navbar = memo(function Navbar({
 
   return (
     <nav className={['navbar', className].filter(Boolean).join(' ')}>
-      <div className="navbar__breadcrumb">
-        {breadcrumbItems.length > 0 && <Breadcrumb items={breadcrumbItems} />}
-      </div>
+      {/* Mobile: burger + logo */}
+      {onMenuToggle && (
+        <button
+          type="button"
+          className="navbar__burger"
+          onClick={onMenuToggle}
+          aria-label="Open menu"
+        >
+          <Menu size={22} />
+        </button>
+      )}
+      {showLogo && (
+        <div className="navbar__logo">
+          {logo || <span className="navbar__logo-placeholder">VU</span>}
+        </div>
+      )}
+      {!showLogo && (
+        <div className="navbar__breadcrumb">
+          {breadcrumbItems.length > 0 && <Breadcrumb items={breadcrumbItems} />}
+        </div>
+      )}
       <div className="navbar__actions">
         {/* Notifications */}
         <div ref={notifRef} className="navbar__notification-wrapper">
@@ -192,4 +213,7 @@ Navbar.propTypes = {
     email: PropTypes.string,
   }),
   onNavigate: PropTypes.func,
+  showLogo: PropTypes.bool,
+  logo: PropTypes.node,
+  onMenuToggle: PropTypes.func,
 };

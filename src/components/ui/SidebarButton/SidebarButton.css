@@ -98,6 +98,15 @@
 .sidebar-subitem--active {
   color: var(--text-primary);
   border-left-color: var(--brand-default);
+}
+
+/* ── Collapsed state ── */
+
+.sidebar-button--collapsed {
+  justify-content: center;
+  padding: var(--padding-xs);
+  border-left: none;
+}
   font-weight: var(--font-medium);
 }
 

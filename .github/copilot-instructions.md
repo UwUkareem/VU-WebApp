@@ -2,21 +2,19 @@
 
 ## Project Overview
 
-**VU** is an AI-powered virtual interview platform with two modes: **Practice Mode** (job seekers, mock interviews) and **Recruitment Mode** (companies, AI-led candidate screening). This React 19 SPA uses Vite 7, Tailwind CSS 4, and follows a design-first approach from [Figma](https://www.figma.com/design/LgLS6zCwbhl4yISLlsN2qC/VU-WebApp).
+**VU** is an AI-powered virtual interview platform with two modes: **Practice Mode** (job seekers, mock interviews) and **Recruitment Mode** (companies, AI-led candidate screening). This React 19 SPA uses Vite 7, React Router v6, and follows a design-first approach from [Figma](https://www.figma.com/design/LgLS6zCwbhl4yISLlsN2qC/VU-WebApp).
 
 ## Tech Stack & Tooling
 
-| Technology       | Version | Purpose                                                              |
-| ---------------- | ------- | -------------------------------------------------------------------- |
-| **React**        | 19      | UI Framework                                                         |
-| **Vite**         | 7       | Build tool & HMR dev server                                          |
-| **Tailwind CSS** | 4       | Utility-first styling (via `@import 'tailwindcss'` + `@theme` block) |
-| **Lucide React** | 0.562+  | Icon components (component-based, not font icons)                    |
-| **PropTypes**    | 15.8+   | Runtime prop validation (required for all components)                |
-| **ESLint**       | 9       | Linting (flat config in `eslint.config.js`)                          |
-| **Prettier**     | 3.7     | Code formatting + Tailwind class sorting                             |
-
-**No routing library yet** - manual state-based navigation in `App.jsx` (React Router planned).
+| Technology       | Version | Purpose                                     |
+| ---------------- | ------- | ------------------------------------------- |
+| **React**        | 19      | UI Framework                                |
+| **Vite**         | 7       | Build tool & HMR dev server                 |
+| **React Router** | 6       | Client-side routing (declarative URL-based) |
+| **Recharts**     | 2       | Charting library (Area, Bar, Radar, Radial) |
+| **Lucide React** | 0.562+  | Icon components (component-based)           |
+| **PropTypes**    | 15.8+   | Runtime prop validation                     |
+| **ESLint**       | 9       | Linting (flat config in `eslint.config.js`) |
 
 ## Development Commands
 
@@ -27,59 +25,89 @@ npm run preview   # Preview production build locally
 npm run lint      # ESLint validation
 ```
 
-**Note**: Prettier runs on save in VS Code. Tailwind classes are auto-sorted by `prettier-plugin-tailwindcss`.
-
 ---
 
 ## Architecture & File Organization
 
 ```
 src/
+├── main.jsx                        # App entry point (BrowserRouter wraps App)
+├── App.jsx                         # React Router v6 routes + page wrappers
 ├── components/
-│   ├── ui/                    # Reusable UI primitives
-│   │   ├── Badge/             # Badge + RoleBadge + variants.js
+│   ├── ui/                         # Reusable UI primitives
+│   │   ├── Badge/                  # Badge + RoleBadge + variants.js
 │   │   ├── Breadcrumb/
 │   │   ├── Button/
-│   │   ├── Cards/             # ActionCard, EntityCard, InfoCard, QuestionCard, QuickInfoCard
-│   │   ├── Charts/            # DonutChart, StatsChart
-│   │   ├── Input/             # Input, InputField, Label, Hint + variants.jsx
+│   │   ├── Cards/                  # ActionCard, EntityCard, InfoCard, QuestionCard, QuickInfoCard
+│   │   ├── Charts/                 # AreaChart, BarChart, RadarChart, RadialBarChart + chartTokens
+│   │   ├── EmptyState/
+│   │   ├── FilterOverlay/          # Portal-rendered slide-in filter panel
+│   │   ├── Input/                  # Input, InputField, Label, Hint + variants.jsx
 │   │   ├── Pagination/
+│   │   ├── QuickSort/
+│   │   ├── RowMenu/
+│   │   ├── SectionTitle/
 │   │   ├── SidebarButton/
-│   │   ├── Tables/            # TableHeader, TableRow, TableCell
+│   │   ├── Stepper/
+│   │   ├── Tables/                 # TableHeader, TableRow, TableCell
 │   │   ├── Tabs/
 │   │   ├── Tags/
 │   │   ├── Toggle/
 │   │   ├── User/
-│   │   └── index.js           # Barrel export for all UI components
-│   └── layout/                # Layout components
-│       ├── Navbar/            # Navbar + NotificationDropdown
-│       ├── PageLayout/        # Main app shell (sidebar + navbar + content)
-│       ├── Shortcuts/         # Action bar (filters + search + buttons)
+│   │   └── index.js                # Barrel export for all UI components
+│   └── layout/                     # Layout components
+│       ├── Navbar/                 # Navbar + NotificationDropdown
+│       ├── PageLayout/             # Main app shell (sidebar + navbar + content)
+│       ├── Shortcuts/              # Action bar (filters + search + buttons)
 │       ├── Sidebar/
-│       └── index.js           # Barrel export for layout components
-├── pages/                     # Route-level page components
-│   ├── Candidates/            # CandidatesPage + Pipeline/
-│   ├── CompanyTeam/           # (placeholder)
-│   ├── Jobs/                  # (placeholder)
-│   ├── Mocks/                 # (placeholder)
-│   ├── Profile/               # (placeholder)
-│   └── _showcase/             # ComponentShowcase (demo page)
-├── styles/
-│   ├── index.css              # Tailwind CSS 4 import + @theme config + utilities
-│   └── tokens.css             # 460+ Figma-exported CSS variables
-└── assets/                    # Static images, icons
+│       └── index.js                # Barrel export for layout components
+├── data/                           # Centralised in-memory mock data + CRUD helpers
+│   ├── index.js                    # Barrel export for all data helpers
+│   ├── candidates.js               # Candidates, pipeline stages, filters
+│   ├── jobs.js                     # Jobs with status, stats, mocks; CRUD
+│   ├── mocks.js                    # Mock interviews; CRUD; getJobsUsingMock
+│   ├── company.js                  # Company info, team members, join requests
+│   ├── application.js              # Candidate-facing session state
+│   └── config.js                   # Shared config constants
+├── pages/                          # Route-level page components
+│   ├── _showcase/                  # Component demo/showcase page
+│   ├── Candidates/
+│   │   ├── Pipeline/               # Candidate pipeline table + FilterOverlay + pagination
+│   │   └── CandidateDetails/       # Tabbed detail view (CVAnalysis, FullFeedback, MockReplay)
+│   ├── Jobs/
+│   │   ├── JobManagement/          # JobList + JobDetails
+│   │   └── JobConfigPage/          # CreateConfig + EditConfig (4-step form)
+│   ├── Mocks/
+│   │   ├── MockManagement/         # MockList + MockDetails
+│   │   └── MockConfigPage/         # CreateMockConfig + EditMockConfig (3-step form)
+│   ├── CompanyTeam/
+│   │   ├── Overview/               # Company stats + team member table
+│   │   ├── AddMembers/             # Join requests management
+│   │   ├── MemberDetails/          # Member/request detail view
+│   │   └── CompanySettings/        # Company info + departments
+│   ├── Profile/                    # User profile (edit mode, activity timeline)
+│   └── Application/                # Candidate-facing flow (standalone, no sidebar)
+│       ├── JobLanding/             # Job description + Apply
+│       ├── CandidateForm/          # Application form
+│       ├── JobOverview/            # Mock interview checklist
+│       ├── MockSession/            # Live mock (intro → interview phases)
+│       └── SubmissionComplete/     # Confirmation screen
+└── styles/
+    ├── index.css                   # Global CSS reset + design token import
+    └── tokens.css                  # 490+ Figma-exported design tokens
 ```
 
 ### Key Files
 
-| File                                    | Purpose                                                        |
-| --------------------------------------- | -------------------------------------------------------------- |
-| `src/components/ui/index.js`            | Central barrel export - **add new UI components here**         |
-| `src/components/layout/index.js`        | Barrel export for layout components                            |
-| `src/styles/tokens.css`                 | 460+ design tokens from Figma - **single source of truth**     |
-| `src/styles/index.css`                  | Tailwind CSS 4 config via `@theme` block + custom utilities    |
-| `src/App.jsx`                           | Main entry point with state-based navigation in `renderPage()` |
-| `src/pages/_showcase/ComponentShowcase` | Component demo page for testing                                |
+| File                             | Purpose                                         |
+| -------------------------------- | ----------------------------------------------- |
+| `src/App.jsx`                    | React Router v6 routes + page wrappers          |
+| `src/styles/tokens.css`          | 490+ design tokens — single source of truth     |
+| `src/styles/index.css`           | Global CSS reset + token import                 |
+| `src/data/index.js`              | Central barrel export for all data helpers      |
+| `src/components/ui/index.js`     | Central barrel export for all UI primitives     |
+| `src/components/layout/index.js` | Barrel export for layout components             |
+| `src/pages/_showcase/`           | Component demo page (useful for visual testing) |
 
 ---
 
@@ -91,7 +119,7 @@ Every UI component follows this folder structure:
 
 ```
 src/components/ui/{ComponentName}/
-├── {ComponentName}.jsx     # Component logic + PropTypes
+├── {ComponentName}.jsx     # Component logic + PropTypes + memo()
 ├── {ComponentName}.css     # BEM-like CSS with design tokens
 └── index.js                # Re-export: export { ComponentName } from './{ComponentName}'
 ```
@@ -101,35 +129,36 @@ src/components/ui/{ComponentName}/
 ```jsx
 import './Button.css';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 
-const VARIANTS = ['primary', 'secondary', 'ghost'];
-
-export function Button({
+export const Button = memo(function Button({
   children,
   variant = 'primary',
+  size,
   disabled = false,
+  loading = false,
   iconLeft,
   iconRight,
   type = 'button',
   className = '',
   ...props
 }) {
-  // Fallback to primary if invalid variant passed
-  const safeVariant = VARIANTS.includes(variant) ? variant : 'primary';
-
   return (
     <button
       type={type}
-      className={`btn btn--${safeVariant} ${className}`.trim()}
-      disabled={disabled}
+      className={['btn', `btn--${variant}`, size && `btn--${size}`, className]
+        .filter(Boolean)
+        .join(' ')}
+      disabled={disabled || loading}
       {...props}
     >
+      {loading && <span className="btn__loader" />}
       {iconLeft && (
         <span className="btn__icon" aria-hidden="true">
           {iconLeft}
         </span>
       )}
-      {children && <span>{children}</span>}
+      {children && <span className="btn__label">{children}</span>}
       {iconRight && (
         <span className="btn__icon" aria-hidden="true">
           {iconRight}
@@ -137,12 +166,14 @@ export function Button({
       )}
     </button>
   );
-}
+});
 
 Button.propTypes = {
   children: PropTypes.node,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'ghost']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'ghost', 'danger', 'dashed']),
+  size: PropTypes.oneOf(['sm', 'lg']),
   disabled: PropTypes.bool,
+  loading: PropTypes.bool,
   iconLeft: PropTypes.node,
   iconRight: PropTypes.node,
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
@@ -195,13 +226,13 @@ Component.propTypes = {
 };
 ```
 
-### 3. Styling Approach (Hybrid CSS + Tailwind)
+### 3. Styling Approach (BEM CSS + Design Tokens)
 
 **Component CSS** (`{Component}.css`):
 
 - Use BEM-like naming: `.component`, `.component--modifier`, `.component__element`
 - Reference design tokens: `var(--token-name)`
-- **NO `@apply`** (not supported in Tailwind CSS 4)
+- Never hardcode colors or sizes
 
 ```css
 /* Button.css */
@@ -235,20 +266,17 @@ Component.propTypes = {
 }
 ```
 
-**Tailwind in JSX**:
-
-- Use `className` prop for layout/spacing utilities
-- Passed classes are merged with component classes
+**className assembly pattern** — all components use filter(Boolean).join:
 
 ```jsx
-<Button className="mt-4 w-full" variant="primary">
-  Submit
-</Button>
+className={['btn', `btn--${variant}`, size && `btn--${size}`, className]
+  .filter(Boolean)
+  .join(' ')}
 ```
 
 ### 4. Design Tokens (`src/styles/tokens.css`)
 
-460+ CSS variables exported from Figma. **Never hardcode colors/sizes.**
+490+ CSS variables exported from Figma. **Never hardcode colors/sizes.**
 
 ```css
 :root {
@@ -354,10 +382,12 @@ Specialized input components that compose from base `Input`:
 | `Textarea`      | Multi-line text                  |
 | `FileInput`     | File upload with drag & drop     |
 
-All use `forwardRef` for ref forwarding:
+All use `memo(forwardRef(...))` for memoization + ref forwarding:
 
 ```jsx
-export const TextInput = forwardRef((props, ref) => <Input ref={ref} type="text" {...props} />);
+export const TextInput = memo(
+  forwardRef((props, ref) => <Input ref={ref} type="text" {...props} />)
+);
 TextInput.displayName = 'TextInput';
 ```
 
@@ -568,167 +598,91 @@ useEffect(() => {
 
 ## Page Development
 
-### PageLayout Pattern
+### Routing (React Router v6)
 
-All pages are wrapped in `PageLayout` which provides sidebar + navbar + content area:
+All routing is defined in `App.jsx`. Dashboard pages render inside `DashboardLayout` (sidebar + navbar + content via `<Outlet />`). The application flow (`/apply/*`) uses a standalone `ApplicationLayout`.
+
+```
+/candidates               → Pipeline (list)
+/candidates/:slug         → CandidateDetails (tabbed detail)
+/jobs                     → JobList
+/jobs/create              → CreateConfig (4-step form)
+/jobs/:id                 → JobDetails
+/jobs/:id/edit            → EditConfig
+/mocks                    → MockList
+/mocks/create             → CreateMockConfig (3-step form)
+/mocks/:id                → MockDetails
+/mocks/:id/edit           → EditMockConfig
+/company                  → CompanyTeam Overview
+/company/team/:id         → MemberDetails (from overview)
+/company/members          → AddMembers
+/company/members/:id      → MemberDetails (from requests)
+/company/requests/:id     → RequestDetails
+/company/settings         → CompanySettings
+/profile                  → ProfilePage
+/apply/:jobId             → JobLanding (candidate-facing)
+/apply/:jobId/form        → CandidateForm
+/apply/:jobId/overview    → JobOverview (mock checklist)
+/apply/:jobId/mock/:mockId→ MockSession
+/apply/:jobId/complete    → SubmissionComplete
+```
+
+### Page Wrappers Pattern
+
+Page wrappers in `App.jsx` bridge `useParams()`/`useNavigate()` to component props:
 
 ```jsx
-// App.jsx
-import { PageLayout } from './components/layout/PageLayout';
-
-export default function App() {
-  const [activePage, setActivePage] = useState('candidates');
-
-  const navItems = [
-    {
-      icon: Users,
-      label: 'Candidates',
-      isActive: activePage === 'candidates',
-      onClick: () => setActivePage('candidates'),
-    },
-    {
-      icon: Briefcase,
-      label: 'Jobs',
-      isActive: activePage === 'jobs',
-      onClick: () => setActivePage('jobs'),
-    },
-    // ... more nav items
-  ];
-
-  const user = { name: 'User Name', email: 'user@example.com', icon: Hash };
-
+function JobDetailsPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   return (
-    <PageLayout navItems={navItems} user={user} breadcrumbItems={getBreadcrumbItems()}>
-      {renderPage()}
-    </PageLayout>
+    <JobDetails
+      jobId={Number(id)}
+      onEdit={() => navigate(`/jobs/${id}/edit`)}
+      onDuplicate={(newId) => navigate(`/jobs/${newId}`)}
+      onViewJob={(newId) => navigate(`/jobs/${newId}`)}
+    />
   );
 }
+```
+
+### PageLayout Pattern
+
+```jsx
+// Dashboard pages (App.jsx)
+<Route element={<DashboardLayout />}>
+  <Route path="/candidates" element={<CandidatesPage />} />
+  ...
+</Route>
+
+// Application flow (standalone, no sidebar)
+<Route path="/apply/:jobId" element={<ApplicationLayout />}>
+  <Route index element={<AppLandingPage />} />
+  ...
+</Route>
 ```
 
 ### Page Structure
 
 ```
 src/pages/{PageName}/
-├── {PageName}Page.jsx     # Main page component (or just PageName.jsx)
-├── {PageName}Page.css     # Page-specific styles
-├── index.js               # Re-export
-└── {SubPage}/             # Optional sub-pages
+├── {PageName}.jsx     # Main page component (memo-wrapped)
+├── {PageName}.css     # Page-specific styles
+├── index.js           # Re-export
+└── {SubPage}/         # Optional sub-pages
     ├── {SubPage}.jsx
     ├── {SubPage}.css
     └── index.js
-```
-
-### Standard Page Pattern (`src/pages/Candidates/Pipeline/Pipeline.jsx`):
-
-```jsx
-import { useState } from 'react';
-import { Shortcuts } from '../../../components/layout/Shortcuts';
-import { Tabs } from '../../../components/ui/Tabs';
-import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
-import { Badge } from '../../../components/ui/Badge';
-import { Pagination } from '../../../components/ui/Pagination';
-import './Pipeline.css';
-
-// Mock data - will be replaced with API calls
-const MOCK_CANDIDATES = [
-  /* ... */
-];
-
-export function Pipeline() {
-  const [activeTab, setActiveTab] = useState('pipeline');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
-
-  return (
-    <div className="pipeline">
-      {/* Shortcuts - filters, search, actions */}
-      <Shortcuts
-        onFilterClick={() => {}}
-        searchPlaceholder="Search candidates"
-        primaryAction={{ label: 'Add Candidate', icon: Plus, onClick: () => {} }}
-      />
-
-      {/* Tabs - page sections */}
-      <Tabs
-        items={[
-          {
-            label: 'Pipeline',
-            isActive: activeTab === 'pipeline',
-            onClick: () => setActiveTab('pipeline'),
-          },
-          {
-            label: 'Overview',
-            isActive: activeTab === 'overview',
-            onClick: () => setActiveTab('overview'),
-          },
-        ]}
-      />
-
-      {/* Content */}
-      <div className="pipeline__table">
-        <TableHeader columns={columns} onSort={handleSort} />
-        {candidates.map((candidate) => (
-          <TableRow key={candidate.id}>
-            <TableCell>{candidate.name}</TableCell>
-            <TableCell>
-              <Badge type="candidateState" variant={candidate.status} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </div>
-
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-    </div>
-  );
-}
 ```
 
 ### Adding a New Page
 
 1. Create folder: `src/pages/{PageName}/`
 2. Create `{PageName}.jsx`, `{PageName}.css`, `index.js`
-3. Add to `App.jsx`:
-   - Add nav item in `navItems` array with `onClick` that calls `setActivePage()` and `setBreadcrumbItems()`
-   - Add case in the `renderPage()` switch
-
-### Candidates: Drill-Down Navigation Pattern
-
-Sub-page navigation within a page is **flat state inside the parent page** — no routing. `Pipeline` owns `selectedCandidate` state:
-
-```jsx
-// Pipeline.jsx
-const [selectedCandidate, setSelectedCandidate] = useState(null);
-
-// Row click → drill in
-const handleRowClick = (candidate) => setSelectedCandidate(candidate);
-
-// Back button → back to list
-const handleBack = () => setSelectedCandidate(null);
-
-// Conditional render — replaces the whole pipeline view
-return selectedCandidate ? (
-  <CandidateDetails candidate={selectedCandidate} onBack={handleBack} />
-) : (
-  <div className="pipeline">...</div>
-);
-```
-
-`CandidateDetails` receives the full candidate object as a prop and derives all display data locally via `useMemo` (skill distribution, AI insights, question review, completed mocks). It **does not fetch** — all data is currently generated/mocked from the candidate object.
-
-```jsx
-// CandidateDetails.jsx
-export function CandidateDetails({ candidate }) {
-  const skillDistribution = useMemo(
-    () => buildSkillDistribution(candidate.score),
-    [candidate.score]
-  );
-  const aiInsights = useMemo(() => buildAIInsights(candidate), [candidate]);
-  // ...
-}
-```
-
-When backend integration arrives, replace the `build*()` helper functions with API calls, keeping the component signature unchanged.
+3. Create a page wrapper function in `App.jsx`
+4. Add `<Route>` inside `<DashboardLayout>` in the route definitions
+5. Add breadcrumb mapping in `getRouteBreadcrumbs()`
+6. Add sidebar nav item in `buildNavItems()`
 
 ---
 
@@ -737,18 +691,21 @@ When backend integration arrives, replace the `build*()` helper functions with A
 ### UI Components (`src/components/ui/index.js`):
 
 ```js
-// UI Components
-export { default as Button } from './Button';
+export { Button } from './Button';
 export { Toggle } from './Toggle';
 export { Badge, BADGE_VARIANTS, BADGE_TYPES } from './Badge';
 export { Breadcrumb } from './Breadcrumb';
+export { EmptyState } from './EmptyState';
 export { Pagination } from './Pagination';
 export { SidebarButton } from './SidebarButton';
 export { User } from './User';
 export { Tabs } from './Tabs';
 export { Tags } from './Tags';
+export { QuickSort } from './QuickSort';
+export { Stepper } from './Stepper';
 export { TableHeader, TableRow, TableCell } from './Tables';
-export { StatsChart } from './StatsChart';
+export { SectionTitle } from './SectionTitle';
+export { FilterOverlay } from './FilterOverlay';
 ```
 
 ### Layout Components (`src/components/layout/index.js`):
@@ -764,22 +721,23 @@ export { PageLayout } from './PageLayout';
 
 ## Key Conventions Summary
 
-| Pattern               | Convention                                                             |
-| --------------------- | ---------------------------------------------------------------------- |
-| **Component exports** | Named exports: `export function Button() {}`                           |
-| **PropTypes**         | Required for all components                                            |
-| **Icons**             | Lucide React: `import { Icon } from 'lucide-react'`                    |
-| **Icon sizing**       | In JSX: `<Icon size={16} />`                                           |
-| **CSS naming**        | BEM-like: `.component`, `.component--modifier`, `.component__element`  |
-| **CSS values**        | Design tokens: `var(--token-name)` - never hardcode                    |
-| **Disabled styling**  | CSS `:disabled` pseudo-class                                           |
-| **Ref forwarding**    | `forwardRef` for input components                                      |
-| **Variant fallback**  | `const safeVariant = VARIANTS.includes(variant) ? variant : 'primary'` |
-| **Event cleanup**     | Always return cleanup function from `useEffect`                        |
-| **Stable callbacks**  | Use `useCallback` for event handlers passed to effects                 |
-| **Mock data**         | Prefix with `MOCK_`: `const MOCK_CANDIDATES = [...]`                   |
-| **File naming**       | PascalCase: `Button.jsx`, `InputField.jsx`                             |
-| **Tailwind sorting**  | Automatic via Prettier - don't manually reorder                        |
+| Pattern               | Convention                                                                 |
+| --------------------- | -------------------------------------------------------------------------- |
+| **Component exports** | Named exports: `export const Button = memo(function Button() {})`          |
+| **Memoization**       | All components wrapped in `React.memo()`                                   |
+| **PropTypes**         | Required for all components                                                |
+| **Icons**             | Lucide React: `import { Icon } from 'lucide-react'`                        |
+| **Icon sizing**       | In JSX: `<Icon size={16} />`                                               |
+| **CSS naming**        | BEM-like: `.component`, `.component--modifier`, `.component__element`      |
+| **CSS values**        | Design tokens: `var(--token-name)` — never hardcode                        |
+| **className**         | `['cls', cond && 'mod'].filter(Boolean).join(' ')`                         |
+| **Disabled styling**  | CSS `:disabled` pseudo-class                                               |
+| **Ref forwarding**    | `memo(forwardRef(...))` for input components + set `.displayName`          |
+| **Event cleanup**     | Always return cleanup function from `useEffect`                            |
+| **Stable callbacks**  | Use `useCallback` for event handlers passed to child components or effects |
+| **Constants**         | Module-scope for static config: `const TABLE_COLUMNS = [...]`              |
+| **Data exports**      | SCREAMING_CASE for arrays: `CANDIDATES`, camelCase for helpers             |
+| **File naming**       | PascalCase: `Button.jsx`, `InputField.jsx`                                 |
 
 ---
 
@@ -787,18 +745,23 @@ export { PageLayout } from './PageLayout';
 
 ### ✅ Implemented
 
-- Component library (Button, Input variants, Badge, Cards, Tables, Tabs, Pagination, etc.)
-- Layout system (PageLayout, Navbar, Sidebar, Shortcuts)
-- Design token system (460+ variables from Figma)
-- Candidates page with Pipeline view
+- 30+ component library (Button, Input variants, Badge, Cards, Tables, Charts, Tabs, Pagination, FilterOverlay, Toggle, Tags, Stepper, EmptyState, RowMenu, QuickSort, SectionTitle, User, etc.)
+- Layout system (PageLayout, Navbar with notifications, collapsible Sidebar, Shortcuts)
+- Design token system (490+ variables from Figma)
+- React Router v6 with nested routes, breadcrumbs, page wrappers
+- Centralised data layer (`src/data/`) with full CRUD helpers
+- All dashboard pages (Candidates, Jobs, Mocks, CompanyTeam, Profile)
+- Candidate-facing application flow (Landing → Form → Overview → MockSession → Complete)
+- Portal-rendered FilterOverlay
 - Component showcase page
 
 ### 🔄 Planned
 
-- React Router integration (replace manual state navigation)
-- Backend API integration ([VU-WebApp backend](https://github.com/UwUkareem/VU-WebApp.git))
-- Global state management (Context/Zustand when needed)
-- Remaining pages (Jobs, Mocks, CompanyTeam, Profile)
+- Backend API integration (replace in-memory mock data)
+- Authentication & protected routes
+- Global state management (Context or Zustand when needed)
+- Settings page
+- Real AI mock session integration
 
 ---
 
@@ -807,8 +770,6 @@ export { PageLayout } from './PageLayout';
 | Issue                        | Solution                                                                          |
 | ---------------------------- | --------------------------------------------------------------------------------- |
 | ESLint config errors         | Use flat config format (`eslint.config.js`), not `.eslintrc`                      |
-| Tailwind classes reordering  | Normal - Prettier plugin auto-sorts on save                                       |
 | Vite HMR not working         | Check export consistency (named vs default)                                       |
 | Design token not found       | Check `src/styles/tokens.css` first; don't hardcode                               |
 | Import not found from barrel | Ensure exported from both `{Component}/index.js` AND `src/components/ui/index.js` |
-| `@apply` not working         | Tailwind CSS 4 doesn't support `@apply` - use design tokens in CSS instead        |

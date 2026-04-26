@@ -24,6 +24,8 @@ export { JOBS, getJobById, updateJob, addJob, removeJob, duplicateJob } from './
 export {
   CANDIDATES,
   getCandidateById,
+  getCandidateBySlug,
+  toSlug,
   getCandidatesByJob,
   getCandidatesByJobId,
 } from './candidates';

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState, useCallback, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Sidebar } from '../Sidebar';
 import { Navbar } from '../Navbar';
@@ -6,6 +6,16 @@ import './PageLayout.css';
 
 const EMPTY_NAV = [];
 const EMPTY_BREADCRUMBS = [];
+
+/* ── Media-query breakpoints (must match tokens.css) ── */
+const BP_MOBILE = 768;
+const BP_TABLET = 1024;
+
+function getMode(width) {
+  if (width < BP_MOBILE) return 'mobile';
+  if (width < BP_TABLET) return 'tablet';
+  return 'desktop';
+}
 
 export const PageLayout = memo(function PageLayout({
   navItems = EMPTY_NAV,
@@ -16,15 +26,111 @@ export const PageLayout = memo(function PageLayout({
   className = '',
   onNavigate,
 }) {
+  const [mode, setMode] = useState(() => getMode(window.innerWidth));
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    const mql640 = window.matchMedia(`(max-width: ${BP_MOBILE - 1}px)`);
+    const mql1024 = window.matchMedia(`(max-width: ${BP_TABLET - 1}px)`);
+
+    const update = () => {
+      const newMode = getMode(window.innerWidth);
+      setMode(newMode);
+      if (newMode !== 'mobile') setDrawerOpen(false);
+    };
+
+    // Sync immediately and keep mode aligned with viewport changes.
+    update();
+
+    if (mql640.addEventListener) {
+      mql640.addEventListener('change', update);
+      mql1024.addEventListener('change', update);
+    } else {
+      mql640.addListener(update);
+      mql1024.addListener(update);
+    }
+
+    window.addEventListener('resize', update);
+
+    return () => {
+      if (mql640.removeEventListener) {
+        mql640.removeEventListener('change', update);
+        mql1024.removeEventListener('change', update);
+      } else {
+        mql640.removeListener(update);
+        mql1024.removeListener(update);
+      }
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  const handleDrawerClose = useCallback(() => setDrawerOpen(false), []);
+  const handleMenuToggle = useCallback(() => setDrawerOpen((prev) => !prev), []);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setDrawerOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [drawerOpen]);
+
+  // Auto-close drawer when a nav item is clicked on mobile
+  const wrappedNavItems = useMemo(
+    () =>
+      mode !== 'mobile'
+        ? navItems
+        : navItems.map((item) => ({
+            ...item,
+            onClick: () => {
+              item.onClick?.();
+              setDrawerOpen(false);
+            },
+            subItems: item.subItems?.map((sub) => ({
+              ...sub,
+              onClick: () => {
+                sub.onClick?.();
+                setDrawerOpen(false);
+              },
+            })),
+          })),
+    [navItems, mode]
+  );
+
+  const isMobile = mode === 'mobile';
+  const isCollapsed = mode === 'tablet';
+
   return (
-    <div className={['page-layout', className].filter(Boolean).join(' ')}>
-      <Sidebar logo={logo} navItems={navItems} user={user} className="page-layout__sidebar" />
+    <div
+      className={[
+        'page-layout',
+        isMobile && 'page-layout--mobile',
+        isMobile && drawerOpen && 'page-layout--drawer-open',
+        isCollapsed && 'page-layout--tablet',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <Sidebar
+        logo={logo}
+        navItems={wrappedNavItems}
+        user={user}
+        className="page-layout__sidebar"
+        collapsed={isCollapsed}
+        isDrawerOpen={drawerOpen}
+        onDrawerClose={handleDrawerClose}
+      />
       <div className="page-layout__main">
         <Navbar
           breadcrumbItems={breadcrumbItems}
           className="page-layout__navbar"
           user={user}
           onNavigate={onNavigate}
+          showLogo={isMobile}
+          logo={logo}
+          onMenuToggle={isMobile ? handleMenuToggle : undefined}
         />
         <main className="page-layout__content">{children}</main>
       </div>
@@ -33,7 +139,6 @@ export const PageLayout = memo(function PageLayout({
 });
 
 PageLayout.propTypes = {
-  /** Navigation items for the sidebar */
   navItems: PropTypes.arrayOf(
     PropTypes.shape({
       icon: PropTypes.elementType,
@@ -50,13 +155,11 @@ PageLayout.propTypes = {
       ),
     })
   ),
-  /** Current user info displayed in sidebar footer */
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     icon: PropTypes.elementType,
   }),
-  /** Breadcrumb navigation items */
   breadcrumbItems: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -64,12 +167,8 @@ PageLayout.propTypes = {
       onClick: PropTypes.func,
     })
   ),
-  /** Custom logo element for sidebar */
   logo: PropTypes.node,
-  /** Page content */
   children: PropTypes.node,
-  /** Additional CSS classes */
   className: PropTypes.string,
-  /** Callback for navbar avatar dropdown navigation */
   onNavigate: PropTypes.func,
 };

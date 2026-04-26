@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, lazy, Suspense } from 'react';
 import {
   Routes,
   Route,
@@ -9,24 +9,13 @@ import {
   Outlet,
 } from 'react-router-dom';
 import { PageLayout } from './components/layout/PageLayout';
-import { Pipeline, CandidateDetails } from './pages/Candidates';
+import { Pipeline } from './pages/Candidates/Pipeline/Pipeline';
 import { JobList } from './pages/Jobs/JobManagement/JobList';
-import { JobDetails } from './pages/Jobs/JobManagement/JobDetails';
-import { CreateConfig, EditConfig } from './pages/Jobs/JobConfigPage';
-import { MockList, MockDetails } from './pages/Mocks/MockManagement';
-import { CreateMockConfig, EditMockConfig } from './pages/Mocks/MockConfigPage';
-import { Overview, MemberDetails, AddMembers, CompanySettings } from './pages/CompanyTeam';
-import { ProfilePage } from './pages/Profile';
-import {
-  JobLanding,
-  CandidateForm,
-  JobOverview,
-  MockSession,
-  SubmissionComplete,
-} from './pages/Application';
+import { MockList } from './pages/Mocks/MockManagement/MockList/MockList';
+import { Overview } from './pages/CompanyTeam/Overview/Overview';
 import { getJoinRequestById } from './data/company';
 import { buildApplicationContext } from './data/application';
-import { getCandidateById } from './data/candidates';
+import { getCandidateBySlug } from './data/candidates';
 import {
   Users,
   Briefcase,
@@ -37,7 +26,67 @@ import {
   Hash,
   ClipboardCheck,
 } from 'lucide-react';
-import { ComponentShowcase } from './pages/_showcase';
+
+// ── Lazy-loaded pages (code-split at route level) ──
+const CandidateDetails = lazy(() =>
+  import('./pages/Candidates/CandidateDetails/CandidateDetails').then((m) => ({
+    default: m.CandidateDetails,
+  }))
+);
+const JobDetails = lazy(() =>
+  import('./pages/Jobs/JobManagement/JobDetails').then((m) => ({ default: m.JobDetails }))
+);
+const CreateConfig = lazy(() =>
+  import('./pages/Jobs/JobConfigPage').then((m) => ({ default: m.CreateConfig }))
+);
+const EditConfig = lazy(() =>
+  import('./pages/Jobs/JobConfigPage').then((m) => ({ default: m.EditConfig }))
+);
+const MockDetails = lazy(() =>
+  import('./pages/Mocks/MockManagement/MockDetails/MockDetails').then((m) => ({
+    default: m.MockDetails,
+  }))
+);
+const CreateMockConfig = lazy(() =>
+  import('./pages/Mocks/MockConfigPage').then((m) => ({ default: m.CreateMockConfig }))
+);
+const EditMockConfig = lazy(() =>
+  import('./pages/Mocks/MockConfigPage').then((m) => ({ default: m.EditMockConfig }))
+);
+const MemberDetails = lazy(() =>
+  import('./pages/CompanyTeam/MemberDetails/MemberDetails').then((m) => ({
+    default: m.MemberDetails,
+  }))
+);
+const AddMembers = lazy(() =>
+  import('./pages/CompanyTeam/AddMembers/AddMembers').then((m) => ({
+    default: m.AddMembers,
+  }))
+);
+const CompanySettings = lazy(() =>
+  import('./pages/CompanyTeam/CompanySettings/CompanySettings').then((m) => ({
+    default: m.CompanySettings,
+  }))
+);
+const ProfilePage = lazy(() => import('./pages/Profile').then((m) => ({ default: m.ProfilePage })));
+const JobLanding = lazy(() =>
+  import('./pages/Application').then((m) => ({ default: m.JobLanding }))
+);
+const CandidateForm = lazy(() =>
+  import('./pages/Application').then((m) => ({ default: m.CandidateForm }))
+);
+const JobOverview = lazy(() =>
+  import('./pages/Application').then((m) => ({ default: m.JobOverview }))
+);
+const MockSession = lazy(() =>
+  import('./pages/Application').then((m) => ({ default: m.MockSession }))
+);
+const SubmissionComplete = lazy(() =>
+  import('./pages/Application').then((m) => ({ default: m.SubmissionComplete }))
+);
+const ComponentShowcase = lazy(() =>
+  import('./pages/_showcase').then((m) => ({ default: m.ComponentShowcase }))
+);
 
 // ── Static config ──
 const CURRENT_USER = {
@@ -49,11 +98,14 @@ const CURRENT_USER = {
 // ── Route → breadcrumb mapping ──
 function getRouteBreadcrumbs(pathname, navigate) {
   if (pathname === '/candidates') return [{ label: 'Candidates' }];
-  if (/^\/candidates\/\d+$/.test(pathname))
-    return [
-      { label: 'Candidates', onClick: () => navigate('/candidates') },
-      { label: 'Candidate Details' },
-    ];
+  if (/^\/candidates\/[a-z0-9-]+$/.test(pathname)) {
+    const slug = pathname.split('/').pop();
+    const name = slug
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+    return [{ label: 'Candidates', onClick: () => navigate('/candidates') }, { label: name }];
+  }
 
   if (pathname === '/jobs') return [{ label: 'Job Management' }];
   if (pathname === '/jobs/create') return [{ label: 'Create Job' }];
@@ -228,7 +280,9 @@ function DashboardLayout() {
       breadcrumbItems={breadcrumbs}
       onNavigate={handleNavigate}
     >
-      <Outlet />
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </PageLayout>
   );
 }
@@ -240,8 +294,8 @@ function CandidatesPage() {
   return <Pipeline />;
 }
 function CandidateDetailsPage() {
-  const { id } = useParams();
-  const candidate = getCandidateById(Number(id));
+  const { slug } = useParams();
+  const candidate = getCandidateBySlug(slug);
   if (!candidate) return <Navigate to="/candidates" replace />;
   return <CandidateDetails candidate={candidate} />;
 }
@@ -378,7 +432,9 @@ function ApplicationLayout() {
   return (
     <div className="application-shell">
       <div className="application-shell__main">
-        <Outlet />
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );
@@ -434,7 +490,7 @@ export default function App() {
       {/* Dashboard pages (with sidebar + navbar) */}
       <Route element={<DashboardLayout />}>
         <Route path="/candidates" element={<CandidatesPage />} />
-        <Route path="/candidates/:id" element={<CandidateDetailsPage />} />
+        <Route path="/candidates/:slug" element={<CandidateDetailsPage />} />
         <Route path="/jobs" element={<JobListPage />} />
         <Route path="/jobs/create" element={<CreateJobPage />} />
         <Route path="/jobs/:id" element={<JobDetailsPage />} />

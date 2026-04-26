@@ -43,7 +43,8 @@ export const MemberDetails = memo(function MemberDetails({
 }) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [assignRole, setAssignRole] = useState('viewer');
-  const _ = refreshKey;
+  // refreshKey forces re-read from mutable data layer after writes (remove when API integration lands)
+  void refreshKey;
 
   const member = memberId ? getMemberById(memberId) : null;
   const isCurrentUser = memberId === CURRENT_USER_ID;

@@ -43,6 +43,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  overflow: visible;
 }
 
 /* ── Recharts overrides ── */
@@ -68,6 +69,17 @@
   box-shadow: none !important;
   border: none !important;
   transition: none !important;
+  z-index: 50;
+  position: relative;
+}
+
+/* Allow the recharts SVG surface to overflow — needed for tooltip to escape bounds */
+.radar-chart .recharts-wrapper {
+  overflow: visible !important;
+}
+
+.radar-chart .recharts-wrapper > svg {
+  overflow: visible !important;
 }
 
 .radar-chart *:focus {

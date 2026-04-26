@@ -1,4 +1,4 @@
-import { memo, useState, useMemo, useCallback, useRef, useLayoutEffect } from 'react';
+import { memo, useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Users, Globe, Building2, Search } from 'lucide-react';
 import { EntityCard } from '../../../components/ui/Cards';
@@ -7,6 +7,7 @@ import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
 import { Pagination } from '../../../components/ui/Pagination';
 import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../../../data/company';
+import { useResponsiveItemsPerPage } from '../../../hooks';
 import './Overview.css';
 
 /* ── Table config — all columns sortable ── */
@@ -30,23 +31,11 @@ export const Overview = memo(function Overview({ onEditCompany, onViewMember }) 
   const [searchValue, setSearchValue] = useState('');
   const [sortKey, setSortKey] = useState(null);
   const [sortDir, setSortDir] = useState(null);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
-  const tableRef = useRef(null);
-
-  /* ── Dynamic items-per-page via ResizeObserver ── */
-  useLayoutEffect(() => {
-    const calculate = () => {
-      if (!tableRef.current) return;
-      const available = tableRef.current.clientHeight - HEADER_HEIGHT - PAGINATION_HEIGHT;
-      setItemsPerPage(Math.max(1, Math.floor(available / ROW_HEIGHT)));
-    };
-    calculate();
-    const el = tableRef.current;
-    if (!el) return;
-    const observer = new ResizeObserver(calculate);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const { tableRef, itemsPerPage } = useResponsiveItemsPerPage({
+    rowHeight: ROW_HEIGHT,
+    headerHeight: HEADER_HEIGHT,
+    paginationHeight: PAGINATION_HEIGHT,
+  });
 
   const handleSearch = useCallback((e) => {
     setSearchValue(e.target.value);

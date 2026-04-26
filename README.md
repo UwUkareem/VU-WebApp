@@ -50,7 +50,7 @@ VU is an AI-powered virtual interview platform that reimagines how people are ev
 
 - **490+ CSS variables** in `src/styles/tokens.css` (exported from Figma)
 - **BEM-like component CSS** — each component owns its `.css` file, classes follow `.block`, `.block__element`, `.block--modifier`
-- **No routing library yet** — manual state-based navigation (React Router planned)
+- **React Router v6** — full declarative URL-based navigation with `useNavigate`, `useParams`, nested routes
 
 ---
 
@@ -162,15 +162,15 @@ src/
 
 ### Key Files
 
-| File                             | Purpose                                                     |
-| -------------------------------- | ----------------------------------------------------------- |
-| `src/App.jsx`                    | Root component — React Router v6 routes + page wrappers     |
-| `src/styles/tokens.css`          | Design tokens — single source of truth (490+ vars)          |
-| `src/styles/index.css`           | Global CSS reset + token import                             |
-| `src/data/index.js`              | Central barrel export for all data helpers                  |
-| `src/components/ui/index.js`     | Central barrel export for all UI primitives                 |
-| `src/components/layout/index.js` | Barrel export for layout components                         |
-| `src/pages/_showcase/`           | Component demo page (useful for visual testing)             |
+| File                             | Purpose                                                 |
+| -------------------------------- | ------------------------------------------------------- |
+| `src/App.jsx`                    | Root component — React Router v6 routes + page wrappers |
+| `src/styles/tokens.css`          | Design tokens — single source of truth (490+ vars)      |
+| `src/styles/index.css`           | Global CSS reset + token import                         |
+| `src/data/index.js`              | Central barrel export for all data helpers              |
+| `src/components/ui/index.js`     | Central barrel export for all UI primitives             |
+| `src/components/layout/index.js` | Barrel export for layout components                     |
+| `src/pages/_showcase/`           | Component demo page (useful for visual testing)         |
 
 ---
 
@@ -194,8 +194,9 @@ src/components/ui/{ComponentName}/
 - **PropTypes** required on every component for runtime validation
 - **BEM-like CSS** — `.component`, `.component--modifier`, `.component__element`
 - **Design tokens** — reference `var(--token-name)` from `tokens.css`, never hardcode colors/sizes
-- **Tailwind utilities** — applied via `className` prop for layout/spacing, no `@apply`
+- **className assembly** — `['cls', cond && 'mod'].filter(Boolean).join(' ')`
 - **Lucide React** — all icons come from `lucide-react`
+- **Stable callbacks** — `useCallback` for handlers passed to children or effects
 
 ### Data Layer
 
@@ -233,28 +234,34 @@ All data lives in `src/data/` — a single centralised layer of in-memory mock d
 
 ### Current Status
 
-| Page            | Status         | Sub-pages / Routes                                                                  |
-| --------------- | -------------- | ----------------------------------------------------------------------------------- |
+| Page            | Status         | Sub-pages / Routes                                                                                               |
+| --------------- | -------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **Candidates**  | ✅ Implemented | Pipeline (`/candidates`), CandidateDetails (`/candidates/:id`) with CV Analysis, Full Feedback, Mock Replay tabs |
-| **Jobs**        | ✅ Implemented | JobList (`/jobs`), JobDetails (`/jobs/:id`) with Share Job, Test Application, status management |
-| **Mocks**       | ✅ Implemented | MockList (`/mocks`), MockDetails (`/mocks/:id`) with Test Mock, Edit, Duplicate     |
-| **Company**     | ✅ Implemented | Overview, AddMembers, MemberDetails, CompanySettings (`/company/*`)                 |
-| **Profile**     | ✅ Implemented | Profile view/edit, password change, activity timeline (`/profile`)                  |
-| **Application** | ✅ Implemented | Candidate-facing flow: Landing → Form → Overview → MockSession → Complete (`/apply/:jobId/*`) |
-| **Settings**    | 🔄 Placeholder | Currently shows ComponentShowcase                                                   |
+| **Jobs**        | ✅ Implemented | JobList (`/jobs`), JobDetails (`/jobs/:id`) with Share Job, Test Application, status management                  |
+| **Mocks**       | ✅ Implemented | MockList (`/mocks`), MockDetails (`/mocks/:id`) with Test Mock, Edit, Duplicate                                  |
+| **Company**     | ✅ Implemented | Overview, AddMembers, MemberDetails, CompanySettings (`/company/*`)                                              |
+| **Profile**     | ✅ Implemented | Profile view/edit, password change, activity timeline (`/profile`)                                               |
+| **Application** | ✅ Implemented | Candidate-facing flow: Landing → Form → Overview → MockSession → Complete (`/apply/:jobId/*`)                    |
+| **Settings**    | 🔄 Placeholder | Currently shows ComponentShowcase                                                                                |
 
 ### Routing (React Router v6)
 
 ```
 /candidates               → Pipeline (list)
-/candidates/:id           → CandidateDetails (tabbed detail)
+/candidates/:slug         → CandidateDetails (tabbed detail)
 /jobs                     → JobList
+/jobs/create              → CreateConfig (4-step form)
 /jobs/:id                 → JobDetails
+/jobs/:id/edit            → EditConfig
 /mocks                    → MockList
+/mocks/create             → CreateMockConfig (3-step form)
 /mocks/:id                → MockDetails
+/mocks/:id/edit           → EditMockConfig
 /company                  → CompanyTeam Overview
-/company/add-members      → AddMembers
-/company/members/:id      → MemberDetails
+/company/team/:id         → MemberDetails (from overview)
+/company/members          → AddMembers
+/company/members/:id      → MemberDetails (from requests)
+/company/requests/:id     → RequestDetails
 /company/settings         → CompanySettings
 /profile                  → Profile
 /apply/:jobId             → JobLanding (candidate-facing)

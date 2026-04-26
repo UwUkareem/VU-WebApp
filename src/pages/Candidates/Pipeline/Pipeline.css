@@ -3,7 +3,8 @@
 .pipeline-page {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .pipeline-page__dashboard {
@@ -27,6 +28,27 @@
   border-radius: var(--radius-md);
   min-height: 0;
   overflow: hidden;
+}
+
+/* Overview mode — reset flex constraints so page-layout__content scrolls;
+   all ancestors become overflow:visible so chart tooltips never get clipped. */
+.pipeline-page--overview {
+  flex: none;
+}
+
+.pipeline-page--overview .pipeline-page__dashboard {
+  flex: none;
+}
+
+.pipeline-page--overview .pipeline-page__content {
+  flex: none;
+  height: auto;
+  overflow: visible;
+}
+
+.pipeline-page--overview .pipeline-page__overview {
+  overflow: visible;
+  flex: none;
 }
 
 /* Table */
@@ -157,6 +179,7 @@
 .overview__quick-stats > * {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
 }
 
 /* Charts */
@@ -238,7 +261,7 @@
   border-bottom: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1023px) {
   .overview__quick-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -254,20 +277,146 @@
   .overview__insights-grid {
     grid-template-columns: 1fr;
   }
+
+  .pipeline-page__dashboard {
+    padding: 0 var(--padding-md) var(--padding-md);
+  }
+
+  .pipeline-page__content {
+    padding: var(--padding-md) var(--padding-lg);
+    gap: var(--gap-lg);
+  }
+
+  /* ── Tablet: hide Date + Anti-cheat columns ── */
+  /* Visible columns: Name, Job, Score, Status, Menu */
+  .pipeline-page__header,
+  .pipeline-page__row {
+    grid-template-columns: 1.2fr 1.85fr 1.15fr 1fr 2rem !important;
+  }
+
+  .pipeline-page__header > :nth-child(3),
+  .pipeline-page__row > :nth-child(3) {
+    padding-right: 0;
+  }
+
+  .pipeline-page__header > :nth-child(4),
+  .pipeline-page__row > :nth-child(4),
+  .pipeline-page__header > :nth-child(5),
+  .pipeline-page__row > :nth-child(5) {
+    display: none;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 639px) {
+  .pipeline-page__dashboard {
+    padding: 0 var(--padding-sm) var(--padding-sm);
+  }
+
+  .pipeline-page__content {
+    padding: var(--padding-sm) var(--padding-md);
+    gap: var(--gap-md);
+    border-radius: var(--radius-sm);
+  }
+
   .overview__quick-stats {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--gap-md);
+  }
+
+  .overview__quick-stats .quick-info-card {
+    max-width: none;
+    min-width: 0;
+    padding: var(--padding-sm) var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .overview__quick-stats .quick-info-card__content {
+    min-width: 0;
+  }
+
+  .overview__charts > * {
+    min-height: 260px;
   }
 
   .overview__table-header,
   .overview__table-row {
-    padding: var(--padding-sm) var(--padding-lg);
+    padding: var(--padding-sm) var(--padding-md);
     font-size: var(--text-sm);
   }
 
   .overview__table-header .table-header__cell {
     font-size: var(--text-xs);
+  }
+
+  /* ── Pipeline table: hide Job, Date, Anti-cheat, Menu on mobile ── */
+  /* Column order: 1-Name, 2-Job, 3-Score, 4-Date, 5-Anti-cheat, 6-Status, 7-Menu */
+
+  .pipeline-page__header,
+  .pipeline-page__row {
+    grid-template-columns: 1.2fr 1.5fr 1fr !important;
+  }
+
+  .pipeline-page__header > :nth-child(2),
+  .pipeline-page__header > :nth-child(4),
+  .pipeline-page__header > :nth-child(5),
+  .pipeline-page__header > :nth-child(7),
+  .pipeline-page__row > :nth-child(2),
+  .pipeline-page__row > :nth-child(4),
+  .pipeline-page__row > :nth-child(5),
+  .pipeline-page__row > :nth-child(7) {
+    display: none;
+  }
+
+  .pipeline-page__score {
+    max-width: none;
+  }
+
+  /* ── Overview Job Performance table: hide Avg Score column on mobile ── */
+  /* Column order: 1-Job, 2-Avg Score, 3-Accepted, 4-Rejected, 5-Pending, 6-Total */
+  .overview__table-header,
+  .overview__table-row {
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr !important;
+  }
+
+  .overview__table-header > :nth-child(2),
+  .overview__table-row > :nth-child(2) {
+    display: none;
+  }
+}
+
+/* ── Small laptop (1024px–1279px) ── */
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  /* ── Small laptop: hide Date column ── */
+  /* Visible columns: Name, Job, Score, Anti-cheat, Status, Menu */
+  .pipeline-page__header,
+  .pipeline-page__row {
+    grid-template-columns: 1.2fr 1.85fr 1.15fr 1fr 1fr 2rem !important;
+  }
+
+  .pipeline-page__header > :nth-child(3),
+  .pipeline-page__row > :nth-child(3) {
+    padding-right: 0;
+  }
+
+  .pipeline-page__header > :nth-child(4),
+  .pipeline-page__row > :nth-child(4) {
+    display: none;
+  }
+
+  /* Shrink score bar so it fits the narrower column */
+  .pipeline-page__score {
+    max-width: var(--size-24);
+    gap: var(--gap-sm);
+  }
+
+  /* Stack all performance charts vertically (same as tablet) */
+  .overview__charts {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce QuickInfoCard padding so 4 cards fit on one row */
+  .pipeline-page .quick-info-card {
+    padding: var(--padding-sm) var(--padding-md);
   }
 }

@@ -59,7 +59,7 @@
 /* Right — Sidebar */
 
 .candidate-details__sidebar {
-  width: 360px;
+  width: 22.5rem;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -193,20 +193,138 @@
 
 /* Responsive */
 
-@media (max-width: 1024px) {
+/* ── Small laptop (1024–1279px) ── */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .candidate-details__sidebar {
+    width: 18rem;
+  }
+}
+
+/* ── Tablet & Mobile (≤ 1023px) ──
+   Layout: EntityCard → Completed Mocks → Tabs → Decision buttons
+   Sidebar and Main are unboxed with display:contents so their children
+   participate directly in the grid.
+---------------------------------------------- */
+@media (max-width: 1023px) {
   .candidate-details {
+    display: grid;
+    grid-template-areas:
+      'entity'
+      'mocks'
+      'tabs'
+      'decisions';
+    grid-template-columns: 1fr;
+    height: 100%;
+    overflow-y: auto;
+    gap: var(--gap-lg);
+    /* keep padding from default */
+  }
+
+  /* Unbox main — EntityCard and tabs-container become direct grid items */
+  .candidate-details__main {
+    display: contents;
+  }
+
+  /* EntityCard → grid area "entity" */
+  .candidate-details .entity-card {
+    grid-area: entity;
+  }
+
+  /* Tabs container → grid area "tabs" */
+  .candidate-details__tabs-container {
+    grid-area: tabs;
+    overflow: visible;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* Tab content: natural height, candidate-details scrolls */
+  .candidate-details__tab-content {
+    overflow: visible;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* Sticky tab bar — sticks to top of candidate-details scroll container */
+  .candidate-details__tabs-container > .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--bg-surface);
+    padding: 0 var(--padding-xl);
+    margin: 0 calc(-1 * var(--padding-xl));
+  }
+
+  /* Unbox sidebar */
+  .candidate-details__sidebar {
+    display: contents;
+    width: auto;
+    overflow-y: visible;
+  }
+
+  /* Completed Mocks → grid area "mocks" */
+  .candidate-details__sidebar-section--mocks {
+    grid-area: mocks;
+  }
+
+  /* Decision section → grid area "decisions" */
+  .candidate-details__sidebar-section--decision {
+    grid-area: decisions;
+  }
+
+  /* On tablet: mocks ActionCards go horizontal */
+  .candidate-details__mocks {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .candidate-details__mocks .action-card {
+    flex: 1;
+    min-width: 12rem;
+  }
+}
+
+/* ── Mobile (< 640px) ── */
+@media (max-width: 639px) {
+  .candidate-details {
+    padding: var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .candidate-details__tabs-container {
+    padding: var(--padding-md);
+    gap: var(--gap-md);
+  }
+
+  .candidate-details__tabs-container > .tabs {
+    margin: 0 calc(-1 * var(--padding-md));
+    padding: 0 var(--padding-md);
+  }
+
+  /* Mocks: vertical stack on narrow mobile */
+  .candidate-details__mocks {
     flex-direction: column;
   }
 
-  .candidate-details__sidebar {
-    width: 100%;
+  .candidate-details__mocks .action-card {
+    flex: none;
+    min-width: 0;
+  }
+
+  /* Decision buttons: horizontal row */
+  .candidate-details__decisions {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--gap-lg);
+  }
+
+  .candidate-details__decision-btn {
+    flex: 1;
+    min-width: 5.5rem;
+    justify-content: center;
   }
 
   .candidate-details__sidebar-section {
-    flex: 1;
-    min-width: 240px;
+    min-width: 0;
+    padding: var(--padding-md);
   }
 }

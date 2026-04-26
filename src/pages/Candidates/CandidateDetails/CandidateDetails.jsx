@@ -124,7 +124,7 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
           </div>
         </div>
 
-        <div className="candidate-details__sidebar-section">
+        <div className="candidate-details__sidebar-section candidate-details__sidebar-section--mocks">
           <SectionTitle>Completed Mocks</SectionTitle>
           <div className="candidate-details__mocks">
             {COMPLETED_MOCKS.map((mock) => (

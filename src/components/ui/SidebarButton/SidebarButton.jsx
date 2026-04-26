@@ -10,6 +10,7 @@ export const SidebarButton = memo(function SidebarButton({
   isActive = false,
   onClick,
   subItems = EMPTY_SUBITEMS,
+  collapsed = false,
   className = '',
 }) {
   const hasSubItems = subItems.length > 0;
@@ -20,20 +21,25 @@ export const SidebarButton = memo(function SidebarButton({
     <div className={['sidebar-button-wrapper', className].filter(Boolean).join(' ')}>
       <button
         type="button"
-        className={['sidebar-button', isButtonActive && 'sidebar-button--active']
+        className={[
+          'sidebar-button',
+          isButtonActive && 'sidebar-button--active',
+          collapsed && 'sidebar-button--collapsed',
+        ]
           .filter(Boolean)
           .join(' ')}
         onClick={onClick}
+        title={collapsed ? label : undefined}
       >
         {Icon && (
           <span className="sidebar-button__icon" aria-hidden="true">
             <Icon size={20} />
           </span>
         )}
-        <span className="sidebar-button__label">{label}</span>
+        {!collapsed && <span className="sidebar-button__label">{label}</span>}
       </button>
 
-      {hasSubItems && isButtonActive && (
+      {hasSubItems && isButtonActive && !collapsed && (
         <div className="sidebar-button__subitems">
           {subItems.map((subItem, index) => (
             <SidebarSubItem
@@ -76,6 +82,7 @@ SidebarButton.propTypes = {
     })
   ),
   className: PropTypes.string,
+  collapsed: PropTypes.bool,
 };
 
 SidebarSubItem.propTypes = {

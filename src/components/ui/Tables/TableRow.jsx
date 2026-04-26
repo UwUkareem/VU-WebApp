@@ -10,6 +10,7 @@ export const TableRow = memo(function TableRow({
   selected = false,
   onMenuClick,
   onMenuSelect,
+  onMouseDown,
   onClick,
   className = '',
   gridTemplateColumns,
@@ -37,6 +38,7 @@ export const TableRow = memo(function TableRow({
       ]
         .filter(Boolean)
         .join(' ')}
+      onMouseDown={onMouseDown}
       onClick={onClick}
       role="row"
       style={gridTemplateColumns ? { display: 'grid', gridTemplateColumns } : undefined}
@@ -70,6 +72,7 @@ TableRow.propTypes = {
   selected: PropTypes.bool,
   onMenuClick: PropTypes.func,
   onMenuSelect: PropTypes.func,
+  onMouseDown: PropTypes.func,
   onClick: PropTypes.func,
   className: PropTypes.string,
   gridTemplateColumns: PropTypes.string,

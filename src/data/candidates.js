@@ -487,6 +487,17 @@ export function getCandidateById(id) {
   return CANDIDATES.find((c) => c.id === id) ?? null;
 }
 
+export function toSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+export function getCandidateBySlug(slug) {
+  return CANDIDATES.find((c) => toSlug(c.name) === slug) ?? null;
+}
+
 export function getCandidatesByJob(jobTitle) {
   return CANDIDATES.filter((c) => c.job === jobTitle);
 }

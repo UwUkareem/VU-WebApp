@@ -495,4 +495,38 @@
   --transition-fast: 150ms ease;
   --transition-base: 200ms ease;
   --transition-slow: 300ms ease;
+
+  /* ========================================
+     BREAKPOINTS (reference values — use @media queries below)
+     ======================================== */
+  /* Mobile:       0–767px     */
+  /* Tablet:       768–1023px  */
+  /* Laptop:       1024–1279px */
+  /* Desktop:      1280px+     */
+
+  --bp-mobile-max: 47.9375rem; /* 767px */
+  --bp-tablet-min: 48rem; /* 768px */
+  --bp-tablet-max: 63.9375rem; /* 1023px */
+  --bp-laptop-min: 64rem; /* 1024px */
+  --bp-laptop-max: 79.9375rem; /* 1279px */
+  --bp-desktop-min: 80rem; /* 1280px */
+
+  --sidebar-width: 12.875rem;
+  --sidebar-collapsed-width: 4.25rem;
+}
+
+/* ========================================
+   RESPONSIVE OVERRIDES
+   ======================================== */
+
+@media (max-width: 1023px) {
+  :root {
+    --sidebar-width: var(--sidebar-collapsed-width);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --sidebar-width: 0px;
+  }
 }

@@ -80,6 +80,12 @@
 
 /* Responsive */
 
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .full-feedback__charts {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .full-feedback__charts {
     grid-template-columns: 1fr;

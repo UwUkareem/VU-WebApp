@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef, useMemo, useCallback, memo } from 'react';
+import { useState, useRef, useMemo, useCallback, memo } from 'react';
+import { useEntranceAnimation } from '../../../../hooks';
 import PropTypes from 'prop-types';
 import { Bookmark, MoreVertical } from 'lucide-react';
 import { User } from '../../User';
@@ -9,7 +10,6 @@ import './EntityCard.css';
 
 const ICON_SIZE_SM = 16;
 const ICON_SIZE_MD = 20;
-const INTERSECTION_THRESHOLD = 0.2;
 const SCORE_RADIUS = 20;
 const SCORE_STROKE = 2.5;
 const SCORE_CIRCUMFERENCE = 2 * Math.PI * SCORE_RADIUS;
@@ -54,9 +54,8 @@ export const EntityCard = memo(function EntityCard({
   animated = true,
   onClick,
 }) {
-  const [isVisible, setIsVisible] = useState(!animated);
+  const { ref: cardRef, isVisible } = useEntranceAnimation(animated);
   const [menuOpen, setMenuOpen] = useState(false);
-  const cardRef = useRef(null);
   const menuTriggerRef = useRef(null);
 
   const scoreOffset = useMemo(() => {
@@ -64,26 +63,6 @@ export const EntityCard = memo(function EntityCard({
     const pct = Math.max(0, Math.min(100, score)) / 100;
     return SCORE_CIRCUMFERENCE * (1 - pct);
   }, [score]);
-
-  useEffect(() => {
-    if (!animated) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: INTERSECTION_THRESHOLD }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [animated]);
 
   const handleMenuToggle = useCallback((e) => {
     e.stopPropagation();

@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef, memo } from 'react';
+import { memo } from 'react';
+import { useEntranceAnimation } from '../../../../hooks';
 import PropTypes from 'prop-types';
 import { Star } from 'lucide-react';
 import { Button } from '../../Button';
@@ -6,7 +7,6 @@ import { Badge } from '../../Badge';
 import './ActionCard.css';
 
 const ICON_SIZE = 16;
-const INTERSECTION_THRESHOLD = 0.2;
 
 export const ActionCard = memo(function ActionCard({
   title,
@@ -27,28 +27,7 @@ export const ActionCard = memo(function ActionCard({
   className = '',
   animated = true,
 }) {
-  const [isVisible, setIsVisible] = useState(!animated);
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    if (!animated) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: INTERSECTION_THRESHOLD }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [animated]);
+  const { ref: cardRef, isVisible } = useEntranceAnimation(animated);
 
   return (
     <div

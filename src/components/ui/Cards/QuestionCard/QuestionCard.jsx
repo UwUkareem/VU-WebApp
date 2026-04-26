@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { ChevronDown, Trash2, Star } from 'lucide-react';
 import { TextInput, Textarea, DropdownInput } from '../../Input';
 import { Button } from '../../Button';
@@ -49,51 +49,67 @@ export const QuestionCard = memo(function QuestionCard({
   const [isRemoving, setIsRemoving] = useState(false);
 
   const cardRef = useRef(null);
+  const removeTimerRef = useRef(null);
 
   // Entrance animation
   useEffect(() => {
     requestAnimationFrame(() => {
       setIsVisible(true);
     });
+    return () => {
+      if (removeTimerRef.current) clearTimeout(removeTimerRef.current);
+    };
   }, []);
 
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const handleToggle = useCallback(() => {
+    setIsExpanded((prev) => !prev);
+  }, []);
 
-  const handleTitleChange = (e) => {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
-    onChange?.({ title: newTitle, description, difficulty, estimatedTime });
-  };
+  const handleTitleChange = useCallback(
+    (e) => {
+      const newTitle = e.target.value;
+      setTitle(newTitle);
+      onChange?.({ title: newTitle, description, difficulty, estimatedTime });
+    },
+    [description, difficulty, estimatedTime, onChange]
+  );
 
-  const handleDescriptionChange = (e) => {
-    const newDescription = e.target.value;
-    setDescription(newDescription);
-    onChange?.({ title, description: newDescription, difficulty, estimatedTime });
-  };
+  const handleDescriptionChange = useCallback(
+    (e) => {
+      const newDescription = e.target.value;
+      setDescription(newDescription);
+      onChange?.({ title, description: newDescription, difficulty, estimatedTime });
+    },
+    [title, difficulty, estimatedTime, onChange]
+  );
 
-  const handleDifficultyChange = (value) => {
-    setDifficulty(value);
-    onChange?.({ title, description, difficulty: value, estimatedTime });
-  };
+  const handleDifficultyChange = useCallback(
+    (value) => {
+      setDifficulty(value);
+      onChange?.({ title, description, difficulty: value, estimatedTime });
+    },
+    [title, description, estimatedTime, onChange]
+  );
 
-  const handleEstimatedTimeChange = (value) => {
-    setEstimatedTime(value);
-    onChange?.({ title, description, difficulty, estimatedTime: value });
-  };
+  const handleEstimatedTimeChange = useCallback(
+    (value) => {
+      setEstimatedTime(value);
+      onChange?.({ title, description, difficulty, estimatedTime: value });
+    },
+    [title, description, difficulty, onChange]
+  );
 
-  const handleDone = () => {
+  const handleDone = useCallback(() => {
     setIsExpanded(false);
     onDone?.({ title, description, difficulty, estimatedTime });
-  };
+  }, [title, description, difficulty, estimatedTime, onDone]);
 
-  const handleRemove = () => {
+  const handleRemove = useCallback(() => {
     setIsRemoving(true);
-    setTimeout(() => {
+    removeTimerRef.current = setTimeout(() => {
       onRemove?.();
     }, 300); // Match animation duration
-  };
+  }, [onRemove]);
 
   // Display summary when collapsed
   const getDifficultyLabel = () => {
@@ -280,5 +296,3 @@ QuestionCard.propTypes = {
   defaultExpanded: PropTypes.bool,
   className: PropTypes.string,
 };
-
-export default QuestionCard;

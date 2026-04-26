@@ -4,7 +4,7 @@
   position: absolute;
   top: calc(100% + var(--size-2));
   right: 0;
-  z-index: 1000;
+  z-index: 2400;
   width: 24rem;
   max-height: 32rem;
   background: var(--bg-surface);
@@ -232,4 +232,30 @@
   font-weight: var(--font-regular);
   color: var(--text-tertiary);
   line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .notification-dropdown {
+    position: absolute;
+    top: calc(100% + var(--size-2));
+    right: 0;
+    left: auto;
+    width: min(22rem, calc(100vw - 1rem));
+    max-width: calc(100vw - 1rem);
+    max-height: min(70vh, 30rem);
+    border-radius: var(--radius-md);
+    z-index: 5200;
+    transform-origin: top right;
+  }
+
+  .notification-dropdown__header,
+  .notification-dropdown__footer {
+    padding-left: var(--padding-md);
+    padding-right: var(--padding-md);
+  }
+
+  .notification-item {
+    padding-left: var(--padding-md);
+    padding-right: var(--padding-md);
+  }
 }

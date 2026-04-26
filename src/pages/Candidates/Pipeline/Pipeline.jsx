@@ -1,5 +1,5 @@
-import { useState, useRef, useLayoutEffect, useEffect, useMemo, useCallback, memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Shortcuts } from '../../../components/layout/Shortcuts';
 import { Tabs } from '../../../components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
@@ -9,8 +9,9 @@ import { FilterOverlay } from '../../../components/ui/FilterOverlay';
 import { QuickInfoCard, InfoCard } from '../../../components/ui/Cards';
 import { RadarChart, RadialBarChart, AreaChart, BarChart } from '../../../components/ui/Charts';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
-import { CANDIDATES } from '../../../data/candidates';
-import { ArrowRight, Plus, Users, CheckCircle, Award, Clock } from 'lucide-react';
+import { CANDIDATES, toSlug } from '../../../data/candidates';
+import { ArrowRight, Users, CheckCircle, Award, Clock } from 'lucide-react';
+import { useResponsiveItemsPerPage } from '../../../hooks';
 import './Pipeline.css';
 
 const MOCK_CANDIDATES = CANDIDATES;
@@ -134,9 +135,22 @@ const JOB_PERFORMANCE_COLUMNS = [
 ];
 
 const GRID_TEMPLATE = `${TABLE_COLUMNS.map((col) => `${col.fr || 1}fr`).join(' ')} 2rem`;
+const JOB_PERF_GRID = JOB_PERFORMANCE_COLUMNS.map((col) =>
+  col.key === 'job' ? '2fr' : '1fr'
+).join(' ');
+
+const SELECTED_CANDIDATE_STORAGE_KEY = 'pipeline:lastSelectedCandidateId';
+
+function getStoredSelectedCandidateId() {
+  if (typeof window === 'undefined') return null;
+  const raw = window.sessionStorage.getItem(SELECTED_CANDIDATE_STORAGE_KEY);
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
 
 export const Pipeline = memo(function Pipeline() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('pipeline');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
@@ -145,7 +159,7 @@ export const Pipeline = memo(function Pipeline() {
   const [overviewKey, setOverviewKey] = useState(0); // Force animation reset on tab change
   const [overviewSortColumn, setOverviewSortColumn] = useState(null);
   const [overviewSortDirection, setOverviewSortDirection] = useState(null);
-  const [lastSelectedId, setLastSelectedId] = useState(null);
+  const [lastSelectedId, setLastSelectedId] = useState(() => getStoredSelectedCandidateId());
   const [searchValue, setSearchValue] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [overlayFilters, setOverlayFilters] = useState(INITIAL_OVERLAY);
@@ -181,10 +195,28 @@ export const Pipeline = memo(function Pipeline() {
     return () => document.removeEventListener('mousedown', handleDocumentClick);
   }, [handleDocumentClick]);
 
+  useEffect(() => {
+    const selectedFromState = location.state?.selectedCandidateId;
+    if (Number.isFinite(selectedFromState) && selectedFromState > 0) {
+      setLastSelectedId(selectedFromState);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (lastSelectedId === null) {
+      window.sessionStorage.removeItem(SELECTED_CANDIDATE_STORAGE_KEY);
+      return;
+    }
+    window.sessionStorage.setItem(SELECTED_CANDIDATE_STORAGE_KEY, String(lastSelectedId));
+  }, [lastSelectedId]);
+
   const handleCandidateSelect = useCallback(
     (candidate) => {
       setLastSelectedId(candidate.id);
-      navigate(`/candidates/${candidate.id}`);
+      navigate(`/candidates/${toSlug(candidate.name)}`, {
+        state: { selectedCandidateId: candidate.id },
+      });
     },
     [navigate]
   );
@@ -221,27 +253,10 @@ export const Pipeline = memo(function Pipeline() {
   }, [sortColumn, sortDirection, searchValue, overlayFilters]);
 
   // Responsive items per page calculation
-  const tableRef = useRef(null);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
-
-  useLayoutEffect(() => {
-    const calculateItemsPerPage = () => {
-      if (!tableRef.current) return;
-      const tableHeight = tableRef.current.clientHeight;
-      const availableHeight = tableHeight - HEADER_HEIGHT - PAGINATION_HEIGHT;
-      const count = Math.floor(availableHeight / ROW_HEIGHT);
-      setItemsPerPage(Math.max(1, count));
-    };
-
-    calculateItemsPerPage();
-
-    const el = tableRef.current;
-    if (!el) return;
-    const observer = new ResizeObserver(calculateItemsPerPage);
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
+  const { tableRef, itemsPerPage } = useResponsiveItemsPerPage(
+    { rowHeight: ROW_HEIGHT, headerHeight: HEADER_HEIGHT, paginationHeight: PAGINATION_HEIGHT },
+    { paginationSelector: '.pipeline-page__pagination' }
+  );
 
   const totalPages = Math.max(1, Math.ceil(sortedCandidates.length / itemsPerPage));
   const safePage = Math.min(currentPage, totalPages);
@@ -312,13 +327,20 @@ export const Pipeline = memo(function Pipeline() {
   );
 
   return (
-    <div className="pipeline-page">
+    <div className={`pipeline-page${activeTab === 'overview' ? ' pipeline-page--overview' : ''}`}>
       <Shortcuts
         filterLabel={SHORTCUTS_CONFIG.filterLabel}
         filterCount={
           activeFilterCount
-            ? `${activeFilterCount} active`
-            : `${sortedCandidates.length} Candidates`
+            ? [
+                overlayFilters.status.length && 'Status',
+                overlayFilters.job.length && 'Job',
+                (overlayFilters.score.min || overlayFilters.score.max) && 'Score',
+                overlayFilters.flaggedOnly && 'Anti-cheat',
+              ]
+                .filter(Boolean)
+                .join(' · ')
+            : 'No filters'
         }
         onFilterClick={() => setIsFilterOpen(true)}
         searchValue={searchValue}
@@ -348,6 +370,7 @@ export const Pipeline = memo(function Pipeline() {
                     key={candidate.id}
                     showMenu
                     selected={candidate.id === lastSelectedId}
+                    onMouseDown={() => setLastSelectedId(candidate.id)}
                     onMenuClick={() => {
                       setLastSelectedId(candidate.id);
                       setOpenMenuId(openMenuId === candidate.id ? null : candidate.id);
@@ -498,14 +521,14 @@ export const Pipeline = memo(function Pipeline() {
                     className="overview__table-header"
                     columns={overviewColumnsWithSortState}
                     onSort={handleOverviewSort}
-                    gridTemplateColumns="2fr 1fr 1fr 1fr 1fr 1fr"
+                    gridTemplateColumns={JOB_PERF_GRID}
                   />
                   <div className="overview__table-rows">
                     {sortedJobPerformance.map((job, index) => (
                       <TableRow
                         key={index}
                         className="overview__table-row"
-                        gridTemplateColumns="2fr 1fr 1fr 1fr 1fr 1fr"
+                        gridTemplateColumns={JOB_PERF_GRID}
                         style={{ '--row-index': index }}
                       >
                         <TableCell color="tertiary" className="overview__table-cell--job">

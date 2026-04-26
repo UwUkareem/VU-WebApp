@@ -60,3 +60,37 @@
   flex: 1;
   min-width: 0;
 }
+
+/* ── Responsive Shortcuts ── */
+
+@media (max-width: 1023px) {
+  .shortcuts .input-field {
+    min-width: 12rem;
+  }
+
+  /* Hide secondary action (e.g. "Active Jobs") at tablet and below */
+  .shortcuts__right .btn--secondary {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .shortcuts {
+    padding: var(--padding-sm) var(--padding-md);
+    gap: var(--gap-md);
+    /* Single line — no wrapping */
+  }
+
+  /* Hide count, separator, and secondary action */
+  .shortcuts__separator,
+  .shortcuts__count {
+    display: none;
+  }
+
+  /* Search gets a fixed width instead of filling the container */
+  .shortcuts .input-field {
+    min-width: 0;
+    width: 9rem;
+    flex: none;
+  }
+}
