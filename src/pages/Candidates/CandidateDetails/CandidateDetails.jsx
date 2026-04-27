@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, memo } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Briefcase, MapPin, Calendar, Check, List, X } from 'lucide-react';
 import { EntityCard } from '../../../components/ui/Cards';
@@ -44,14 +44,32 @@ const DECISION_ACTIONS = [
 
 export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
   const [activeTab, setActiveTab] = useState('feedback');
+  const [isCompactLayout, setIsCompactLayout] = useState(
+    () => window.matchMedia && window.matchMedia('(max-width: 1023px)').matches
+  );
   const tabContentRef = useRef(null);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1023px)');
+    const updateLayoutMode = (event) => setIsCompactLayout(event.matches);
+
+    setIsCompactLayout(media.matches);
+
+    if (media.addEventListener) {
+      media.addEventListener('change', updateLayoutMode);
+      return () => media.removeEventListener('change', updateLayoutMode);
+    }
+
+    media.addListener(updateLayoutMode);
+    return () => media.removeListener(updateLayoutMode);
+  }, []);
 
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab);
   }, []);
 
-  const tabs = useMemo(
-    () => [
+  const tabs = useMemo(() => {
+    const baseTabs = [
       {
         label: 'Full Feedback',
         isActive: activeTab === 'feedback',
@@ -67,14 +85,79 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
         isActive: activeTab === 'analysis',
         onClick: () => handleTabChange('analysis'),
       },
-    ],
-    [activeTab, handleTabChange]
-  );
+    ];
+
+    if (!isCompactLayout) return baseTabs;
+
+    return [
+      {
+        label: 'Actions',
+        isActive: activeTab === 'actions',
+        onClick: () => handleTabChange('actions'),
+      },
+      ...baseTabs,
+    ];
+  }, [activeTab, handleTabChange, isCompactLayout]);
 
   const handleDecision = useCallback((action) => {
     // TODO: wire to candidate state update
     void action;
   }, []);
+
+  const decisionSection = (
+    <div
+      className={[
+        'candidate-details__sidebar-section',
+        'candidate-details__sidebar-section--decision',
+        isCompactLayout && 'candidate-details__sidebar-section--compact',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <SectionTitle>Select Decision</SectionTitle>
+      <div className="candidate-details__decisions">
+        {DECISION_ACTIONS.map((action) => (
+          <button
+            key={action.id}
+            className={['candidate-details__decision-btn', action.className]
+              .filter(Boolean)
+              .join(' ')}
+            onClick={() => handleDecision(action.id)}
+          >
+            <action.icon size={18} className="candidate-details__decision-icon" />
+            <span>{action.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const completedMocksSection = (
+    <div
+      className={[
+        'candidate-details__sidebar-section',
+        'candidate-details__sidebar-section--mocks',
+        isCompactLayout && 'candidate-details__sidebar-section--compact',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <SectionTitle>Completed Mocks</SectionTitle>
+      <div className="candidate-details__mocks">
+        {COMPLETED_MOCKS.map((mock) => (
+          <ActionCard
+            key={mock.id}
+            title={mock.title}
+            subtitle={mock.subtitle}
+            descriptionTitle="Score"
+            showDescriptionIcon
+            descriptionNumber={mock.score}
+            animated
+          />
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <div className="candidate-details">
@@ -97,6 +180,12 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
           <Tabs items={tabs} scrollRef={tabContentRef} />
 
           <div ref={tabContentRef} className="candidate-details__tab-content">
+            {activeTab === 'actions' && isCompactLayout && (
+              <div className="candidate-details__actions-tab-content">
+                {decisionSection}
+                {completedMocksSection}
+              </div>
+            )}
             {activeTab === 'feedback' && <FullFeedback candidate={candidate} />}
             {activeTab === 'replay' && <MockReplay candidate={candidate} />}
             {activeTab === 'analysis' && <CVAnalysis candidate={candidate} />}
@@ -106,40 +195,8 @@ export const CandidateDetails = memo(function CandidateDetails({ candidate }) {
 
       {/* Right Section */}
       <aside className="candidate-details__sidebar">
-        <div className="candidate-details__sidebar-section candidate-details__sidebar-section--decision">
-          <SectionTitle>Select Decision</SectionTitle>
-          <div className="candidate-details__decisions">
-            {DECISION_ACTIONS.map((action) => (
-              <button
-                key={action.id}
-                className={['candidate-details__decision-btn', action.className]
-                  .filter(Boolean)
-                  .join(' ')}
-                onClick={() => handleDecision(action.id)}
-              >
-                <action.icon size={18} className="candidate-details__decision-icon" />
-                <span>{action.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="candidate-details__sidebar-section candidate-details__sidebar-section--mocks">
-          <SectionTitle>Completed Mocks</SectionTitle>
-          <div className="candidate-details__mocks">
-            {COMPLETED_MOCKS.map((mock) => (
-              <ActionCard
-                key={mock.id}
-                title={mock.title}
-                subtitle={mock.subtitle}
-                descriptionTitle="Score"
-                showDescriptionIcon
-                descriptionNumber={mock.score}
-                animated
-              />
-            ))}
-          </div>
-        </div>
+        {decisionSection}
+        {completedMocksSection}
       </aside>
     </div>
   );

@@ -12,7 +12,7 @@
 
 .full-feedback__charts {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--gap-lg);
 }
 
@@ -80,17 +80,7 @@
 
 /* Responsive */
 
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .full-feedback__charts {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 768px) {
-  .full-feedback__charts {
-    grid-template-columns: 1fr;
-  }
-
   .full-feedback__insights-row {
     grid-template-columns: 1fr;
   }

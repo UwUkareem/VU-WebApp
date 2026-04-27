@@ -191,6 +191,24 @@
   font-size: var(--text-xs);
 }
 
+.candidate-details__actions-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+.candidate-details__sidebar-section--compact {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  gap: var(--gap-md);
+}
+
+.candidate-details__sidebar-section--compact:hover {
+  border-color: transparent;
+}
+
 /* Responsive */
 
 /* ── Small laptop (1024–1279px) ── */
@@ -198,81 +216,101 @@
   .candidate-details__sidebar {
     width: 18rem;
   }
+
+  .candidate-details .entity-card__cols-content {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: var(--gap-lg);
+  }
+
+  .candidate-details .entity-card__cols-content > :nth-child(2) {
+    display: none;
+  }
 }
 
-/* ── Tablet & Mobile (≤ 1023px) ──
-   Layout: EntityCard → Completed Mocks → Tabs → Decision buttons
-   Sidebar and Main are unboxed with display:contents so their children
-   participate directly in the grid.
----------------------------------------------- */
+/* ── Tablet & Mobile (≤ 1023px) ── */
 @media (max-width: 1023px) {
   .candidate-details {
-    display: grid;
-    grid-template-areas:
-      'entity'
-      'mocks'
-      'tabs'
-      'decisions';
-    grid-template-columns: 1fr;
-    height: 100%;
-    overflow-y: auto;
-    gap: var(--gap-lg);
-    /* keep padding from default */
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+    overflow-x: hidden;
+    gap: var(--gap-md);
+    padding: var(--padding-md);
   }
 
-  /* Unbox main — EntityCard and tabs-container become direct grid items */
   .candidate-details__main {
-    display: contents;
+    min-height: 0;
+    overflow: visible;
   }
 
-  /* EntityCard → grid area "entity" */
-  .candidate-details .entity-card {
-    grid-area: entity;
+  .candidate-details .entity-card__cols-content {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: var(--gap-md);
   }
 
-  /* Tabs container → grid area "tabs" */
+  .candidate-details .entity-card__col-title,
+  .candidate-details .entity-card__col-subtitle {
+    white-space: normal;
+  }
+
+  .candidate-details .entity-card__cols-content > :nth-child(2) {
+    display: none;
+  }
+
   .candidate-details__tabs-container {
-    grid-area: tabs;
+    flex: none;
     overflow: visible;
     height: auto;
     min-height: 0;
+    padding: var(--padding-lg);
+    gap: var(--gap-md);
   }
 
-  /* Tab content: natural height, candidate-details scrolls */
   .candidate-details__tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-lg);
     overflow: visible;
     height: auto;
+    max-height: none;
     min-height: 0;
   }
 
-  /* Sticky tab bar — sticks to top of candidate-details scroll container */
   .candidate-details__tabs-container > .tabs {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: var(--bg-surface);
-    padding: 0 var(--padding-xl);
-    margin: 0 calc(-1 * var(--padding-xl));
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    gap: var(--gap-lg);
+    padding-bottom: var(--gap-sm);
   }
 
-  /* Unbox sidebar */
+  .candidate-details__tabs-container > .tabs::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  .candidate-details__tabs-container > .tabs .tab {
+    white-space: nowrap;
+    padding-bottom: var(--gap-sm);
+  }
+
   .candidate-details__sidebar {
-    display: contents;
-    width: auto;
-    overflow-y: visible;
+    display: none;
   }
 
-  /* Completed Mocks → grid area "mocks" */
-  .candidate-details__sidebar-section--mocks {
-    grid-area: mocks;
+  .candidate-details__actions-tab-content .candidate-details__sidebar-section {
+    padding: 0;
+    gap: var(--gap-md);
   }
 
-  /* Decision section → grid area "decisions" */
-  .candidate-details__sidebar-section--decision {
-    grid-area: decisions;
+  .candidate-details__actions-tab-content .candidate-details__sidebar-section--compact {
+    padding: 0;
   }
 
-  /* On tablet: mocks ActionCards go horizontal */
   .candidate-details__mocks {
     flex-direction: row;
     flex-wrap: wrap;
@@ -287,18 +325,25 @@
 /* ── Mobile (< 640px) ── */
 @media (max-width: 639px) {
   .candidate-details {
-    padding: var(--padding-md);
+    padding: var(--padding-sm);
     gap: var(--gap-md);
   }
 
   .candidate-details__tabs-container {
+    flex: none;
     padding: var(--padding-md);
     gap: var(--gap-md);
+    min-height: 0;
   }
 
-  .candidate-details__tabs-container > .tabs {
-    margin: 0 calc(-1 * var(--padding-md));
-    padding: 0 var(--padding-md);
+  .candidate-details .entity-card__cols-content {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: var(--gap-sm);
+  }
+
+  .candidate-details__tab-content {
+    overflow: visible;
+    max-height: none;
   }
 
   /* Mocks: vertical stack on narrow mobile */
@@ -311,6 +356,15 @@
     min-width: 0;
   }
 
+  .candidate-details__actions-tab-content .candidate-details__sidebar-section {
+    min-width: 0;
+    padding: 0;
+  }
+
+  .candidate-details__actions-tab-content .candidate-details__sidebar-section--compact {
+    padding: 0;
+  }
+
   /* Decision buttons: horizontal row */
   .candidate-details__decisions {
     flex-direction: row;
@@ -321,10 +375,5 @@
     flex: 1;
     min-width: 5.5rem;
     justify-content: center;
-  }
-
-  .candidate-details__sidebar-section {
-    min-width: 0;
-    padding: var(--padding-md);
   }
 }
