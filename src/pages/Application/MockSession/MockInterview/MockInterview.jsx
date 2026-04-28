@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 import { Toggle } from '../../../../components/ui/Toggle';
-import { getApplicationMock, SAMPLE_CONVERSATION } from '../../../../data/application';
+import { getApplicationMock, SAMPLE_CONVERSATION } from '../../../../api';
 import './MockInterview.css';
 
 /* â”€â”€ Timer helper â”€â”€ */

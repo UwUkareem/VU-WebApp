@@ -4,7 +4,7 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TextInput, EmailInput, FileInput, DropdownInput } from '../../../components/ui/Input';
-import { saveCandidateInfo, APPLICATION } from '../../../data/application';
+import { saveCandidateInfo, APPLICATION } from '../../../api';
 import './CandidateForm.css';
 
 /* ── Initial form state ── */

@@ -83,7 +83,7 @@
 .cv-analysis__match-bar-track {
   width: 100%;
   height: 4px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--white-a5);
   border-radius: var(--radius-full);
   overflow: hidden;
   margin-top: var(--gap-xs);
@@ -126,36 +126,36 @@
 
 /* Strong — green tint */
 .cv-analysis__skill-tag--strong {
-  color: var(--green-500);
-  background: rgba(52, 199, 89, 0.06);
-  border-color: rgba(52, 199, 89, 0.18);
+  color: var(--status-success-text);
+  background: var(--status-success-bg);
+  border-color: var(--status-success-hover);
 }
 
 .cv-analysis__skill-tag--strong:hover {
-  background: rgba(52, 199, 89, 0.12);
+  background: var(--status-success-hover);
 }
 
 /* Bonus — yellow tint */
 .cv-analysis__skill-tag--bonus {
-  color: var(--yellow-400);
-  background: rgba(255, 204, 0, 0.05);
-  border-color: rgba(255, 204, 0, 0.15);
+  color: var(--status-warning-text);
+  background: var(--status-warning-bg);
+  border-color: var(--status-warning-border);
 }
 
 .cv-analysis__skill-tag--bonus:hover {
-  background: rgba(255, 204, 0, 0.1);
+  background: var(--status-warning-hover);
 }
 
 /* Missing — red tint, dashed border */
 .cv-analysis__skill-tag--missing {
-  color: var(--red-400);
-  background: rgba(255, 59, 48, 0.04);
-  border-color: rgba(255, 59, 48, 0.15);
+  color: var(--status-danger-text);
+  background: var(--status-danger-bg);
+  border-color: var(--status-danger-hover);
   border-style: dashed;
 }
 
 .cv-analysis__skill-tag--missing:hover {
-  background: rgba(255, 59, 48, 0.1);
+  background: var(--status-danger-hover);
 }
 
 /* Native tooltip via title attr — no extra CSS needed */

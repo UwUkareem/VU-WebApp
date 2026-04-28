@@ -11,8 +11,8 @@
   border: var(--border-sm) solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    0 1px 3px rgba(0, 0, 0, 0.3);
+    0 4px 12px var(--shadow-md),
+    0 1px 3px var(--shadow-sm);
   overflow: hidden;
   opacity: 0;
   transform: translateY(-6px) scale(0.97);
@@ -118,7 +118,7 @@
 
 .notification-item--unread {
   border-left-color: var(--brand-default);
-  background: rgba(230, 79, 40, 0.04);
+  background: var(--brand-subtle);
 }
 
 .notification-item__avatar {

@@ -6,7 +6,7 @@ import { Badge } from '../../../components/ui/Badge';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
 import { TableHeader, TableRow, TableCell } from '../../../components/ui/Tables';
 import { Pagination } from '../../../components/ui/Pagination';
-import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../../../data/company';
+import { COMPANY, TEAM_MEMBERS, CURRENT_USER_ID } from '../../../api';
 import { useResponsiveItemsPerPage } from '../../../hooks';
 import './Overview.css';
 

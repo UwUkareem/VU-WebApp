@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
-import { Bell, UserCircle2, Building2, LogOut, User, Menu } from 'lucide-react';
+import { Bell, UserCircle2, Building2, LogOut, User, Menu, Moon, Sun } from 'lucide-react';
 import { Breadcrumb } from '../../ui/Breadcrumb';
 import { NotificationDropdown } from './NotificationDropdown';
+import { getActiveTheme, THEMES, toggleTheme as toggleAppTheme } from '../../../utils';
 import './Navbar.css';
 
 const EMPTY_BREADCRUMBS = [];
@@ -34,6 +35,7 @@ const Navbar = memo(function Navbar({
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+  const [theme, setTheme] = useState(() => getActiveTheme());
 
   const notifRef = useRef(null);
   const avatarRef = useRef(null);
@@ -80,6 +82,13 @@ const Navbar = memo(function Navbar({
     },
     [onNavigate]
   );
+
+  const handleThemeToggle = useCallback(() => {
+    setTheme((currentTheme) => toggleAppTheme(currentTheme));
+    setIsAvatarOpen(false);
+  }, []);
+
+  const isLightTheme = theme === THEMES.light;
 
   return (
     <nav className={['navbar', className].filter(Boolean).join(' ')}>
@@ -176,6 +185,16 @@ const Navbar = memo(function Navbar({
                   <span>{label}</span>
                 </button>
               ))}
+
+              <button
+                type="button"
+                className="navbar__avatar-item navbar__avatar-item--theme"
+                role="menuitem"
+                onClick={handleThemeToggle}
+              >
+                {isLightTheme ? <Moon size={14} /> : <Sun size={14} />}
+                <span>{isLightTheme ? 'Switch to Dark Mode' : 'Switch to Light Mode'}</span>
+              </button>
 
               <div className="navbar__avatar-divider" />
 

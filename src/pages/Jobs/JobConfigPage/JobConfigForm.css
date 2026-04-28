@@ -264,7 +264,7 @@
   gap: var(--gap-sm);
   padding: var(--padding-sm) var(--padding-md);
   background-color: var(--status-warning-bg);
-  border: var(--border-sm) solid rgba(255, 204, 0, 0.2);
+  border: var(--border-sm) solid var(--status-warning-border);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: var(--text-xs);
@@ -308,7 +308,7 @@
 }
 .create-job__duration-tag--normal {
   color: var(--green-500);
-  background-color: rgba(52, 199, 89, 0.12);
+  background-color: var(--status-success-bg);
 }
 .create-job__duration-tag--moderate {
   color: var(--status-warning-text);

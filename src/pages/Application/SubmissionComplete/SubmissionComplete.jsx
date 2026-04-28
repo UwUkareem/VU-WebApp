@@ -2,7 +2,7 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { CheckCircle2, Clock, FileText, ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
-import { APPLICATION, CANDIDATE_INFO, getCompletedCount } from '../../../data/application';
+import { APPLICATION, CANDIDATE_INFO, getCompletedCount } from '../../../api';
 import './SubmissionComplete.css';
 
 /* ── Component ── */

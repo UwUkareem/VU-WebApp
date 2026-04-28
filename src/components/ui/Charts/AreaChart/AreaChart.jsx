@@ -9,7 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { CHART_BRAND, CHART_GRID, CHART_AXIS_X, CHART_AXIS_Y } from '../chartTokens';
+import { CHART_AXIS_X, CHART_AXIS_Y, CHART_BRAND, CHART_CURSOR, CHART_GRID } from '../chartTokens';
 import './AreaChart.css';
 
 const GRADIENT_ID = 'area-chart-gradient';
@@ -136,7 +136,7 @@ export const AreaChart = memo(function AreaChart({
               isAnimationActive={false}
               wrapperStyle={{ outline: 'none', pointerEvents: 'none', zIndex: 10 }}
               allowEscapeViewBox={{ x: true, y: true }}
-              cursor={{ stroke: 'rgba(255,255,255,0.08)', strokeWidth: 1 }}
+              cursor={{ stroke: CHART_CURSOR, strokeWidth: 1 }}
             />
             {dataKeys.map((dk, i) => (
               <Area

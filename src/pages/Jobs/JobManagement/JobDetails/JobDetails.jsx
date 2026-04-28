@@ -24,8 +24,7 @@ import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { Tabs } from '../../../../components/ui/Tabs';
 import { TableHeader, TableRow, TableCell } from '../../../../components/ui/Tables';
 import { RadarChart, AreaChart, RadialBarChart } from '../../../../components/ui/Charts';
-import { getJobById, updateJob, duplicateJob } from '../../../../data/jobs';
-import { getCandidatesByJobId } from '../../../../data/candidates';
+import { getJobById, updateJob, duplicateJob, getCandidatesByJobId } from '../../../../api';
 import './JobDetails.css';
 
 /* -------------------------------------------------

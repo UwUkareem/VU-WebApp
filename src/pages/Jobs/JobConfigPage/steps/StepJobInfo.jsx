@@ -1,11 +1,7 @@
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TextInput, DropdownInput, Textarea } from '../../../../components/ui/Input';
 import { Tags } from '../../../../components/ui/Tags';
-import {
-  JOB_TYPE_OPTIONS,
-  SENIORITY_OPTIONS,
-  LOCATION_TYPE_OPTIONS,
-} from '../../../../data/config';
+import { JOB_TYPE_OPTIONS, SENIORITY_OPTIONS, LOCATION_TYPE_OPTIONS } from '../../../../api';
 
 export function StepJobInfo({ form, updateField, departmentOptions, addSkill, removeSkill }) {
   return (

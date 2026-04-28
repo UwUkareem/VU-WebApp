@@ -6,7 +6,7 @@ import {
   SENIORITY_OPTIONS,
   LOCATION_TYPE_OPTIONS,
   EMAIL_TRIGGERS,
-} from '../../../../data/config';
+} from '../../../../api';
 
 export function StepReview({ form, totalWeight, totalDuration, statusPreview, enabledEmailCount }) {
   const deptLabel =

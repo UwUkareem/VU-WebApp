@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { JobConfigForm } from '../JobConfigForm';
-import { getJobById, updateJob } from '../../../../data/jobs';
+import { getJobById, updateJob } from '../../../../api';
 
 /**
  * Convert a shared-data job object into the form shape expected by JobConfigForm.

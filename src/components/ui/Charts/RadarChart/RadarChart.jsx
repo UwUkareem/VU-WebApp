@@ -8,12 +8,18 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { CHART_BRAND, CHART_GRID } from '../chartTokens';
+import {
+  CHART_AXIS_X,
+  CHART_BRAND,
+  CHART_BRAND_SOFT,
+  CHART_BRAND_STRONG,
+  CHART_GRID,
+} from '../chartTokens';
 import './RadarChart.css';
 
-const FILL_COLOR = `${CHART_BRAND}40`; // brand @ 25% opacity
+const FILL_COLOR = CHART_BRAND_SOFT;
 const STROKE_COLOR = CHART_BRAND;
-const ACTIVE_FILL = `${CHART_BRAND}66`; // brand @ 40% opacity
+const ACTIVE_FILL = CHART_BRAND_STRONG;
 
 /** Custom tooltip */
 function ChartTooltip({ active, payload, label }) {
@@ -38,7 +44,7 @@ function AxisTick({ x, y, payload, textAnchor }) {
       x={x}
       y={y}
       textAnchor={textAnchor}
-      fill="rgba(255,255,255,0.7)"
+      fill={CHART_AXIS_X}
       fontSize={12}
       fontFamily="Inter, sans-serif"
     >

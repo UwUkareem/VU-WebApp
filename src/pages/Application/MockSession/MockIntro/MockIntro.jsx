@@ -15,7 +15,7 @@ import {
   Loader,
 } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
-import { getApplicationMock } from '../../../../data/application';
+import { getApplicationMock } from '../../../../api';
 import './MockIntro.css';
 
 /* ── Device-check states ── */

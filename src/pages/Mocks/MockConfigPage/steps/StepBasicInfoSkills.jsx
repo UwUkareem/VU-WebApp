@@ -1,7 +1,7 @@
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TextInput, DropdownInput, Textarea } from '../../../../components/ui/Input';
 import { Tags } from '../../../../components/ui/Tags';
-import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS, DURATION_OPTIONS } from '../../../../data/config';
+import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS, DURATION_OPTIONS } from '../../../../api';
 
 export function StepBasicInfoSkills({ form, updateField, addSkill, removeSkill, isActive }) {
   return (

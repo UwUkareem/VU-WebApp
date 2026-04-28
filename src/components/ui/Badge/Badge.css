@@ -126,27 +126,27 @@
   opacity: 0.8;
 }
 .badge--outline.badge--green {
-  border-color: rgba(93, 210, 122, 0.2);
+  border-color: var(--status-success-bg);
   color: var(--status-success-text);
 }
 .badge--outline.badge--yellow {
-  border-color: rgba(255, 214, 51, 0.15);
+  border-color: var(--status-warning-border);
   color: var(--status-warning-text);
 }
 .badge--outline.badge--red {
-  border-color: rgba(255, 98, 89, 0.2);
+  border-color: var(--status-danger-bg);
   color: var(--status-error-text);
 }
 .badge--outline.badge--blue {
-  border-color: rgba(51, 149, 255, 0.2);
+  border-color: var(--status-info-bg);
   color: var(--status-info-text);
 }
 .badge--outline.badge--purple {
-  border-color: rgba(191, 90, 242, 0.2);
+  border-color: var(--status-purple-bg);
   color: var(--status-purple-text);
 }
 .badge--outline.badge--teal {
-  border-color: rgba(89, 192, 210, 0.2);
+  border-color: var(--status-teal-bg);
   color: var(--status-teal-text);
 }
 .badge--outline.badge--gray {

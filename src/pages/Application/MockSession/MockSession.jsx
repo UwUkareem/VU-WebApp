@@ -2,7 +2,7 @@ import { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { MockIntro } from './MockIntro';
 import { MockInterview } from './MockInterview';
-import { startMock, completeMock } from '../../../data/application';
+import { startMock, completeMock } from '../../../api';
 
 /* ── Phases: intro → interview → done ── */
 

@@ -7,7 +7,7 @@ import {
   MOCK_STEPS_CREATE as STEPS_CREATE,
   MOCK_STEPS_EDIT as STEPS_EDIT,
   INITIAL_MOCK_FORM,
-} from '../../../data/config';
+} from '../../../api';
 import { redistributeWeightsPair } from '../../../utils';
 import './MockConfigForm.css';
 

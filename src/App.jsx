@@ -13,9 +13,9 @@ import { Pipeline } from './pages/Candidates/Pipeline/Pipeline';
 import { JobList } from './pages/Jobs/JobManagement/JobList';
 import { MockList } from './pages/Mocks/MockManagement/MockList/MockList';
 import { Overview } from './pages/CompanyTeam/Overview/Overview';
-import { getJoinRequestById } from './data/company';
-import { buildApplicationContext } from './data/application';
-import { getCandidateBySlug } from './data/candidates';
+import { getJoinRequestById } from './api';
+import { buildApplicationContext } from './api';
+import { getCandidateBySlug } from './api';
 import {
   Users,
   Briefcase,
@@ -25,6 +25,7 @@ import {
   Settings,
   Hash,
   ClipboardCheck,
+  LayoutTemplate,
 } from 'lucide-react';
 
 // ── Lazy-loaded pages (code-split at route level) ──
@@ -69,6 +70,9 @@ const CompanySettings = lazy(() =>
   }))
 );
 const ProfilePage = lazy(() => import('./pages/Profile').then((m) => ({ default: m.ProfilePage })));
+const SettingsPage = lazy(() =>
+  import('./pages/Settings').then((m) => ({ default: m.SettingsPage }))
+);
 const JobLanding = lazy(() =>
   import('./pages/Application').then((m) => ({ default: m.JobLanding }))
 );
@@ -151,6 +155,7 @@ function getRouteBreadcrumbs(pathname, navigate) {
 
   if (pathname === '/profile') return [{ label: 'My Profile' }];
   if (pathname === '/settings') return [{ label: 'Settings' }];
+  if (pathname === '/showcase') return [{ label: 'Component Showcase' }];
 
   return [{ label: 'Candidates' }];
 }
@@ -237,6 +242,12 @@ function buildNavItems(pathname, navigate) {
       isActive: pathname === '/settings',
       onClick: () => navigate('/settings'),
       separator: true,
+    },
+    {
+      icon: LayoutTemplate,
+      label: 'Showcase',
+      isActive: pathname === '/showcase',
+      onClick: () => navigate('/showcase'),
     },
     {
       icon: ClipboardCheck,
@@ -506,7 +517,8 @@ export default function App() {
         <Route path="/company/requests/:id" element={<RequestDetailsPage />} />
         <Route path="/company/settings" element={<CompanySettings />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<ComponentShowcase />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/showcase" element={<ComponentShowcase />} />
       </Route>
 
       {/* Application flow (candidate-facing, standalone) */}

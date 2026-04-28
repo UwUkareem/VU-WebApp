@@ -1,6 +1,6 @@
 import { Clock } from 'lucide-react';
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
-import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../../../../data/config';
+import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../../../../api';
 
 export function StepReview({ form, totalWeight }) {
   const typeLabel = MOCK_TYPE_OPTIONS.find((o) => o.value === form.type)?.label || form.type || '—';

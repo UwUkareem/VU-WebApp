@@ -1,7 +1,7 @@
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TextInput } from '../../../../components/ui/Input';
 import { Toggle } from '../../../../components/ui/Toggle';
-import { EMAIL_TRIGGERS } from '../../../../data/config';
+import { EMAIL_TRIGGERS } from '../../../../api';
 
 export function StepScheduling({ form, updateField, updateEmail, statusPreview }) {
   const today = new Date().toISOString().split('T')[0];

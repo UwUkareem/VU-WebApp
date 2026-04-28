@@ -47,7 +47,9 @@ export const FilterOverlay = memo(function FilterOverlay({
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e) => {
-      if (panelRef.current && !panelRef.current.contains(e.target)) onClose();
+      const clickedPanel = panelRef.current && panelRef.current.contains(e.target);
+      const clickedDropdownMenu = e.target.closest?.('.dropdown-input__menu');
+      if (!clickedPanel && !clickedDropdownMenu) onClose();
     };
     // delay to avoid catching the click that opened the overlay
     const id = setTimeout(() => document.addEventListener('mousedown', handler), 0);

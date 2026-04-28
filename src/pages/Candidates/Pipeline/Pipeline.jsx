@@ -9,7 +9,7 @@ import { FilterOverlay } from '../../../components/ui/FilterOverlay';
 import { QuickInfoCard, InfoCard } from '../../../components/ui/Cards';
 import { RadarChart, RadialBarChart, AreaChart, BarChart } from '../../../components/ui/Charts';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
-import { CANDIDATES, toSlug } from '../../../data/candidates';
+import { CANDIDATES, toSlug } from '../../../api';
 import { ArrowRight, Users, CheckCircle, Award, Clock } from 'lucide-react';
 import { useResponsiveItemsPerPage } from '../../../hooks';
 import './Pipeline.css';
@@ -151,6 +151,13 @@ function getStoredSelectedCandidateId() {
 export const Pipeline = memo(function Pipeline() {
   const navigate = useNavigate();
   const location = useLocation();
+  const initialSelectedId = useMemo(() => {
+    const selectedFromState = location.state?.selectedCandidateId;
+    if (Number.isFinite(selectedFromState) && selectedFromState > 0) {
+      return selectedFromState;
+    }
+    return getStoredSelectedCandidateId();
+  }, [location.state]);
   const [activeTab, setActiveTab] = useState('pipeline');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
@@ -159,7 +166,7 @@ export const Pipeline = memo(function Pipeline() {
   const [overviewKey, setOverviewKey] = useState(0); // Force animation reset on tab change
   const [overviewSortColumn, setOverviewSortColumn] = useState(null);
   const [overviewSortDirection, setOverviewSortDirection] = useState(null);
-  const [lastSelectedId, setLastSelectedId] = useState(() => getStoredSelectedCandidateId());
+  const [lastSelectedId, setLastSelectedId] = useState(() => initialSelectedId);
   const [searchValue, setSearchValue] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [overlayFilters, setOverlayFilters] = useState(INITIAL_OVERLAY);
@@ -194,13 +201,6 @@ export const Pipeline = memo(function Pipeline() {
     document.addEventListener('mousedown', handleDocumentClick);
     return () => document.removeEventListener('mousedown', handleDocumentClick);
   }, [handleDocumentClick]);
-
-  useEffect(() => {
-    const selectedFromState = location.state?.selectedCandidateId;
-    if (Number.isFinite(selectedFromState) && selectedFromState > 0) {
-      setLastSelectedId(selectedFromState);
-    }
-  }, [location.state]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -346,7 +346,10 @@ export const Pipeline = memo(function Pipeline() {
         searchValue={searchValue}
         onSearchChange={handleSearchChange}
         searchPlaceholder="Search candidates..."
-        secondaryAction={SHORTCUTS_CONFIG.secondaryAction}
+        secondaryAction={{
+          ...SHORTCUTS_CONFIG.secondaryAction,
+          onClick: () => navigate('/jobs?status=Active'),
+        }}
       />
 
       <div className="pipeline-page__dashboard">

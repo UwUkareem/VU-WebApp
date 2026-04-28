@@ -1,5 +1,5 @@
 import { JobConfigForm } from '../JobConfigForm';
-import { addJob } from '../../../../data/jobs';
+import { addJob } from '../../../../api';
 
 /**
  * Convert the create-form shape into the shared-data job shape.

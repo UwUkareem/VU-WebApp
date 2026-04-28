@@ -3,7 +3,7 @@ import { GripVertical, Trash2, Plus, Search, AlertTriangle, Clock } from 'lucide
 import { SectionTitle } from '../../../../components/ui/SectionTitle';
 import { TextInput } from '../../../../components/ui/Input';
 import { Button } from '../../../../components/ui/Button';
-import { MOCK_LIBRARY } from '../../../../data/config';
+import { MOCK_LIBRARY } from '../../../../api';
 
 export function StepMocks({
   mocks,

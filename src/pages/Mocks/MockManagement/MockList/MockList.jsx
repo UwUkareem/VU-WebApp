@@ -5,7 +5,7 @@ import { Shortcuts } from '../../../../components/layout/Shortcuts';
 import { EntityCard } from '../../../../components/ui/Cards';
 import { Pagination } from '../../../../components/ui/Pagination';
 import { FilterOverlay } from '../../../../components/ui/FilterOverlay';
-import { MOCKS, getUsedInJobsCount, getMockStatus } from '../../../../data/mocks';
+import { MOCKS, getUsedInJobsCount, getMockStatus } from '../../../../api';
 import './MockList.css';
 
 /* Menu options */

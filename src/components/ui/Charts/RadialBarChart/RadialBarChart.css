@@ -71,7 +71,7 @@
 
 .radial-bar-chart__legend-item:hover,
 .radial-bar-chart__legend-item--active {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: var(--white-a5);
 }
 
 .radial-bar-chart__legend-item--dimmed {

@@ -27,7 +27,7 @@
   border: var(--border-sm) solid var(--border-structure);
   border-radius: var(--radius-md);
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Overview mode — reset flex constraints so page-layout__content scrolls;
@@ -251,7 +251,6 @@
 .overview__table-row {
   padding: var(--padding-md) var(--padding-xl);
   border-bottom: var(--border-sm) solid var(--border-subtle);
-  background-color: var(--gray-1100);
   border-radius: 0;
   content-visibility: auto;
   contain-intrinsic-size: 0 56px;

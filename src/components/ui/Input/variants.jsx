@@ -1,4 +1,5 @@
 import { forwardRef, useState, useId, useRef, useEffect, useCallback, memo } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Input } from './Input';
 import { Label } from './Label';
@@ -237,8 +238,38 @@ export const DropdownInput = memo(
       const hintId = hint ? `${inputId}-hint` : undefined;
       const [isOpen, setIsOpen] = useState(false);
       const dropdownRef = useRef(null);
+      const menuRef = useRef(null);
+      const [menuStyle, setMenuStyle] = useState(null);
 
-      const close = useCallback(() => setIsOpen(false), []);
+      const buildMenuStyle = useCallback(() => {
+        if (!dropdownRef.current) return null;
+        const rect = dropdownRef.current.getBoundingClientRect();
+        return {
+          position: 'fixed',
+          top: rect.bottom + (window.scrollY || window.pageYOffset),
+          left: rect.left + (window.scrollX || window.pageXOffset),
+          right: 'auto',
+          width: rect.width,
+          zIndex: 7000,
+        };
+      }, []);
+
+      const updateMenuPosition = useCallback(() => {
+        if (!menuRef.current || !dropdownRef.current) return;
+        const rect = dropdownRef.current.getBoundingClientRect();
+        const style = menuRef.current.style;
+        style.position = 'fixed';
+        style.top = `${rect.bottom + (window.scrollY || window.pageYOffset)}px`;
+        style.left = `${rect.left + (window.scrollX || window.pageXOffset)}px`;
+        style.right = 'auto';
+        style.width = `${rect.width}px`;
+        style.zIndex = '7000';
+      }, []);
+
+      const close = useCallback(() => {
+        setIsOpen(false);
+        setMenuStyle(null);
+      }, []);
 
       useEffect(() => {
         if (!isOpen) return;
@@ -247,7 +278,8 @@ export const DropdownInput = memo(
           if (
             e.type === 'mousedown' &&
             dropdownRef.current &&
-            !dropdownRef.current.contains(e.target)
+            !dropdownRef.current.contains(e.target) &&
+            !(menuRef.current && menuRef.current.contains(e.target))
           )
             close();
         };
@@ -263,6 +295,30 @@ export const DropdownInput = memo(
         onChange?.(optionValue);
         close();
       };
+
+      const handleToggle = () => {
+        if (disabled) return;
+        if (!isOpen) {
+          setMenuStyle(buildMenuStyle());
+        }
+        setIsOpen((o) => !o);
+      };
+
+      useEffect(() => {
+        if (!isOpen || !dropdownRef.current) {
+          return;
+        }
+        updateMenuPosition();
+        const handleResize = () => {
+          updateMenuPosition();
+        };
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('scroll', handleResize, true);
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          window.removeEventListener('scroll', handleResize, true);
+        };
+      }, [isOpen, updateMenuPosition]);
 
       const selectedOption = options.find((opt) => opt.value === value);
       const displayText = selectedOption ? selectedOption.label : placeholder;
@@ -288,7 +344,7 @@ export const DropdownInput = memo(
               ]
                 .filter(Boolean)
                 .join(' ')}
-              onClick={() => !disabled && setIsOpen((o) => !o)}
+              onClick={handleToggle}
               disabled={disabled}
               aria-expanded={isOpen}
               aria-haspopup="listbox"
@@ -308,28 +364,35 @@ export const DropdownInput = memo(
               </span>
               <ChevronDown size={16} className="dropdown-input__icon" aria-hidden="true" />
             </button>
-            <div
-              className={['dropdown-input__menu', isOpen && 'open'].filter(Boolean).join(' ')}
-              role="listbox"
-            >
-              {options.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="option"
-                  aria-selected={option.value === value}
-                  className={[
-                    'dropdown-input__option',
-                    option.value === value && 'dropdown-input__option--selected',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  onClick={() => handleSelect(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
+            {isOpen
+              ? createPortal(
+                  <div
+                    ref={menuRef}
+                    className={['dropdown-input__menu', 'open'].filter(Boolean).join(' ')}
+                    role="listbox"
+                    style={menuStyle || undefined}
+                  >
+                    {options.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        role="option"
+                        aria-selected={option.value === value}
+                        className={[
+                          'dropdown-input__option',
+                          option.value === value && 'dropdown-input__option--selected',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                        onClick={() => handleSelect(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>,
+                  document.body
+                )
+              : null}
           </div>
           {showHint && hint && (
             <Hint id={hintId} error={error}>

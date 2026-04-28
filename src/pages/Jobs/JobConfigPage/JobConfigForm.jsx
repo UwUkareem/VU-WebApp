@@ -11,7 +11,7 @@ import {
   EMAIL_TRIGGERS,
   INITIAL_JOB_FORM as INITIAL_FORM,
   parseDurationMin,
-} from '../../../data/config';
+} from '../../../api';
 import { redistributeWeights } from '../../../utils';
 import './JobConfigForm.css';
 

@@ -24,7 +24,7 @@ import {
   duplicateMock,
   getJobsUsingMock,
   getCandidatesPerJob,
-} from '../../../../data/mocks';
+} from '../../../../api';
 import './MockDetails.css';
 
 const ICON_SM = 14;

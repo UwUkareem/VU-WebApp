@@ -262,7 +262,7 @@
 }
 
 .entity-card__score-track {
-  stroke: rgba(255, 255, 255, 0.06);
+  stroke: var(--border-subtle);
 }
 
 .entity-card__score-fill {

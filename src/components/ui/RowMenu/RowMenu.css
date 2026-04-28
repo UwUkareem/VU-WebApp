@@ -10,8 +10,8 @@
   border: var(--border-sm) solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    0 1px 3px rgba(0, 0, 0, 0.3);
+    0 4px 12px var(--shadow-md),
+    0 1px 3px var(--shadow-sm);
   overflow: hidden;
   opacity: 0;
   transform: translateY(-4px) scale(0.97);

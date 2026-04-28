@@ -230,6 +230,14 @@
   color: var(--text-primary);
 }
 
+.navbar__avatar-item--theme svg {
+  color: var(--brand-default);
+}
+
+.navbar__avatar-item--theme:hover {
+  background: var(--brand-subtle);
+}
+
 .navbar__avatar-item--danger {
   color: var(--status-danger-text);
 }

@@ -14,12 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { SectionTitle } from '../../../components/ui/SectionTitle';
-import {
-  APPLICATION,
-  ASSESSMENT_RULES,
-  getCompletedCount,
-  allMocksCompleted,
-} from '../../../data/application';
+import { APPLICATION, ASSESSMENT_RULES, getCompletedCount, allMocksCompleted } from '../../../api';
 import './JobOverview.css';
 
 /* ── Status icon mapping ── */

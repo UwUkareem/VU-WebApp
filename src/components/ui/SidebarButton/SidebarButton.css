@@ -34,13 +34,13 @@
 }
 
 .sidebar-button--active {
-  background: rgba(230, 79, 40, 0.06);
+  background: var(--brand-subtle);
   color: var(--text-primary);
   border-left-color: var(--brand-default);
 }
 
 .sidebar-button--active:hover {
-  background: rgba(230, 79, 40, 0.08);
+  background: var(--brand-subtle);
 }
 
 .sidebar-button__icon {

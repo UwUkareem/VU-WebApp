@@ -1,42 +1,35 @@
 /**
- * Chart colour palette — single-hue tint scale derived from the brand accent.
- * Gives a cohesive, modern SaaS look instead of a multi-colour rainbow.
+ * Chart color tokens are expressed as CSS variables so light/dark mode updates
+ * are applied automatically without reloading modules.
  */
-const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+export const CHART_BRAND = 'var(--chart-brand)';
+export const CHART_BRAND_SOFT = 'var(--chart-brand-soft)';
+export const CHART_BRAND_STRONG = 'var(--chart-brand-strong)';
 
-/** Brand / primary chart colour (full strength) */
-export const CHART_BRAND = cssVar('--darkred-500'); // #ff5d31
-
-/**
- * 6-slot single-hue scale — brand tinted toward white.
- * Strong → light, suitable for bar / area / donut fills.
- */
 export const CHART_PALETTE = [
-  '#ff5d31', // brand – full
-  '#ff7d5a', // 80 %
-  '#ff9e83', // 60 %
-  '#ffb6a2', // 45 %
-  '#ffcec1', // 30 %
-  '#ffe7e0', // 15 %
+  'var(--chart-brand-1)',
+  'var(--chart-brand-2)',
+  'var(--chart-brand-3)',
+  'var(--chart-brand-4)',
+  'var(--chart-brand-5)',
+  'var(--chart-brand-6)',
 ];
 
 /**
- * Value-based colour — maps a numeric score to the brand hue.
- * Low → muted/dim, High → full brand strength.
- * @param {number} value  0-100 (clamped)
- * @param {number} max    domain ceiling (default 100)
+ * Maps a numeric score to the nearest tokenized tint.
+ * Higher values map to stronger brand colors.
  */
 export const getValueColor = (value, max = 100) => {
+  const lastIndex = CHART_PALETTE.length - 1;
+  if (lastIndex <= 0 || max <= 0) return CHART_PALETTE[lastIndex] || CHART_BRAND;
+
   const t = Math.max(0, Math.min(1, value / max));
-  const s = Math.round(30 + 70 * t); // 30 % → 100 %
-  const l = Math.round(35 + 25 * t); // 35 % → 60 %
-  return `hsl(14, ${s}%, ${l}%)`;
+  const index = Math.round((1 - t) * lastIndex);
+  return CHART_PALETTE[index];
 };
 
-/** Bar chart — neutral fill for non-highlighted bars */
-export const CHART_BAR_NEUTRAL = 'rgba(255, 255, 255, 0.10)';
-
-/** Reusable chart constants */
-export const CHART_GRID = 'rgba(255, 255, 255, 0.08)';
-export const CHART_AXIS_X = 'rgba(255, 255, 255, 0.45)';
-export const CHART_AXIS_Y = 'rgba(255, 255, 255, 0.35)';
+export const CHART_BAR_NEUTRAL = 'var(--chart-bar-neutral)';
+export const CHART_GRID = 'var(--chart-grid)';
+export const CHART_AXIS_X = 'var(--chart-axis-x)';
+export const CHART_AXIS_Y = 'var(--chart-axis-y)';
+export const CHART_CURSOR = 'var(--chart-cursor)';

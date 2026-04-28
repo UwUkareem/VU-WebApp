@@ -1,6 +1,5 @@
 import { MockConfigForm } from '../MockConfigForm';
-import { addMock } from '../../../../data/mocks';
-import { MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../../../../data/config';
+import { addMock, MOCK_TYPE_OPTIONS, DIFFICULTY_OPTIONS } from '../../../../api';
 
 /**
  * Convert the create-form shape into the shared-data mock shape.

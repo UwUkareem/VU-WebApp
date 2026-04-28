@@ -6,6 +6,7 @@
   gap: var(--gap-2xl);
   padding-top: var(--gap-xs);
   padding-bottom: var(--gap-xl);
+  overflow: visible;
 }
 
 /* Charts — bar 2fr, radar 1fr */
@@ -14,6 +15,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--gap-lg);
+  overflow: visible;
 }
 
 .full-feedback__charts > * {

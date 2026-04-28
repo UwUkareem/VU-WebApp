@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, memo } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Users,
@@ -16,7 +17,7 @@ import { Shortcuts } from '../../../../components/layout/Shortcuts';
 import { EntityCard } from '../../../../components/ui/Cards';
 import { Pagination } from '../../../../components/ui/Pagination';
 import { FilterOverlay } from '../../../../components/ui/FilterOverlay';
-import { JOBS } from '../../../../data/jobs';
+import { JOBS } from '../../../../api';
 import './JobList.css';
 
 /* ── Menu options ── */
@@ -105,12 +106,27 @@ const INITIAL_OVERLAY = {
 /* ── Component ── */
 
 export const JobList = memo(function JobList({ onViewJob, onEditJob, onCreateJob }) {
-  const [statusFilter, setStatusFilter] = useState('All');
+  const location = useLocation();
+
+  const initialStatus = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const statusParam = params.get('status');
+    if (statusParam && STATUS_FILTERS.includes(statusParam)) {
+      return statusParam;
+    }
+    return 'All';
+  }, [location.search]);
+
+  const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [sortBy, setSortBy] = useState('Recently Modified');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [overlayFilters, setOverlayFilters] = useState(INITIAL_OVERLAY);
+  const [overlayFilters, setOverlayFilters] = useState(() => ({
+    ...INITIAL_OVERLAY,
+    statusQuick: initialStatus === 'All' ? '' : initialStatus,
+  }));
 
   const activeFilterCount = useMemo(() => {
     let count = 0;
