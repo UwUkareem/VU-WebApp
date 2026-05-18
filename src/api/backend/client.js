@@ -12,7 +12,14 @@ function getDefaultApiBaseUrl() {
   return DEPLOYED_API_ORIGIN;
 }
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getDefaultApiBaseUrl();
+function getApiBaseUrl() {
+  if (import.meta.env.PROD && typeof window !== 'undefined') {
+    if (window.location.hostname.endsWith('vercel.app')) return '/api';
+  }
+  return import.meta.env.VITE_API_BASE_URL || getDefaultApiBaseUrl();
+}
+
+export const API_BASE_URL = getApiBaseUrl();
 export const API_PUBLIC_ORIGIN =
   import.meta.env.VITE_PUBLIC_API_ORIGIN ||
   import.meta.env.VITE_BACKEND_URL ||
